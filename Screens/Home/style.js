@@ -11,10 +11,19 @@ const HomeStyle = {
      flex: 1, 
      backgroundColor: COLORS.white
   },
-  Icon: {
+  SectionIcon: {
     alignSelf: 'flex-end',
     flexDirection: 'row',
-    paddingTop:5
+    paddingTop:5,
+    paddingBottom: 5,
+  },
+  Icon:{
+    color: COLORS.primary,
+    paddingLeft: 10,
+  },
+  ViewButton:{
+    flexDirection:'row',
+    paddingBottom: 20,
   },
   Section:{
     width:'100%',
@@ -52,6 +61,21 @@ const HomeStyle = {
     width:SCREENSIZE.deviceWidth-25,
     height:100,
     borderRadius:15,
+  },
+  ButtonRetour:{
+   alignSelf:'flex-start',
+   color:COLORS.primary
+  },
+  Header:{
+    width:'100%',
+    flexDirection:'row',
+    alignItems: 'center',
+    paddingTop:10,
+    justifyContent: 'space-between',
+  },
+  TextHeader:{
+    fontFamily:FONT.Black,
+    fontSize:15,
   }
 };
 

@@ -10,6 +10,7 @@ import Login from "./Screens/Login";
 import SignUp from "./Screens/signup";
 import ForgotPassword from "./Screens/passwordForgotten";
 import RenewAssucance from "./Screens/Home/ScreensHome/RenewAssurance";
+import ExperstiseQuery from "./Screens/Home/ScreensHome/ExperstiseQuery";
 
 
 SplashScreen.preventAutoHideAsync();
@@ -44,6 +45,7 @@ export default function App() {
           <Stack.Screen name="SignUp" component={SignUp} />
           <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
           <Stack.Screen name="RenewAssurance" component={RenewAssucance} />
+          <Stack.Screen name="ExpertiseQuery" component={ExperstiseQuery} />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>

@@ -1,4 +1,4 @@
-import { View, Text, Image } from "react-native";
+import { View, Text, Image, Alert, Button } from "react-native";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import LoginStyle from "./style";
@@ -6,12 +6,17 @@ import { COLORS, MARGIN, FONT } from "../../constants";
 import { ScrollView, TextInput, TouchableOpacity } from "react-native";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
+import axios from "axios";
+
+{
+  /* pati sa pemet mwen verifier chak champ nn formulaire a */
+}
 
 const LoginSchema = Yup.object().shape({
   nif: Yup.string()
+    .matches(/^[0-9]+$/, "Ce champ ne doit avoir que des chiffes !!")
     .min(10, "il doit avoir exactement 10 chiffres !!")
     .max(10, "il doit avoir exactement 10 chiffres !!")
-    .matches(/^[0-9]+$/, "Ce champ ne doit avoir que des chiffes !!")
     .required("Champ obligatoire !!"),
   password: Yup.string()
     .min(8)
@@ -22,7 +27,12 @@ const LoginSchema = Yup.object().shape({
     ),
 });
 
+{
+  /* debut code */
+}
+
 const Login = ({ navigation }) => {
+  const [error, setError] = useState();
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
       <Formik
@@ -31,6 +41,14 @@ const Login = ({ navigation }) => {
           password: "",
         }}
         validationSchema={LoginSchema}
+        onSubmit={(values) =>{
+          axios.post(`http://127.0.0.1:8000/api/auth/login`, values).then((response) =>{
+            let user=response.data.user;
+            console.log(user);
+          }).catch((error) =>{
+            console.log(error);
+          });
+        }}
       >
         {({
           values,
@@ -85,6 +103,7 @@ const Login = ({ navigation }) => {
                     placeholder="Entrer votre nif..."
                     placeholderTextColor={COLORS.text}
                     selectionColor={COLORS.primary}
+                    keyboardType="numeric"
                     value={values.nif}
                     onChangeText={handleChange("nif")}
                     onBlur={() => setFieldTouched("nif")}
@@ -152,9 +171,12 @@ const Login = ({ navigation }) => {
               </View>
               {/* pati button an */}
               <TouchableOpacity
-                onPress={() => navigation.navigate("Home")}
+                onPress={handleSubmit}
                 disabled={!isValid}
-                style={[LoginStyle.btn,{ backgroundColor: isValid ? "#D9E5FF" : "#407BFF" }]}
+                style={[
+                  LoginStyle.btn,
+                  { backgroundColor: isValid ? "#407BFF" : "#D9E5FF" },
+                ]}
               >
                 <Text style={{ color: COLORS.white, fontFamily: FONT.Black }}>
                   Se connecter

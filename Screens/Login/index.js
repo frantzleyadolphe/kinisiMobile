@@ -7,10 +7,9 @@ import { ScrollView, TextInput, TouchableOpacity } from "react-native";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
+import Toast, { BaseToast, ErrorToast } from "react-native-toast-message";
 
-{
-  /* pati sa pemet mwen verifier chak champ nn formulaire a */
-}
+/* pati sa pemet mwen verifier chak champ nn formulaire a */
 
 const LoginSchema = Yup.object().shape({
   nif: Yup.string()
@@ -27,12 +26,80 @@ const LoginSchema = Yup.object().shape({
     ),
 });
 
-{
-  /* debut code */
-}
+/*
+  pati sa m jere toast lan ak tout configuration
+
+*/
+
+const showToastNif = () => {
+  Toast.show({
+    type: "error",
+    text1: "Attention!",
+    text2: "Nif incorrect",
+    autoHide: true,
+    visibilityTime: 4500,
+  });
+};
+
+const showToastSucces = () => {
+  Toast.show({
+    type: "success",
+    text1: "Message",
+    text2: "Le compte existe vraiment dans la base de données",
+    autoHide: true,
+    visibilityTime: 4500,
+  });
+};
+
+const showToastPassword = () => {
+  Toast.show({
+    type: "error",
+    text1: "Attention !!",
+    text2: "Mot de passe incorrect",
+    autoHide: true,
+    visibilityTime: 4500,
+  });
+};
+
+const toastConfig = {
+  /*
+    Overwrite 'success' type,
+    by modifying the existing `BaseToast` component
+    
+  */
+  success: (props) => (
+    <BaseToast
+      {...props}
+      style={{ borderLeftColor: "green" }}
+      contentContainerStyle={{ paddingHorizontal: 20 }}
+      text1Style={{
+        fontSize: 16,
+        fontWeight: "200",
+      }}
+    />
+  ),
+  /*
+    Overwrite 'error' type,
+    by modifying the existing `ErrorToast` component
+    
+  */
+  error: (props) => (
+    <ErrorToast
+      {...props}
+      style={{ borderLeftColor: "red" }}
+      text1Style={{
+        fontSize: 17,
+      }}
+      text2Style={{
+        fontSize: 16,
+      }}
+    />
+  ),
+};
+
+/* debut code */
 
 const Login = ({ navigation }) => {
-  const [error, setError] = useState();
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
       <Formik
@@ -41,13 +108,26 @@ const Login = ({ navigation }) => {
           password: "",
         }}
         validationSchema={LoginSchema}
-        onSubmit={(values) =>{
-          axios.post(`http://127.0.0.1:8000/api/auth/login`, values).then((response) =>{
-            let user=response.data.user;
-            console.log(user);
-          }).catch((error) =>{
-            console.log(error);
-          });
+        onSubmit={(values) => {
+          axios
+            .post(
+              `https://2b05-200-113-251-74.ngrok-free.app/api/auth/login`,
+              values
+            )
+            .then((response) => {
+              let user = response.data.user;
+              if (user) {
+                showToastSucces();
+              }
+            })
+            .catch((error) => {
+              let errorParsed = JSON.parse(error.response.data);
+              if (errorParsed?.nif) {
+                showToastNif();
+              } else if (errorParsed?.password) {
+                showToastPassword();
+              }
+            });
         }}
       >
         {({
@@ -74,6 +154,7 @@ const Login = ({ navigation }) => {
                   style={LoginStyle.image}
                 />
               </View>
+              <Toast config={toastConfig} />
               {/* pati text la */}
               <View style={{ alignItems: "center", paddingTop: 30 }}>
                 <Text

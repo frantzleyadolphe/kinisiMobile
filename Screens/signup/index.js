@@ -1,12 +1,24 @@
-import { View, Text, Image, TextInput, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  TextInput,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { COLORS, FONT } from "../../constants";
-import { ScrollView } from "react-native";
-import { Formik, Form, Field } from "formik";
+import { Formik } from "formik";
 import * as Yup from "yup";
 import SignUpStyle from "./style";
+import axios from "axios";
+import Toast, { BaseToast, ErrorToast } from "react-native-toast-message";
+import { Redirect } from "expo-router";
 
+/*
+    pati sa m jere validation formulaire lan 
+  */
 const SignupSchema = Yup.object().shape({
   nif: Yup.string()
     .min(10, "il doit avoir exactement 10 chiffres !!")
@@ -21,11 +33,92 @@ const SignupSchema = Yup.object().shape({
       /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
       "Le mot de passe doit avoir 8 caractères et des symboles"
     ),
-  passwordConfirm: Yup.string()
+  password_confirmation: Yup.string()
     .min(8)
     .oneOf([Yup.ref("password")], "Les mot de passe ne correspondent pas !")
     .required("COnfirmation de mot de passe obligatoire !"),
 });
+/*
+   pati sa pemet mwen di men ki mesaj m vle jwen de plugin toast lan 
+  */
+
+const showToast = () => {
+  Toast.show({
+    type: "success",
+    text1: "Inscription",
+    text2: "Votre compte créé avec succès !! 👋",
+    autoHide: true,
+    visibilityTime: 4500,
+  });
+};
+
+const showToastError = () => {
+  Toast.show({
+    type: "error",
+    text1: "Attention!",
+    text2: "Ce nif existe déjà !!",
+    autoHide: true,
+    visibilityTime: 4500,
+  });
+};
+
+const showToastEmail = () => {
+  Toast.show({
+    type: "error",
+    text1: "Attention !!",
+    text2: "Cette adresse email existe déjà !!",
+    autoHide: true,
+    visibilityTime: 4500,
+  });
+};
+
+const showToastEmailNif = () => {
+  Toast.show({
+    type: "error",
+    text1: "Attention !!",
+    text2: "Ce nif et l'email existe déjà !!",
+    autoHide: true,
+    visibilityTime: 4500,
+  });
+};
+
+
+/*
+    nan pati sa mwen modifye toast lan pou m k fel nn janm bezwen l lan 
+  */
+const toastConfig = {
+  /*
+    Overwrite 'success' type,
+    by modifying the existing `BaseToast` component
+  */
+  success: (props) => (
+    <BaseToast
+      {...props}
+      style={{ borderLeftColor: "green" }}
+      contentContainerStyle={{ paddingHorizontal: 20 }}
+      text1Style={{
+        fontSize: 16,
+        fontWeight: "200",
+      }}
+    />
+  ),
+  /*
+    Overwrite 'error' type,
+    by modifying the existing `ErrorToast` component
+  */
+  error: (props) => (
+    <ErrorToast
+      {...props}
+      style={{ borderLeftColor: "red", }}
+      text1Style={{
+        fontSize: 17,
+      }}
+      text2Style={{
+        fontSize: 16,
+      }}
+    />
+  ),
+};
 
 const SignUp = ({ navigation }) => {
   return (
@@ -35,9 +128,38 @@ const SignUp = ({ navigation }) => {
           nif: "",
           email: "",
           password: "",
-          passwordConfirm: "",
+          password_confirmation: "",
         }}
         validationSchema={SignupSchema}
+        onSubmit={(values) => {
+          axios
+            .post(
+              `https://2b05-200-113-251-74.ngrok-free.app/api/auth/register`,
+              values
+            )
+            .then((response) => {
+              let userInfo = response.data.user;
+              /*
+              m afiche messaj si nif lan ak email lan existe deja
+              */
+              if (userInfo) {
+                showToast();
+              }
+            })
+            .catch((error) => {
+              /*
+              m afiche messaj si nif lan ak email lan existe deja
+              */
+              let errorParsed = JSON.parse(error.response.data);
+              if (errorParsed?.nif && errorParsed?.email) {
+                showToastEmailNif();
+              } else if (errorParsed?.nif) {
+                showToastError();
+              } else if (errorParsed?.email) {
+                showToastEmail();
+              }
+            });
+        }}
       >
         {({
           values,
@@ -54,6 +176,7 @@ const SignUp = ({ navigation }) => {
                 source={require("./../../assets/signup.png")}
                 style={{ width: 300, height: 300 }}
               />
+              <Toast config={toastConfig} />
               {/* pati text la */}
               <View style={{ alignItems: "center", paddingTop: 10 }}>
                 <Text style={SignUpStyle.titre}>INSCRIPTION</Text>
@@ -118,25 +241,27 @@ const SignUp = ({ navigation }) => {
                     placeholder="Confirmer votre mot de passe"
                     placeholderTextColor={COLORS.text}
                     selectionColor={COLORS.primary}
-                    onChangeText={handleChange("passwordConfirm")}
-                    onBlur={() => setFieldTouched("passwordConfirm")}
+                    value={values.password_confirmation}
+                    onChangeText={handleChange("password_confirmation")}
+                    onBlur={() => setFieldTouched("password_confirmation")}
                     autoCapitalize="none"
                   />
-                  {touched.passwordConfirm && errors.passwordConfirm && (
-                    <Text style={SignUpStyle.errorText}>
-                      {errors.passwordConfirm}
-                    </Text>
-                  )}
+                  {touched.password_confirmation &&
+                    errors.password_confirmation && (
+                      <Text style={SignUpStyle.errorText}>
+                        {errors.password_confirmation}
+                      </Text>
+                    )}
                 </View>
               </View>
 
               {/* pati button an */}
               <TouchableOpacity
-                onPress={() => {}}
+                onPress={handleSubmit}
                 disabled={!isValid}
                 style={[
                   SignUpStyle.btn,
-                  { backgroundColor: isValid ? "#D9E5FF" : "#407BFF" },
+                  { backgroundColor: isValid ? "#407BFF" : "#D9E5FF" },
                 ]}
               >
                 <Text style={{ color: COLORS.white, fontFamily: FONT.Black }}>

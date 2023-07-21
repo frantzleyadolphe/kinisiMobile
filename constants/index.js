@@ -12,7 +12,9 @@ export const COLORS= {
     text:'#0E0E0E',
     iconColor:'#407BFF',
     white:'#FFFFFF',
-    buttonText:'#4F008E'
+    buttonText:'#4F008E',
+    spinner:'#BB0000'
+
 };
 
 export const MARGIN={

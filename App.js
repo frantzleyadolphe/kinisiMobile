@@ -1,4 +1,3 @@
-import { View } from "react-native";
 import { useCallback, useEffect } from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { SplashScreen } from "expo-router";
@@ -11,43 +10,44 @@ import SignUp from "./Screens/signup";
 import ForgotPassword from "./Screens/passwordForgotten";
 import RenewAssucance from "./Screens/Home/ScreensHome/RenewAssurance";
 import ExperstiseQuery from "./Screens/Home/ScreensHome/ExperstiseQuery";
-
+import { AuthProvider } from "./context/AuthContext";
 
 SplashScreen.preventAutoHideAsync();
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
-
   //load all font
   const [fontsLoaded] = useFonts({
-    bohuan:require("./assets/fonts/bohuan.ttf"),
-    SfProRegular:require("./assets/fonts/SF-Pro.ttf"),
-    SfProMedium:require("./assets/fonts/sf-pro-medium.ttf"),
-  })
+    bohuan: require("./assets/fonts/bohuan.ttf"),
+    SfProRegular: require("./assets/fonts/SF-Pro.ttf"),
+    SfProMedium: require("./assets/fonts/sf-pro-medium.ttf"),
+  });
 
-  const onLayoutRootView= useCallback(async ()=>{
-    if(fontsLoaded){
+  const onLayoutRootView = useCallback(async () => {
+    if (fontsLoaded) {
       await SplashScreen.hideAsync();
     }
-  },[fontsLoaded]);
+  }, [fontsLoaded]);
 
-  if(!fontsLoaded){
+  if (!fontsLoaded) {
     return null;
   }
 
   return (
-    <SafeAreaProvider onLayout={onLayoutRootView} >
-      <NavigationContainer>
-        <Stack.Navigator initialRouteName="Login" screenOptions={{headerShown:false}}>
-          <Stack.Screen name="Login" component={Login}/>
-          <Stack.Screen name="Home" component={HomeScreen} />
-          <Stack.Screen name="SignUp" component={SignUp} />
-          <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
-          <Stack.Screen name="RenewAssurance" component={RenewAssucance} />
-          <Stack.Screen name="ExpertiseQuery" component={ExperstiseQuery} />
-        </Stack.Navigator>
-      </NavigationContainer>
+    <SafeAreaProvider onLayout={onLayoutRootView}>
+      <AuthProvider>
+        <NavigationContainer>
+          <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="Login" component={Login} />
+            <Stack.Screen name="Home" component={HomeScreen} />
+            <Stack.Screen name="SignUp" component={SignUp} />
+            <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
+            <Stack.Screen name="RenewAssurance" component={RenewAssucance} />
+            <Stack.Screen name="ExpertiseQuery" component={ExperstiseQuery} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </AuthProvider>
     </SafeAreaProvider>
   );
 }

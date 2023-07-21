@@ -9,7 +9,9 @@ import * as Yup from "yup";
 import axios from "axios";
 import Toast, { BaseToast, ErrorToast } from "react-native-toast-message";
 
-/* pati sa pemet mwen verifier chak champ nn formulaire a */
+{
+  /* pati sa pemet mwen verifier chak champ nn formulaire a */
+}
 
 const LoginSchema = Yup.object().shape({
   nif: Yup.string()
@@ -28,7 +30,6 @@ const LoginSchema = Yup.object().shape({
 
 /*
   pati sa m jere toast lan ak tout configuration
-
 */
 
 const showToastNif = () => {
@@ -65,7 +66,6 @@ const toastConfig = {
   /*
     Overwrite 'success' type,
     by modifying the existing `BaseToast` component
-    
   */
   success: (props) => (
     <BaseToast
@@ -81,7 +81,6 @@ const toastConfig = {
   /*
     Overwrite 'error' type,
     by modifying the existing `ErrorToast` component
-    
   */
   error: (props) => (
     <ErrorToast
@@ -116,7 +115,7 @@ const Login = ({ navigation }) => {
             )
             .then((response) => {
               let user = response.data.user;
-              if (user) {
+              if(user){
                 showToastSucces();
               }
             })

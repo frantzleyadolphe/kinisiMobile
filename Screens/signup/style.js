@@ -40,7 +40,7 @@ const SignUpStyle = {
     color: 'red',
     fontFamily: FONT.SfProMedium,
     paddingTop: 2,
-  }
+  },
 };
 
 export default SignUpStyle;

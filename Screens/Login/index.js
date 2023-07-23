@@ -1,13 +1,14 @@
 import { View, Text, Image, Alert, Button } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import LoginStyle from "./style";
 import { COLORS, MARGIN, FONT } from "../../constants";
 import { ScrollView, TextInput, TouchableOpacity } from "react-native";
-import { Formik, Form, Field } from "formik";
+import { Formik } from "formik";
 import * as Yup from "yup";
-import axios from "axios";
 import Toast, { BaseToast, ErrorToast } from "react-native-toast-message";
+import { AuthContext } from "../../context/AuthContext";
+import Spinner from "react-native-loading-spinner-overlay";
 
 {
   /* pati sa pemet mwen verifier chak champ nn formulaire a */
@@ -27,40 +28,6 @@ const LoginSchema = Yup.object().shape({
       "Le mot de passe doit avoir 8 caractères et des symboles et sans lettres capitales"
     ),
 });
-
-/*
-  pati sa m jere toast lan ak tout configuration
-*/
-
-const showToastNif = () => {
-  Toast.show({
-    type: "error",
-    text1: "Attention!",
-    text2: "Nif incorrect",
-    autoHide: true,
-    visibilityTime: 4500,
-  });
-};
-
-const showToastSucces = () => {
-  Toast.show({
-    type: "success",
-    text1: "Message",
-    text2: "Le compte existe vraiment dans la base de données",
-    autoHide: true,
-    visibilityTime: 4500,
-  });
-};
-
-const showToastPassword = () => {
-  Toast.show({
-    type: "error",
-    text1: "Attention !!",
-    text2: "Mot de passe incorrect",
-    autoHide: true,
-    visibilityTime: 4500,
-  });
-};
 
 const toastConfig = {
   /*
@@ -99,6 +66,7 @@ const toastConfig = {
 /* debut code */
 
 const Login = ({ navigation }) => {
+  const { isLoading, login } = useContext(AuthContext);
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
       <Formik
@@ -107,28 +75,7 @@ const Login = ({ navigation }) => {
           password: "",
         }}
         validationSchema={LoginSchema}
-        onSubmit={(values) => {
-          axios
-            .post(
-              `https://2b05-200-113-251-74.ngrok-free.app/api/auth/login`,
-              values
-            )
-            .then((response) => {
-              let user = response.data.user;
-              if(user){
-                showToastSucces();
-              }
-            })
-            .catch((error) => {
-              let errorParsed = JSON.parse(error.response.data);
-              if (errorParsed?.nif) {
-                showToastNif();
-              } else if (errorParsed?.password) {
-                showToastPassword();
-              }
-            });
-        }}
-      >
+        onSubmit={(values) => {login(values);}}>
         {({
           values,
           errors,
@@ -153,6 +100,7 @@ const Login = ({ navigation }) => {
                   style={LoginStyle.image}
                 />
               </View>
+              <Spinner visible={isLoading} color={COLORS.spinner} size={60} />
               <Toast config={toastConfig} />
               {/* pati text la */}
               <View style={{ alignItems: "center", paddingTop: 30 }}>

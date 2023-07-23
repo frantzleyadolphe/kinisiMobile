@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
 } from "react-native";
 import React from "react";
-import { useNavigation } from "expo-router";
 import LoginStyle from "../Login/style";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { COLORS, MARGIN, FONT } from "../../constants";
@@ -86,7 +85,7 @@ const ForgotPassword = ({ navigation }) => {
             >
               <TouchableOpacity
                 onPress={() => {
-                  navigation.navigate("ForgotPassword");
+                  navigation.goBack();
                 }}
               >
                 <Text

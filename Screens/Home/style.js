@@ -14,7 +14,7 @@ const HomeStyle = {
   SectionIcon: {
     alignSelf: 'flex-end',
     flexDirection: 'row',
-    paddingTop:5,
+    paddingTop:2,
     paddingBottom: 5,
   },
   Icon:{
@@ -37,6 +37,15 @@ const HomeStyle = {
     width: 100,
     height:100,
     marginTop:MARGIN.vertical
+  },
+  image2:{
+    width: 175,
+    height:100,
+    marginTop:MARGIN.vertical
+  },
+  avatar:{
+    width: 50,
+    height:50
   },
   button:{
     width: (SCREENSIZE.deviceWidth / 2) - 25,

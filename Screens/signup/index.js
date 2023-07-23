@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { COLORS, FONT } from "../../constants";
 import { Formik } from "formik";
@@ -15,6 +15,7 @@ import SignUpStyle from "./style";
 import Toast, { BaseToast, ErrorToast } from "react-native-toast-message";
 import { AuthContext } from "../../context/AuthContext";
 import Spinner from "react-native-loading-spinner-overlay";
+
 
 /*
     pati sa m jere validation formulaire lan 
@@ -65,7 +66,7 @@ const toastConfig = {
   error: (props) => (
     <ErrorToast
       {...props}
-      style={{ borderLeftColor: "red", }}
+      style={{ borderLeftColor: "red" }}
       text1Style={{
         fontSize: 17,
       }}
@@ -81,7 +82,8 @@ const toastConfig = {
 */
 
 const SignUp = ({ navigation }) => {
-  const {isLoading, register}=useContext(AuthContext);
+  const { isLoading, register } = useContext(AuthContext);
+  // const { isSecureEntry, setIsSecureEntry } = useState(false);
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
       <Formik
@@ -92,7 +94,9 @@ const SignUp = ({ navigation }) => {
           password_confirmation: "",
         }}
         validationSchema={SignupSchema}
-        onSubmit={(values) => {register(values);} }
+        onSubmit={(values) => {
+          register(values);
+        }}
       >
         {({
           values,
@@ -104,13 +108,12 @@ const SignUp = ({ navigation }) => {
           handleSubmit,
         }) => (
           <ScrollView>
-  
             <View style={SignUpStyle.pageColor}>
               <Image
                 source={require("./../../assets/signup.png")}
-                style={{ width: 300, height: 300 }}
+                style={{ width: 300, height: 200 }}
               />
-              <Spinner visible={isLoading} color={COLORS.spinner} size={60}/>
+              <Spinner visible={isLoading} color={COLORS.spinner} size={60} />
               <Toast config={toastConfig} />
               {/* pati text la */}
               <View style={{ alignItems: "center", paddingTop: 10 }}>

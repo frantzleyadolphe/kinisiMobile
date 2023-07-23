@@ -1,31 +1,27 @@
 import { View, Text, Image, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import React from "react";
-import { COLORS, MARGIN } from "../../constants";
+import React, { useContext } from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import HomeStyle from "./style";
 import SliderImage from "../../components/SliderImage";
+import Spinner from "react-native-loading-spinner-overlay";
+import { AuthContext } from "../../context/AuthContext";
 
 const HomeScreen = ({ navigation }) => {
+  const {isLoading, userInfo }=useContext(AuthContext);
+
   return (
     <SafeAreaView style={HomeStyle.colorPage}>
       <View style={HomeStyle.Page}>
         <View style={HomeStyle.SectionIcon}>
           <TouchableOpacity>
-            <Ionicons
-              name="notifications-outline"
-              size={32}
-              style={HomeStyle.Icon}
-            />
+          <Image style={HomeStyle.avatar} source={require("./../../assets/notification.png")}/>
           </TouchableOpacity>
           <TouchableOpacity>
-            <Ionicons
-              name="person-circle-outline"
-              size={32}
-              style={HomeStyle.Icon}
-            />
+            <Image style={HomeStyle.avatar} source={require("./../../assets/avatar.png")}/>
           </TouchableOpacity>
         </View>
+        <Spinner visible={isLoading}/>
         <SliderImage />
         <View style={HomeStyle.Section}>
           <View style={HomeStyle.ViewButton}>
@@ -53,7 +49,7 @@ const HomeScreen = ({ navigation }) => {
             <TouchableOpacity style={HomeStyle.button}>
               <Image
                 source={require("../../assets/Alert.png")}
-                style={HomeStyle.image}
+                style={HomeStyle.image2}
               />
               <Text style={HomeStyle.Text}>Alert vol de Vehicule</Text>
             </TouchableOpacity>

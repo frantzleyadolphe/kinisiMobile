@@ -1,11 +1,10 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 import axios from "axios";
 import Toast from "react-native-toast-message";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { BASE_URL } from "../api/apiUrl";
 
 export const AuthContext = createContext();
-
-const BASE_URL = "https://e793-200-113-230-50.ngrok-free.app";
 
 /*
    pati sa pemet mwen di men ki mesaj m vle jwen de plugin toast lan 
@@ -51,10 +50,57 @@ const showToastEmailNif = () => {
   });
 };
 
+const showToastErr = () => {
+  Toast.show({
+    type: "error",
+    text1: "Attention !!",
+    text2: "Une erreur s'est produite",
+    autoHide: true,
+    visibilityTime: 4500,
+  });
+};
+
+/*
+  pati sa m jere toast lan ak tout configuration
+*/
+
+const showToastNif = () => {
+  Toast.show({
+    type: "error",
+    text1: "Attention!",
+    text2: "Nif incorrect",
+    autoHide: true,
+    visibilityTime: 4500,
+  });
+};
+
+const showToastSucces = () => {
+  Toast.show({
+    type: "success",
+    text1: "Message",
+    text2: "Le compte existe vraiment dans la base de données",
+    autoHide: true,
+    visibilityTime: 4500,
+  });
+};
+
+const showToastPassword = () => {
+  Toast.show({
+    type: "error",
+    text1: "Attention !!",
+    text2: "Mot de passe incorrect",
+    autoHide: true,
+    visibilityTime: 4500,
+  });
+};
+
+/*
+
+*/
 export const AuthProvider = ({ children }) => {
   const [userInfo, setUserInfo] = useState({});
   const [isLoading, setIsLoading] = useState(false);
-  const [splashLoading, setSplashLoading] = useState(false);
+  const [splachLoading, setSplachLoading]=useState(false);
 
   const register = (values) => {
     setIsLoading(true);
@@ -91,8 +137,75 @@ export const AuthProvider = ({ children }) => {
       });
   };
 
+  const login = (values) => {
+    setIsLoading(true);
+    axios
+      .post(`${BASE_URL}/api/auth/login`, values)
+      .then((response) => {
+        let userInfo = response.data;
+        /*
+        m voy mesaj poum di moun nn ke kont lan cree
+        */
+        if (userInfo) {
+          setIsLoading(false);
+          setUserInfo(userInfo);
+          AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
+          showToastSucces();
+          /* avec console log sa m gad si token lan kreye poum k rele l nn paj navigation an */
+          //console.log(userInfo.authorization.token);
+        }
+      })
+      .catch((error) => {
+        /*
+        m afiche messaj si nif lan ak email lan existe deja
+        */
+        let errorParsed = JSON.parse(error.response.data);
+        if (errorParsed?.nif) {
+          setIsLoading(false);
+          showToastNif();
+        } else if (errorParsed?.password) {
+          setIsLoading(false);
+          showToastPassword();
+        }
+      });
+  };
+
+  const logout=()=>{
+    setIsLoading(true);
+    axios.post(`${BASE_URL}/api/auth/logout`, {},{
+      headers:{authorization: `Bearer ${userInfo.autorization.token}`}
+    }).then(response =>{
+      //let userInfo = response.data;
+      AsyncStorage.removeItem('userInfo');
+      setUserInfo({});
+      setIsLoading(false);
+    }).catch(error =>{
+      setIsLoading(false);
+      showToastErr();
+    });
+  };
+
+  const isLoggedIn = async()=> {
+    try{
+      setSplachLoading(true);
+      let userInfo = await AsyncStorage.getItem('userInfo');
+      userInfo = JSON.parse(userInfo);
+
+      if(userInfo){
+        setUserInfo(userInfo);
+      }
+      setSplachLoading(false);
+    }catch(error){
+
+    }
+  };
+
+  useEffect(()=>{
+    isLoggedIn();
+  },[]);
+
   return (
-    <AuthContext.Provider value={{ isLoading, userInfo, register }}>
+    <AuthContext.Provider value={{ isLoading, isLoggedIn,userInfo, splachLoading, register, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

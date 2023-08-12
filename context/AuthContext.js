@@ -100,7 +100,7 @@ const showToastPassword = () => {
 export const AuthProvider = ({ children }) => {
   const [userInfo, setUserInfo] = useState({});
   const [isLoading, setIsLoading] = useState(false);
-  const [splachLoading, setSplachLoading]=useState(false);
+  const [splachLoading, setSplachLoading] = useState(false);
 
   const register = (values) => {
     setIsLoading(true);
@@ -123,10 +123,11 @@ export const AuthProvider = ({ children }) => {
         /*
         m afiche messaj si nif lan ak email lan existe deja
         */
-        let errorParsed = JSON.parse(error.response.data);
+        let errorParsed = JSON.parse(error.response.config.data);
         if (errorParsed?.nif && errorParsed?.email) {
           setIsLoading(false);
           showToastEmailNif();
+          console.log(errorParsed);
         } else if (errorParsed?.nif) {
           setIsLoading(false);
           showToastError();
@@ -146,20 +147,21 @@ export const AuthProvider = ({ children }) => {
         /*
         m voy mesaj poum di moun nn ke kont lan cree
         */
-        if (userInfo) {
           setIsLoading(false);
           setUserInfo(userInfo);
-          AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
-          showToastSucces();
-          /* avec console log sa m gad si token lan kreye poum k rele l nn paj navigation an */
-          //console.log(userInfo.authorization.token);
-        }
+          let values = JSON.stringify(userInfo);
+          AsyncStorage.setItem("userInfo", values);
+          console.log(userInfo);
+          //showToastSucces();
+       
       })
       .catch((error) => {
         /*
         m afiche messaj si nif lan ak email lan existe deja
         */
-        let errorParsed = JSON.parse(error.response.data);
+       console.log(error.response.data);
+        const errorParsed = error.response.data;
+
         if (errorParsed?.nif) {
           setIsLoading(false);
           showToastNif();
@@ -170,42 +172,55 @@ export const AuthProvider = ({ children }) => {
       });
   };
 
-  const logout=()=>{
+  const logout = async () => {
     setIsLoading(true);
-    axios.post(`${BASE_URL}/api/auth/logout`, {},{
-      headers:{authorization: `Bearer ${userInfo.autorization.token}`}
-    }).then(response =>{
-      //let userInfo = response.data;
+
+    axios.post(`${BASE_URL}/api/auth/logout`,null,{
+      headers: { Authorization : `Bearer ${userInfo.token}`}
+    }).then( response => {
+      console.log(response.data);
       AsyncStorage.removeItem('userInfo');
       setUserInfo({});
       setIsLoading(false);
-    }).catch(error =>{
+    }).catch( error => {
       setIsLoading(false);
-      showToastErr();
+      console.log(error);
     });
+
   };
 
-  const isLoggedIn = async()=> {
-    try{
+  const isLoggedIn = async () => {
+    try {
       setSplachLoading(true);
-      let userInfo = await AsyncStorage.getItem('userInfo');
+      let userInfo = await AsyncStorage.getItem("userInfo");
       userInfo = JSON.parse(userInfo);
 
-      if(userInfo){
+      if (userInfo) {
         setUserInfo(userInfo);
       }
       setSplachLoading(false);
-    }catch(error){
-
+    } catch (error) {
+      setSplachLoading(false);
+      console.log(error);
     }
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     isLoggedIn();
-  },[]);
+  }, []);
 
   return (
-    <AuthContext.Provider value={{ isLoading, isLoggedIn,userInfo, splachLoading, register, login, logout }}>
+    <AuthContext.Provider
+      value={{
+        isLoading,
+        isLoggedIn,
+        userInfo,
+        splachLoading,
+        register,
+        login,
+        logout,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

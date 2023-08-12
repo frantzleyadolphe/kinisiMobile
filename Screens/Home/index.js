@@ -1,27 +1,35 @@
 import { View, Text, Image, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import React, { useContext } from "react";
-import Ionicons from "@expo/vector-icons/Ionicons";
 import HomeStyle from "./style";
 import SliderImage from "../../components/SliderImage";
 import Spinner from "react-native-loading-spinner-overlay";
 import { AuthContext } from "../../context/AuthContext";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 const HomeScreen = ({ navigation }) => {
-  const {isLoading, userInfo }=useContext(AuthContext);
+  const { isLoading } = useContext(AuthContext);
 
   return (
     <SafeAreaView style={HomeStyle.colorPage}>
       <View style={HomeStyle.Page}>
         <View style={HomeStyle.SectionIcon}>
           <TouchableOpacity>
-          <Image style={HomeStyle.avatar} source={require("./../../assets/notification.png")}/>
+            <Ionicons
+              name="notifications-outline"
+              size={40}
+              style={HomeStyle.ButtonRetour}
+            />
           </TouchableOpacity>
-          <TouchableOpacity>
-            <Image style={HomeStyle.avatar} source={require("./../../assets/avatar.png")}/>
+          <TouchableOpacity onPress={() => navigation.navigate("Profil")}>
+            <Ionicons
+              name="person-circle-outline"
+              size={40}
+              style={HomeStyle.ButtonRetour}
+            />
           </TouchableOpacity>
         </View>
-        <Spinner visible={isLoading}/>
+        <Spinner visible={isLoading} />
         <SliderImage />
         <View style={HomeStyle.Section}>
           <View style={HomeStyle.ViewButton}>
@@ -51,7 +59,7 @@ const HomeScreen = ({ navigation }) => {
                 source={require("../../assets/Alert.png")}
                 style={HomeStyle.image2}
               />
-              <Text style={HomeStyle.Text}>Alert vol de Vehicule</Text>
+              <Text style={HomeStyle.Text}>Alerte vol de Vehicule</Text>
             </TouchableOpacity>
             <TouchableOpacity style={HomeStyle.button}>
               <Image

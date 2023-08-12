@@ -2,13 +2,13 @@ import { useCallback, useEffect, useContext } from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { SplashScreen } from "expo-router";
 import { useFonts } from "expo-font";
-import { AuthContext, AuthProvider } from "./context/AuthContext";
+import { AuthProvider } from "./context/AuthContext";
 import Navigation from "./routes/Navigation";
 import { StatusBar } from "react-native";
+import { COLORS } from "./constants";
+import 'expo-dev-client';
 
 SplashScreen.preventAutoHideAsync();
-
-
 
 export default function App() {
   //const {userInfo}=useContext(AuthContext);
@@ -32,6 +32,7 @@ export default function App() {
   return (
     <SafeAreaProvider onLayout={onLayoutRootView}>
       <AuthProvider>
+        <StatusBar backgroundColor={COLORS.primary}/>
         <Navigation />
       </AuthProvider>
     </SafeAreaProvider>

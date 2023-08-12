@@ -6,15 +6,14 @@ export const SCREENSIZE ={
 };
 
 export const COLORS= {
-    primary: '#407BFF',
-    secondary: '#D9E5FF',
+    primary: '#1C71A6',
+    secondary: '#F2F2F2',
     input:'#D9D9D9',
     text:'#0E0E0E',
     iconColor:'#407BFF',
     white:'#FFFFFF',
-    buttonText:'#4F008E',
+    buttonText:'#000038',
     spinner:'#BB0000'
-
 };
 
 export const MARGIN={

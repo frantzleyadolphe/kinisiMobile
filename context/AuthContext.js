@@ -221,7 +221,7 @@ const login = (values) => {
     });
 };
 
-// Définition d'une fonction de déconnexion appelée "logout"
+// Définition d'une fonction de déconnexion 
 const logout = async () => {
   // Mettre isLoading à true pour indiquer qu'une opération est en cours
   setIsLoading(true);

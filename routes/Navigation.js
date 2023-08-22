@@ -23,19 +23,22 @@ const Navigation = () => {
         {splachLoading ? (
           <Stack.Screen name="splach" component={IndicatorLoading} />
         ) : token ? (
-          <>
-            <Stack.Screen name="Home" component={HomeScreen} />
-            <Stack.Screen name="RenewAssurance" component={RenewAssucance} />
-            <Stack.Screen name="ExpertiseQuery" component={ExperstiseQuery} />
-            <Stack.Screen name="Profil" component={Profil} />
-          </>
+            <>
+              <Stack.Screen name="Home" component={HomeScreen} />
+              <Stack.Screen name="RenewAssurance" component={RenewAssucance}/>
+              <Stack.Screen name="ExpertiseQuery" component={ExperstiseQuery} />
+              <Stack.Screen name="Profil" component={Profil} />
+            </>
         ) : (
           <>
             <Stack.Screen name="Login" component={Login} />
             <Stack.Screen name="SignUp" component={SignUp} />
             <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
           </>
+          
         )}
+        
+          
       </Stack.Navigator>
     </NavigationContainer>
   );

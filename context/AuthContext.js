@@ -221,25 +221,35 @@ const login = (values) => {
     });
 };
 
+// Définition d'une fonction de déconnexion appelée "logout"
+const logout = async () => {
+  // Mettre isLoading à true pour indiquer qu'une opération est en cours
+  setIsLoading(true);
 
-  const logout = async () => {
-    setIsLoading(true);
+  // Effectuer une requête POST à l'URL de base combinée avec le chemin de déconnexion "/api/auth/logout"
+  // et inclure le token d'autorisation dans les en-têtes de la requête
+  axios.post(`${BASE_URL}/api/auth/logout`, null, {
+    headers: { Authorization: `Bearer ${userInfo.token}` }
+  }).then(response => {
+    // Une fois la réponse reçue avec succès...
+    // Supprimer les informations utilisateur du stockage local
+    AsyncStorage.removeItem('userInfo');
 
-    axios.post(`${BASE_URL}/api/auth/logout`,null,{
-      headers: { Authorization : `Bearer ${userInfo.token}`}
-    }).then( response => {
-      //console.log(response.data);
-      AsyncStorage.removeItem('userInfo');
-      setUserInfo({});
-      setIsLoading(false);
-    }).catch( error => {
-      setIsLoading(false);
-      //console.log(error);
-      /* show toast sa c poum voy on mesaj ere bay itilizate an */
-      showToastErr();
-    });
+    // Réinitialiser les informations utilisateur à un objet vide
+    setUserInfo({});
 
-  };
+    // Mettre isLoading à false pour indiquer que l'opération est terminée
+    setIsLoading(false);
+  }).catch(error => {
+    // En cas d'erreur...
+    // Mettre isLoading à false en cas d'erreur
+    setIsLoading(false);
+
+    // Appeler la fonction showToastErr() pour afficher un message d'erreur
+    showToastErr();
+  });
+};
+
 
   const isLoggedIn = async () => {
     try {

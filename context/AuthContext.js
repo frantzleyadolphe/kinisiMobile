@@ -148,12 +148,10 @@ const register = (values) => {
       if (errorParsed?.nif && errorParsed?.email) {
         // Mettre isLoading à false en cas d'erreur
         setIsLoading(false);
-
         // Appeler la fonction showToastEmailNif() pour afficher un message d'erreur spécifique
         showToastEmailNif();
-
         // Afficher les détails de l'erreur dans la console
-        console.log(errorParsed);
+        //console.log(errorParsed);
       } else if (errorParsed?.nif) {
         // Mettre isLoading à false en cas d'erreur
         setIsLoading(false);

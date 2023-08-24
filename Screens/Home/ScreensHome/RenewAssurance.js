@@ -26,6 +26,9 @@ export default function RenewAssurance({ navigation }) {
           </TouchableOpacity>
         </View>
         {/* pati corps paj lan */}
+        <View>
+          
+        </View>
       </View>
     </SafeAreaView>
   );

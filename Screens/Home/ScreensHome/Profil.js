@@ -35,7 +35,7 @@ const Profil = ({ navigation }) => {
         </View>
         <View style={HomeStyle.viewProfil}>
           <View style={HomeStyle.profilView}>
-            <TouchableOpacity style={HomeStyle.row}>
+            <TouchableOpacity style={HomeStyle.row} onPress={()=>navigation.navigate("Modify") }>
               <Ionicons
                 name="person-circle-outline"
                 size={38}

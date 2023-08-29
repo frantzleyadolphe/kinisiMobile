@@ -20,7 +20,7 @@ const showToast = () => {
   });
 };
 
-const showToastError = () => {
+const showToastErrorNif = () => {
   Toast.show({
     type: "error",
     text1: "Attention!",
@@ -30,7 +30,7 @@ const showToastError = () => {
   });
 };
 
-const showToastEmail = () => {
+const showToastErrorEmail = () => {
   Toast.show({
     type: "error",
     text1: "Attention !!",
@@ -74,25 +74,25 @@ const showToastNif = () => {
   });
 };
 
-const showToastSucces = () => {
+const showToastAccessDenied = () => {
   Toast.show({
-    type: "success",
-    text1: "Message",
-    text2: "Le compte existe vraiment dans la base de données",
+    type: "error",
+    text1: "Refus",
+    text2: "Vous n'êtes pas un propriétaire",
     autoHide: true,
     visibilityTime: 4500,
   });
 };
 
-// const showToastPassword = () => {
-//   Toast.show({
-//     type: "error",
-//     text1: "Attention !!",
-//     text2: "Nif ou password incorrect",
-//     autoHide: true,
-//     visibilityTime: 4500,
-//   });
-// };
+const showToastUserFound = () => {
+  Toast.show({
+    type: "error",
+    text1: "Refus",
+    text2: "L'utilisateur existe déjà !!",
+    autoHide: true,
+    visibilityTime: 4500,
+  });
+};
 
 /*
 
@@ -105,68 +105,54 @@ export const AuthProvider = ({ children }) => {
 
 
  // Définition d'une fonction d'inscription
-const register = (values) => {
-  // Mettre isLoading à true pour indiquer qu'une opération est en cours
+ const register = (values) => {
   setIsLoading(true);
-
-  // Effectuer une requête POST à l'URL de base combinée avec le chemin d'inscription "/api/auth/register"
   axios
     .post(`${BASE_URL}/api/auth/register`, values)
     .then((response) => {
-      // Une fois la réponse reçue avec succès...
-      // Extraire les informations de l'utilisateur de la réponse
       let userInfo = response.data;
-
       /*
-      m voy mesaj poum di moun nn ke kont lan cree
+      Afficher un message pour indiquer que le compte a été créé
       */
-
-      // Vérifier si des informations utilisateur sont présentes
       if (userInfo) {
-        // Mettre isLoading à false pour indiquer que l'opération est terminée
         setIsLoading(false);
-
-        // Mettre à jour les informations de l'utilisateur avec les données reçues
         setUserInfo(userInfo);
-
-        // Stocker les informations de l'utilisateur dans le stockage local sous forme de chaîne JSON
         AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
-
-        // Appeler la fonction showToast() pour afficher un message de succès
         showToast();
       }
     })
     .catch((error) => {
-      /*
-      m afiche messaj si nif lan ak email lan existe deja
-      */
+      if (error.response) {
+        const statusCode = error.response.status;
 
-      // Extraire les données d'erreur de la configuration de la requête
-      let errorParsed = JSON.parse(error.response.config.data);
+        if (statusCode === 422) {
+          const errors = error.response.data;
 
-      // Vérifier si à la fois "nif" et "email" sont présents dans les données d'erreur
-      if (errorParsed?.nif && errorParsed?.email) {
-        // Mettre isLoading à false en cas d'erreur
+          if (errors.hasOwnProperty("nif") && errors.hasOwnProperty("email")) {
+            setIsLoading(false);
+            showToastEmailNif();
+          } else if (errors.hasOwnProperty("nif")) {
+            setIsLoading(false);
+            showToastErrorNif();
+          } else if (errors.hasOwnProperty("email")) {
+            setIsLoading(false);
+            showToastErrorEmail();
+          }
+        } else if (statusCode === 403) {
+          setIsLoading(false);
+          showToastAccessDenied();
+        } else if (statusCode === 302){
+          setIsLoading(false);
+          showToastUserFound();
+        }
+      } else {
         setIsLoading(false);
-        // Appeler la fonction showToastEmailNif() pour afficher un message d'erreur spécifique
-        showToastEmailNif();
-        // Afficher les détails de l'erreur dans la console
-        //console.log(errorParsed);
-      } else if (errorParsed?.nif) {
-        // Mettre isLoading à false en cas d'erreur
-        setIsLoading(false);
-
-        // Appeler la fonction showToastError() pour afficher un message d'erreur lié au nif
-        showToastError();
-      } else if (errorParsed?.email) {
-        // Mettre isLoading à false en cas d'erreur
-        setIsLoading(false);
-
-        // Appeler la fonction showToastEmail() pour afficher un message d'erreur lié à l'email
-        showToastEmail();
+        showToastErr();
       }
     });
 };
+
+
 
   // Définition d'une fonction de connexion
 const login = (values) => {

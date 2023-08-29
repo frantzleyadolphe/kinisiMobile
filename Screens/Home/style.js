@@ -131,7 +131,46 @@ const HomeStyle = {
   iconProfil: {
     marginLeft: 10,
     marginRight: 10,
-    color:COLORS.white
+    color: COLORS.white,
+  },
+  imageRenew: {
+    marginTop: 20,
+    width: 300,
+    height: 250,
+  },
+  textTitleRenew: {
+    paddingTop: 20,
+    fontFamily: FONT.SfProMedium,
+    fontSize: 14,
+    color: COLORS.primary,
+  },
+  errorText: {
+    color: "red",
+    fontFamily: FONT.SfProMedium,
+    paddingTop: 2,
+  },
+  input: {
+    height: 48,
+    width: "100%",
+    backgroundColor: COLORS.secondary,
+    padding: MARGIN.horizontal,
+    borderRadius: 10,
+    fontFamily: FONT.SfProRegular,
+  },
+  subtitleForm: {
+    paddingTop: 5,
+    fontFamily: FONT.SfProRegular,
+    fontSize: 14,
+    color: COLORS.text,
+  },
+  btnForm: {
+    backgroundColor: COLORS.primary,
+    borderRadius: 5,
+    marginVertical: MARGIN.vertical,
+    width: 276,
+    height: 51,
+    padding: MARGIN.vertical,
+    alignItems: "center",
   },
 };
 

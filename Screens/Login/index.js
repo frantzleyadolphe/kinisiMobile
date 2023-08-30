@@ -71,7 +71,7 @@ const Login = ({ navigation }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [visiblePassword, setVisiblePassword] = useState(true);
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
+    <SafeAreaView style={LoginStyle.safeAreaViewStyle}>
       <Formik
         initialValues={{
           nif: "",
@@ -92,14 +92,7 @@ const Login = ({ navigation }) => {
           handleSubmit,
         }) => (
           <ScrollView>
-            <View
-              style={{
-                alignItems: "center",
-                justifyContent: "center",
-                marginRight: MARGIN.horizontal,
-                marginLeft: MARGIN.horizontal,
-              }}
-            >
+            <View style={LoginStyle.styleView}>
               <View style={LoginStyle.view}>
                 <Image
                   source={require("./../../assets/login.png")}
@@ -110,28 +103,13 @@ const Login = ({ navigation }) => {
               <Toast config={toastConfig} />
               {/* pati text la */}
               <View style={{ alignItems: "center", paddingTop: 30 }}>
-                <Text
-                  style={{
-                    fontFamily: FONT.Black,
-                    fontSize: 20,
-                    color: COLORS.primary,
-                  }}
-                >
-                  CONNEXION
-                </Text>
-                <Text
-                  style={{
-                    paddingTop: 5,
-                    fontFamily: FONT.SfProMedium,
-                    fontSize: 12,
-                    color: COLORS.text,
-                  }}
-                >
+                <Text style={LoginStyle.textTitle}>CONNEXION</Text>
+                <Text style={LoginStyle.textSubtitle}>
                   Remplissez les champs ci-dessous pour vous connecter
                 </Text>
               </View>
               {/* pati input la */}
-              <View style={{ width: "100%", paddingTop: 30 }}>
+              <View style={LoginStyle.viewAllInput}>
                 <View>
                   <TextInput
                     placeholder="Entrer votre nif..."
@@ -141,7 +119,7 @@ const Login = ({ navigation }) => {
                     value={values.nif}
                     onChangeText={handleChange("nif")}
                     onBlur={() => setFieldTouched("nif")}
-                    style={LoginStyle.passwordInput}
+                    style={LoginStyle.textInput}
                   />
                   {touched.nif && errors.nif && (
                     <Text style={LoginStyle.errorText}>{errors.nif}</Text>
@@ -149,7 +127,7 @@ const Login = ({ navigation }) => {
                 </View>
                 <View style={{ paddingTop: 10 }}>
                   <TextInput
-                    style={LoginStyle.passwordInput}
+                    style={LoginStyle.textInput}
                     secureTextEntry={visiblePassword}
                     placeholder="Entrer votre mot de passe"
                     placeholderTextColor={COLORS.text}
@@ -169,28 +147,26 @@ const Login = ({ navigation }) => {
                       setShowPassword(!showPassword);
                     }}
                   >
-                    <Ionicons name={showPassword===false ? "eye-outline" : "eye-off-outline"} 
-                    size={25} color={{color:COLORS.text}}/>
+                    <Ionicons
+                      name={
+                        showPassword === false
+                          ? "eye-outline"
+                          : "eye-off-outline"
+                      }
+                      disabled
+                      size={25}
+                      color={LoginStyle.iconColor}
+                    />
                   </TouchableOpacity>
                 </View>
               </View>
-              <View
-                style={{
-                  alignSelf: "flex-end",
-                  marginVertical: MARGIN.vertical,
-                }}
-              >
+              <View style={LoginStyle.forgotPasswordView}>
                 <TouchableOpacity
                   onPress={() => {
                     navigation.navigate("ForgotPassword");
                   }}
                 >
-                  <Text
-                    style={{
-                      fontFamily: FONT.SfProMedium,
-                      color: COLORS.primary,
-                    }}
-                  >
+                  <Text style={LoginStyle.forgotPasswordViewText}>
                     Mot de passe oublié ?
                   </Text>
                 </TouchableOpacity>
@@ -204,26 +180,17 @@ const Login = ({ navigation }) => {
                   { backgroundColor: isValid ? "#407BFF" : "#D9E5FF" },
                 ]}
               >
-                <Text style={{ color: COLORS.white, fontFamily: FONT.Black }}>
-                  Se connecter
-                </Text>
+                <Text style={LoginStyle.textBtn}>Se connecter</Text>
               </TouchableOpacity>
               {/* pati forgotten lan */}
 
-              <View
-                style={{ alignSelf: "center", marginVertical: MARGIN.vertical }}
-              >
+              <View style={LoginStyle.viewNew}>
                 <TouchableOpacity
                   onPress={() => {
                     navigation.navigate("SignUp");
                   }}
                 >
-                  <Text
-                    style={{
-                      fontFamily: FONT.SfProMedium,
-                      color: COLORS.primary,
-                    }}
-                  >
+                  <Text style={LoginStyle.viewNewText}>
                     Nouveau sur KINISI ? Créer un compte
                   </Text>
                 </TouchableOpacity>

@@ -39,6 +39,19 @@ const LoginStyle = {
     padding: MARGIN.vertical,
     alignItems: "center",
   },
+  eyeBtn:{
+    position:'absolute',
+    right:15,
+    top:20,
+  },
+  passwordInput: {
+    height: 48,
+    width: "100%",
+    backgroundColor: COLORS.secondary,
+    padding: MARGIN.horizontal,
+    borderRadius: 10,
+    fontFamily: FONT.SfProRegular,
+  },
 };
 
 export default LoginStyle;

@@ -9,6 +9,7 @@ import * as Yup from "yup";
 import Toast, { BaseToast, ErrorToast } from "react-native-toast-message";
 import { AuthContext } from "../../context/AuthContext";
 import Spinner from "react-native-loading-spinner-overlay";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 {
   /* pati sa pemet mwen verifier chak champ nn formulaire a */
@@ -67,6 +68,8 @@ const toastConfig = {
 
 const Login = ({ navigation }) => {
   const { isLoading, login } = useContext(AuthContext);
+  const [showPassword, setShowPassword] = useState(false);
+  const [visiblePassword, setVisiblePassword] = useState(true);
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
       <Formik
@@ -75,7 +78,10 @@ const Login = ({ navigation }) => {
           password: "",
         }}
         validationSchema={LoginSchema}
-        onSubmit={(values) => {login(values);}}>
+        onSubmit={(values) => {
+          login(values);
+        }}
+      >
         {({
           values,
           errors,
@@ -135,16 +141,7 @@ const Login = ({ navigation }) => {
                     value={values.nif}
                     onChangeText={handleChange("nif")}
                     onBlur={() => setFieldTouched("nif")}
-                    style={[
-                      {
-                        height: 48,
-                        width: "100%",
-                        backgroundColor: COLORS.secondary,
-                        padding: MARGIN.horizontal,
-                        borderRadius: 10,
-                        fontFamily: FONT.SfProRegular,
-                      },
-                    ]}
+                    style={LoginStyle.passwordInput}
                   />
                   {touched.nif && errors.nif && (
                     <Text style={LoginStyle.errorText}>{errors.nif}</Text>
@@ -152,17 +149,8 @@ const Login = ({ navigation }) => {
                 </View>
                 <View style={{ paddingTop: 10 }}>
                   <TextInput
-                    style={[
-                      {
-                        height: 48,
-                        width: "100%",
-                        backgroundColor: COLORS.secondary,
-                        padding: MARGIN.horizontal,
-                        borderRadius: 10,
-                        fontFamily: FONT.SfProRegular,
-                      },
-                    ]}
-                    secureTextEntry
+                    style={LoginStyle.passwordInput}
+                    secureTextEntry={visiblePassword}
                     placeholder="Entrer votre mot de passe"
                     placeholderTextColor={COLORS.text}
                     selectionColor={COLORS.primary}
@@ -174,6 +162,16 @@ const Login = ({ navigation }) => {
                   {touched.password && errors.password && (
                     <Text style={LoginStyle.errorText}>{errors.password}</Text>
                   )}
+                  <TouchableOpacity
+                    style={LoginStyle.eyeBtn}
+                    onPress={() => {
+                      setVisiblePassword(!visiblePassword);
+                      setShowPassword(!showPassword);
+                    }}
+                  >
+                    <Ionicons name={showPassword===false ? "eye-outline" : "eye-off-outline"} 
+                    size={25} color={{color:COLORS.text}}/>
+                  </TouchableOpacity>
                 </View>
               </View>
               <View

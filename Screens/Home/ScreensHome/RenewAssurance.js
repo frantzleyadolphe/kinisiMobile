@@ -78,14 +78,14 @@ export default function RenewAssurance({ navigation }) {
                   AJOUTEZ VOTRE NUMÉRO D’EXPERTISE
                 </Text>
               </View>
-              <View style={{paddingTop:5}}>
+              <View style={{paddingTop:2}}>
                 <Text style={HomeStyle.subtitleForm}>
                   Veuillez entrer le numéro de votre document d’expertise pour
                   renouveler votre police d’assurance à l’OAVCT.
                 </Text>
               </View>
               {/* pati input expertise number a */}
-              <View style={{ width: "100%", paddingTop: 30 }}>
+              <View style={{ width: "100%", paddingTop: 20 }}>
                 <View>
                   <TextInput
                     placeholder="Entrer votre numéro d'expertise..."

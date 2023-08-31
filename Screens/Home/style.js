@@ -75,7 +75,7 @@ const HomeStyle = {
     borderRadius: 10,
   },
   Text: {
-    fontFamily: FONT.Black,
+    fontFamily: FONT.PoppinsBold,
     padding: 10,
     color: COLORS.buttonText,
     textAlign: "center",
@@ -140,7 +140,7 @@ const HomeStyle = {
   },
   textTitleRenew: {
     paddingTop: 20,
-    fontFamily: FONT.SfProMedium,
+    fontFamily: FONT.Black,
     fontSize: 14,
     color: COLORS.primary,
   },
@@ -158,10 +158,11 @@ const HomeStyle = {
     fontFamily: FONT.SfProRegular,
   },
   subtitleForm: {
-    paddingTop: 5,
+    paddingTop: 2,
     fontFamily: FONT.SfProRegular,
     fontSize: 14,
     color: COLORS.text,
+    textAlign: "center",
   },
   btnForm: {
     backgroundColor: COLORS.primary,

@@ -30,4 +30,6 @@ export const FONT = {
     Black: "bohuan",
     SfProRegular:"SfProRegular",
     SfProMedium:"SfProMedium",
+    PoppinsBold:"PoppinsBold",
+    
   };

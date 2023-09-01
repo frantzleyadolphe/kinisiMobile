@@ -74,6 +74,16 @@ const HomeStyle = {
     marginRight: MARGIN.vertical,
     borderRadius: 10,
   },
+  btnDecon:{
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "flex-start",
+    backgroundColor: COLORS.primary,
+    height: 50,
+    marginLeft: MARGIN.vertical,
+    marginRight: MARGIN.vertical,
+    borderRadius: 10,
+  },
   Text: {
     fontFamily: FONT.PoppinsBold,
     padding: 10,
@@ -179,6 +189,26 @@ const HomeStyle = {
     height: 51,
     padding: MARGIN.vertical,
     alignItems: "center",
+  },
+  modalBackGround: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalContainer: {
+    width: '80%',
+    backgroundColor: 'white',
+    paddingHorizontal: 20,
+    paddingVertical: 30,
+    borderRadius: 20,
+    elevation: 20,
+  },
+  header: {
+    width: '100%',
+    height: 40,
+    alignItems: 'flex-end',
+    justifyContent: 'center',
   },
 };
 

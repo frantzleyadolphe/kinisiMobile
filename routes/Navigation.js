@@ -23,7 +23,7 @@ const Navigation = () => {
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         {splachLoading ? (
-          <Stack.Screen name="splach" component={IndicatorLoading} />
+          <Stack.Screen name="splach" component={IndicatorLoading}  />
         ) : token ? (
             <>
               <Stack.Screen name="Home" component={HomeScreen} />

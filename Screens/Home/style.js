@@ -39,7 +39,7 @@ const HomeStyle = {
     marginTop: MARGIN.vertical,
   },
   image2: {
-    width: 175,
+    width: 120,
     height: 100,
     marginTop: MARGIN.vertical,
   },
@@ -77,8 +77,15 @@ const HomeStyle = {
   Text: {
     fontFamily: FONT.PoppinsBold,
     padding: 10,
+    fontSize: SCREENSIZE.deviceHeight / 55,
     color: COLORS.buttonText,
     textAlign: "center",
+  },
+  viewButton:{
+     alignItems:"center",
+     justifyContent:"center",
+    marginTop:10,
+    marginBottom:30,
   },
   imageContainer: {
     borderRadius: 15,

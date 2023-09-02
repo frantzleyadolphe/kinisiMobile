@@ -20,6 +20,16 @@ const showToast = () => {
   });
 };
 
+const showToastModifEmail = () => {
+  Toast.show({
+    type: "success",
+    text1: "Inscription",
+    text2: "Modification effectué avec succès!! 👋",
+    autoHide: true,
+    visibilityTime: 4500,
+  });
+};
+
 const showToastErrorNif = () => {
   Toast.show({
     type: "error",
@@ -102,95 +112,124 @@ export const AuthProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [splachLoading, setSplachLoading] = useState(false);
 
-
-
- // Définition d'une fonction d'inscription
- const register = (values) => {
-  setIsLoading(true);
-  axios
-    .post(`${BASE_URL}/api/auth/register`, values)
-    .then((response) => {
-      let userInfo = response.data;
-      /*
+  // Définition d'une fonction d'inscription
+  const register = (values) => {
+    setIsLoading(true);
+    axios
+      .post(`${BASE_URL}/api/auth/register`, values)
+      .then((response) => {
+        let userInfo = response.data;
+        /*
       Afficher un message pour indiquer que le compte a été créé
       */
-      if (userInfo) {
-        setIsLoading(false);
-        setUserInfo(userInfo);
-        AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
-        showToast();
-      }
-    })
-    .catch((error) => {
-      if (error.response) {
-        const statusCode = error.response.status;
-
-        if (statusCode === 422) {
-          const errors = error.response.data;
-          if (errors.hasOwnProperty("nif") && errors.hasOwnProperty("email")) {
-            setIsLoading(false);
-            showToastEmailNif();
-          } else if (errors.hasOwnProperty("nif")) {
-            setIsLoading(false);
-            showToastErrorNif();
-          } else if (errors.hasOwnProperty("email")) {
-            setIsLoading(false);
-            showToastErrorEmail();
-          }
-        } else if (statusCode === 403) {
+        if (userInfo) {
           setIsLoading(false);
-          showToastAccessDenied();
-        } else if (statusCode === 302){
-          setIsLoading(false);
-          showToastUserFound();
+          setUserInfo(userInfo);
+          AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
+          showToast();
         }
-      } else {
-        setIsLoading(false);
-        showToastErr();
-      }
-    });
-};
+      })
+      .catch((error) => {
+        if (error.response) {
+          const statusCode = error.response.status;
 
+          if (statusCode === 422) {
+            const errors = error.response.data;
+            if (
+              errors.hasOwnProperty("nif") &&
+              errors.hasOwnProperty("email")
+            ) {
+              setIsLoading(false);
+              showToastEmailNif();
+            } else if (errors.hasOwnProperty("nif")) {
+              setIsLoading(false);
+              showToastErrorNif();
+            } else if (errors.hasOwnProperty("email")) {
+              setIsLoading(false);
+              showToastErrorEmail();
+            }
+          } else if (statusCode === 403) {
+            setIsLoading(false);
+            showToastAccessDenied();
+          } else if (statusCode === 302) {
+            setIsLoading(false);
+            showToastUserFound();
+          }
+        } else {
+          setIsLoading(false);
+          showToastErr();
+        }
+      });
+  };
 
+  const emailModify = async (idUser, new_email) => {
+    setIsLoading(true);
+    axios
+      .put(`${BASE_URL}/api/user/${idUser}/change-email`, new_email)
+      .then((response) => {
+        let userInfo = response.data;
+        /*
+      Afficher un message pour indiquer que la mise a jour a été faite
+      */
+        if (userInfo) {
+          setIsLoading(false);
+          showToastModifEmail();
+          //setVisibleModal(false);
+        }
+      })
+      .catch((error) => {
+        if (error.response) {
+          const statusCode = error.response.status;
+          if (statusCode === 401) {
+            setIsLoading(false);
+            //setVisibleModal(false);
+            showToastErr();
+            console.log(error.response.data);
+          }
+        }
+      });
+  };
 
   // Définition d'une fonction de connexion
-const login = (values) => {
-  // Mettre isLoading à true pour indiquer qu'une opération est en cours
-  setIsLoading(true);
-  axios
-    .post(`${BASE_URL}/api/auth/login`, values)
-    .then((response) => {
-      let userInfo = response.data;
-      setIsLoading(false);
-      setUserInfo(userInfo);
-      let values = JSON.stringify(userInfo);
-      AsyncStorage.setItem("userInfo", values);
-    })
-    .catch((error) => {
-      const errorParsed = error.response.data;
-      if (errorParsed?.message) {
+  const login = (values) => {
+    // Mettre isLoading à true pour indiquer qu'une opération est en cours
+    setIsLoading(true);
+    axios
+      .post(`${BASE_URL}/api/auth/login`, values)
+      .then((response) => {
+        let userInfo = response.data;
         setIsLoading(false);
-        showToastMessageErrorLogin();
-      }
-    });
-};
+        setUserInfo(userInfo);
+        let values = JSON.stringify(userInfo);
+        AsyncStorage.setItem("userInfo", values);
+      })
+      .catch((error) => {
+        const errorParsed = error.response.data;
+        if (errorParsed?.message) {
+          setIsLoading(false);
+          showToastMessageErrorLogin();
+        }
+      });
+  };
 
-// Définition d'une fonction de déconnexion 
-const logout = async () => {
-  setIsLoading(true);
-  axios.post(`${BASE_URL}/api/auth/logout`, null, {
-    headers: { Authorization: `Bearer ${userInfo.token}` }
-  }).then(response => {
-    AsyncStorage.removeItem('userInfo');
-    setUserInfo({});
-    setIsLoading(false);
-  }).catch(error => {
-    // En cas d'erreur...
-    setIsLoading(false);
-    showToastErr();
-  });
-};
-
+  // Définition d'une fonction de déconnexion
+  const logout = async () => {
+    setIsLoading(true);
+    axios
+      .post(`${BASE_URL}/api/auth/logout`, null, {
+        headers: { Authorization: `Bearer ${userInfo.token}` },
+      })
+      .then((response) => {
+        AsyncStorage.removeItem("userInfo");
+        setUserInfo({});
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        // En cas d'erreur...
+        setIsLoading(false);
+        showToastErr();
+      });
+  };
 
   const isLoggedIn = async () => {
     try {
@@ -221,6 +260,7 @@ const logout = async () => {
         splachLoading,
         register,
         login,
+        emailModify,
         logout,
       }}
     >

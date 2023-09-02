@@ -41,6 +41,12 @@ const SignUpStyle = {
     fontFamily: FONT.SfProMedium,
     paddingTop: 2,
   },
+  eyeBtn: {
+    position: "absolute",
+    right: 15,
+    top: 20,
+  },
+  iconColor: { color: COLORS.text },
 };
 
 export default SignUpStyle;

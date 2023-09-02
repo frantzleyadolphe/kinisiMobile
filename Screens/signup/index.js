@@ -15,6 +15,7 @@ import SignUpStyle from "./style";
 import Toast, { BaseToast, ErrorToast } from "react-native-toast-message";
 import { AuthContext } from "../../context/AuthContext";
 import Spinner from "react-native-loading-spinner-overlay";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 
 /*
@@ -32,7 +33,7 @@ const SignupSchema = Yup.object().shape({
     .required("Mot de passe obligatoire !!")
     .matches(
       /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
-      "Le mot de passe doit avoir 8 caractères et des symboles"
+      "Le mot de passe doit avoir 8 caractères et au moins une lettre majuscule des symboles "
     ),
   password_confirmation: Yup.string()
     .min(8)
@@ -83,6 +84,8 @@ const toastConfig = {
 
 const SignUp = ({ navigation }) => {
   const { isLoading, register } = useContext(AuthContext);
+  const [showPassword, setShowPassword] = useState(false);
+  const [visiblePassword, setVisiblePassword] = useState(true);
   // const { isSecureEntry, setIsSecureEntry } = useState(false);
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
@@ -159,7 +162,7 @@ const SignUp = ({ navigation }) => {
                 <View style={{ paddingTop: 10 }}>
                   <TextInput
                     style={SignUpStyle.input}
-                    secureTextEntry
+                    secureTextEntry={visiblePassword}
                     placeholder="Entrer votre mot de passe"
                     placeholderTextColor={COLORS.text}
                     selectionColor={COLORS.primary}
@@ -171,11 +174,29 @@ const SignUp = ({ navigation }) => {
                   {touched.password && errors.password && (
                     <Text style={SignUpStyle.errorText}>{errors.password}</Text>
                   )}
+                  <TouchableOpacity
+                    style={SignUpStyle.eyeBtn}
+                    onPress={() => {
+                      setVisiblePassword(!visiblePassword);
+                      setShowPassword(!showPassword);
+                    }}
+                  >
+                    <Ionicons
+                      name={
+                        showPassword === false
+                          ? "eye-outline"
+                          : "eye-off-outline"
+                      }
+                      disabled
+                      size={25}
+                      color={SignUpStyle.iconColor}
+                    />
+                  </TouchableOpacity>
                 </View>
                 <View style={{ paddingTop: 10 }}>
                   <TextInput
                     style={SignUpStyle.input}
-                    secureTextEntry
+                    secureTextEntry={visiblePassword}
                     placeholder="Confirmer votre mot de passe"
                     placeholderTextColor={COLORS.text}
                     selectionColor={COLORS.primary}

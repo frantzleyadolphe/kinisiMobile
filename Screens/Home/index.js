@@ -58,7 +58,7 @@ const HomeScreen = ({ navigation }) => {
             </TouchableOpacity>
           </View>
           <View style={HomeStyle.ViewButton}>
-            <TouchableOpacity style={HomeStyle.button}>
+            <TouchableOpacity style={HomeStyle.button} onPress={()=>navigation.navigate("AlertVehicle")}>
               <View style={HomeStyle.viewButton}>
                 <Image
                   source={require("../../assets/Alert.png")}

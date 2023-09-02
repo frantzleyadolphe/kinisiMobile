@@ -69,6 +69,15 @@ const showToastErr = () => {
     visibilityTime: 4500,
   });
 };
+const showToastErrServNet = () => {
+  Toast.show({
+    type: "error",
+    text1: "Attention !!",
+    text2: "Erreur de connection ou serveur",
+    autoHide: true,
+    visibilityTime: 4500,
+  });
+};
 
 /*
   pati sa m jere toast lan ak tout configuration
@@ -205,9 +214,13 @@ export const AuthProvider = ({ children }) => {
       })
       .catch((error) => {
         const errorParsed = error.response.data;
+        //console.log(error);
         if (errorParsed?.message) {
           setIsLoading(false);
           showToastMessageErrorLogin();
+        }else{
+          setIsLoading(false);
+          showToastErrServNet();
         }
       });
   };

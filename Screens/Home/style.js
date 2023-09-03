@@ -113,9 +113,14 @@ const HomeStyle = {
   Header: {
     width: "100%",
     flexDirection: "row",
-    alignItems: "center",
+    alignContent: "center",
     paddingTop: 10,
-    justifyContent: "space-between",
+  },
+  btnRr:{
+    width:"40%"
+  },
+  viewTitle: {
+    justifyContent: "center",
   },
   TextHeader: {
     fontFamily: FONT.Black,
@@ -169,6 +174,14 @@ const HomeStyle = {
   },
   input: {
     height: 48,
+    width: "100%",
+    backgroundColor: COLORS.secondary,
+    padding: MARGIN.horizontal,
+    borderRadius: 10,
+    fontFamily: FONT.SfProRegular,
+  },
+  inputDesc: {
+    height: 60,
     width: "100%",
     backgroundColor: COLORS.secondary,
     padding: MARGIN.horizontal,
@@ -241,6 +254,35 @@ const HomeStyle = {
     color: 'red',
     fontFamily: FONT.SfProMedium,
     paddingTop: 2,
+  },
+  iconColor: { color: COLORS.gray },
+  eyeBtn: {
+    position: "absolute",
+    right: 15,
+    top: 10,
+  },
+  centeredView: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: COLORS.primary,
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 20,
+    padding: 35,
+    width: "90%",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 5,
+    },
+    shadowOpacity: 0.50,
+    shadowRadius: 4,
+    elevation: 5,
+    
   },
 };
 

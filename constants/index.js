@@ -13,7 +13,8 @@ export const COLORS= {
     iconColor:'#407BFF',
     white:'#FFFFFF',
     buttonText:'#000038',
-    spinner:'#BB0000'
+    spinner:'#BB0000',
+    gray:'#8C8C8C'
 };
 
 export const MARGIN={

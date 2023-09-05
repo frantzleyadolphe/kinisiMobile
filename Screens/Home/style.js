@@ -107,17 +107,33 @@ const HomeStyle = {
     borderRadius: 15,
   },
   ButtonRetour: {
-    alignSelf: "flex-start",
     color: COLORS.primary,
+  },
+  flatlist: {
+    backgroundColor: "rgba(224, 252, 255, 0.4)",
+    borderColor: "#78CAD5",
+    borderWidth: 1,
+    height: 80,
+    width: "90%",
+    marginTop: 20,
+    alignSelf: "center",
+    borderRadius: 10,
+    flexDirection: "row",
+    paddingLeft: 10,
+    alignItems: "center",
   },
   Header: {
     width: "100%",
     flexDirection: "row",
     alignContent: "center",
     paddingTop: 10,
+    justifyContent: "space-between",
   },
-  btnRr:{
-    width:"40%"
+  btnLr: {
+    paddingLeft: 10,
+  },
+  btnRr: {
+    paddingRight: 10,
   },
   viewTitle: {
     justifyContent: "center",
@@ -133,7 +149,7 @@ const HomeStyle = {
   viewProfil: {
     width: "100%",
     height: 330,
-    marginTop:30,
+    marginTop: 30,
     paddingTop: 10,
     backgroundColor: "#F2F2F2",
     borderRadius: 15,
@@ -250,8 +266,8 @@ const HomeStyle = {
     padding: MARGIN.vertical,
     alignItems: "center",
   },
-  errorText:{
-    color: 'red',
+  errorText: {
+    color: "red",
     fontFamily: FONT.SfProMedium,
     paddingTop: 2,
   },
@@ -279,10 +295,49 @@ const HomeStyle = {
       width: 0,
       height: 5,
     },
-    shadowOpacity: 0.50,
+    shadowOpacity: 0.5,
     shadowRadius: 4,
     elevation: 5,
-    
+  },
+  imageAlert: {
+    height: 60,
+    width: 60,
+    borderRadius: 50,
+  },
+  textAlert: {
+    fontFamily: FONT.Black,
+  },
+  textStatus: {
+    fontFamily: FONT.SfProMedium,
+    fontSize: 12,
+    paddingBottom: 3,
+    color: COLORS.white
+  },
+  viewContent: {
+    flexDirection: "column",
+    paddingLeft: 10,
+  },
+  viewCard:{
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "rgba(220, 228, 255, 2.85)",
+    width: "45%",
+    borderRadius:5,
+    justifyContent: "center",
+    marginRight: 10
+  },
+  viewCard2:{
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "green,0.5",
+    width: "45%",
+    borderRadius:5,
+    justifyContent: "center",
+    marginRight: 10
+  },
+  cardColum:{
+    flexDirection: "row",
+    width:"80%"
   },
 };
 

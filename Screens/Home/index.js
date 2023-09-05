@@ -67,7 +67,7 @@ const HomeScreen = ({ navigation }) => {
                 <Text style={HomeStyle.Text}>Alerte vol de Vehicule</Text>
               </View>
             </TouchableOpacity>
-            <TouchableOpacity style={HomeStyle.button}>
+            <TouchableOpacity style={HomeStyle.button} onPress={()=>navigation.navigate("Suivis")}>
               <View style={HomeStyle.viewButton}>
                 <Image
                   source={require("../../assets/Suivie.png")}

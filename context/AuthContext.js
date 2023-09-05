@@ -30,6 +30,16 @@ const showToastModifEmail = () => {
   });
 };
 
+const showToastSignalement = () => {
+  Toast.show({
+    type: "success",
+    text1: "Alert vol de vehicule",
+    text2: "Alerte effectuée avec succès!! 👋",
+    autoHide: true,
+    visibilityTime: 4500,
+  });
+};
+
 const showToastErrorNif = () => {
   Toast.show({
     type: "error",
@@ -199,6 +209,23 @@ export const AuthProvider = ({ children }) => {
       });
   };
 
+  const signalement = async (values) => {
+    setIsLoading(true);
+    axios
+      .post(`${BASE_URL}/api/user/signalement`, values)
+      .then((response) => {
+        if (response.status === 200) {
+          setIsLoading(false);
+          showToastSignalement();
+        }
+      })
+      .catch((error) => {
+        setIsLoading(false);
+        showToastErr()
+        console.log(error);
+      });
+  };
+
   // Définition d'une fonction de connexion
   const login = (values) => {
     // Mettre isLoading à true pour indiquer qu'une opération est en cours
@@ -218,7 +245,7 @@ export const AuthProvider = ({ children }) => {
         if (errorParsed?.message) {
           setIsLoading(false);
           showToastMessageErrorLogin();
-        }else{
+        } else {
           setIsLoading(false);
           showToastErrServNet();
         }
@@ -262,6 +289,7 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     isLoggedIn();
+
   }, []);
 
   return (
@@ -275,6 +303,7 @@ export const AuthProvider = ({ children }) => {
         login,
         emailModify,
         logout,
+        signalement,
       }}
     >
       {children}

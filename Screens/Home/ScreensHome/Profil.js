@@ -18,7 +18,9 @@ import { COLORS, FONT } from "../../../constants";
 import Toast, { BaseToast, ErrorToast } from "react-native-toast-message";
 
 const ModifySchema = Yup.object().shape({
-  new_email: Yup.string().email("Email invalide").required("Email obligatoire !"),
+  new_email: Yup.string()
+    .email("Email invalide")
+    .required("Email obligatoire !"),
 });
 
 const toastConfig = {
@@ -105,21 +107,18 @@ const Profil = ({ navigation }) => {
     <SafeAreaView style={HomeStyle.colorPage}>
       <View style={HomeStyle.Page}>
         <View style={HomeStyle.Header}>
-          <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Ionicons
-              name="chevron-back-outline"
-              size={32}
-              style={HomeStyle.ButtonRetour}
-            />
-          </TouchableOpacity>
-          <Text style={HomeStyle.TextHeader}>Profil</Text>
-          <TouchableOpacity>
-            <Ionicons
-              name="notifications-outline"
-              size={32}
-              style={HomeStyle.ButtonRetour}
-            />
-          </TouchableOpacity>
+          <View style={HomeStyle.btnRr}>
+            <TouchableOpacity onPress={() => navigation.goBack()}>
+              <Ionicons
+                name="chevron-back-outline"
+                size={32}
+                style={HomeStyle.ButtonRetour}
+              />
+            </TouchableOpacity>
+          </View>
+          <View style={HomeStyle.viewTitle}>
+            <Text style={HomeStyle.TextHeader}>Profil</Text>
+          </View>
         </View>
         <View style={{ paddingTop: 30, paddingBottom: 30 }}>
           <Image
@@ -129,9 +128,7 @@ const Profil = ({ navigation }) => {
         </View>
         <Toast config={toastConfig} />
         <View>
-          <Text style={{fontFamily:FONT.Black}}>
-            {emailUser}
-          </Text>
+          <Text style={{ fontFamily: FONT.Black }}>{emailUser}</Text>
         </View>
         <View style={HomeStyle.viewProfil}>
           {/* modal popup */}

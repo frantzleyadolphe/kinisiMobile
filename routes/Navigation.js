@@ -11,6 +11,7 @@ import { AuthContext } from "../context/AuthContext";
 import IndicatorLoading from "../Screens/IndicatorLoading";
 import Profil from "../Screens/Home/ScreensHome/Profil";
 import AlertVehicule from "../Screens/Home/ScreensHome/AlertVehicule";
+import ListAlert from "../Screens/Home/ScreensHome/ListAlert";
 
 
 const Stack = createNativeStackNavigator();
@@ -31,6 +32,7 @@ const Navigation = () => {
               <Stack.Screen name="ExpertiseQuery" component={ExperstiseQuery} />
               <Stack.Screen name="AlertVehicle" component={AlertVehicule} />
               <Stack.Screen name="Profil" component={Profil} />
+              <Stack.Screen name="ListAlert" component={ListAlert}/>
             </>
         ) : (
           <>

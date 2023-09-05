@@ -1,7 +1,6 @@
 import {
   View,
   Text,
-  Image,
   TouchableOpacity,
   ScrollView,
   TextInput,
@@ -11,37 +10,74 @@ import React, { useState, useContext } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import HomeStyle from "./../style";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import Spinner from "react-native-loading-spinner-overlay";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { AuthContext } from "../../../context/AuthContext";
 import { COLORS, MARGIN, FONT } from "../../../constants/index";
 import DatePicker from "react-native-modern-datepicker";
 import { getFormatedDate } from "react-native-modern-datepicker";
+import Toast, { BaseToast, ErrorToast } from "react-native-toast-message";
+
+const toastConfig = {
+  /*
+    Overwrite 'success' type,
+    by modifying the existing `BaseToast` component
+  */
+  success: (props) => (
+    <BaseToast
+      {...props}
+      style={{ borderLeftColor: "green" }}
+      contentContainerStyle={{ paddingHorizontal: 20 }}
+      text1Style={{
+        fontSize: 16,
+        fontWeight: "200",
+        fontFamily:FONT.Black
+      }}
+    />
+  ),
+  /*
+    Overwrite 'error' type,
+    by modifying the existing `ErrorToast` component
+  */
+  error: (props) => (
+    <ErrorToast
+      {...props}
+      style={{ borderLeftColor: "red" }}
+      text1Style={{
+        fontSize: 17,
+      }}
+      text2Style={{
+        fontSize: 16,
+      }}
+    />
+  ),
+};
 
 const ExpertiseSchema = Yup.object().shape({
-  immatriculation: Yup.string()
+  plate_number: Yup.string()
     .matches(
       /^[a-zA-Z0-9]+$/,
       "Ce champ ne doit avoir que des caracères alphanumériques sans les caractères spéciaux(@,#$%^_-!?., etc) !!"
     )
-    .min(7, "il doit avoir exactement 7 caractères !!")
-    .max(7, "il doit avoir exactement 7 caractères !!")
+    .min(7, "Numéro de plaque invalide")
+    .max(7, "Numéro de plaque invalide")
     .required("Champ obligatoire !!"),
-  date_vol: Yup.string().required("Date vol de vehicule obligatoire !!"),
+  stolen_date: Yup.string().required("Champs obligatoire !!"),
+  description: Yup.string().required("Champs obligatoire !!"),
 });
 
 export default function AlertVehicule({ navigation }) {
-  const { isLoading, login } = useContext(AuthContext);
-
+  const { signalement } = useContext(AuthContext);
   const [openStartDatePicker, setOpenStartDatePicker] = useState(false);
   const today = new Date();
   const startDate = getFormatedDate(
     today.setDate(today.getDate() + 1),
-    "DD/MM/YYYY"
+    "DD-MM-YYYY"
   );
   const [selectedStartDate, setSelectedStartDate] = useState("");
-  const [startedDate, setStartedDate] = useState("12/12/2023");
+  const [startedDate, setStartedDate] = useState("12-12-2023");
+  const { userInfo } = useContext(AuthContext);
+  const idUser = userInfo.user.id;
 
   function handleChangeStartDate(propDate) {
     setStartedDate(propDate);
@@ -55,11 +91,14 @@ export default function AlertVehicule({ navigation }) {
     <SafeAreaView style={HomeStyle.colorPage}>
       <Formik
         initialValues={{
-          number: "",
+          plate_number: "",
+          user_id: idUser,
+          stolen_date:"",
+          description: "",
         }}
         validationSchema={ExpertiseSchema}
         onSubmit={(values) => {
-          login(values);
+          signalement(values);
         }}
       >
         {({
@@ -88,7 +127,7 @@ export default function AlertVehicule({ navigation }) {
                 </View>
               </View>
               {/* pati corps paj lan */}
-              <Spinner visible={isLoading} color={COLORS.spinner} size={60} />
+              
               <View>
                 <Text style={HomeStyle.textTitleRenew}>
                   AJOUTEZ LES INFORMATIONS DU VEHICULE VOLÉ
@@ -102,6 +141,7 @@ export default function AlertVehicule({ navigation }) {
                   teintée ou pas)
                 </Text>
               </View>
+              <Toast config={toastConfig} />
               {/* pati input expertise number a */}
               <View style={{ width: "100%", paddingTop: 20 }}>
                 <View>
@@ -109,14 +149,14 @@ export default function AlertVehicule({ navigation }) {
                     placeholder="Entrer le numéro d'immatriculation..."
                     placeholderTextColor={COLORS.text}
                     selectionColor={COLORS.primary}
-                    value={values.immatriculation}
-                    onChangeText={handleChange("immatriculation")}
-                    onBlur={() => setFieldTouched("immatriculation")}
+                    value={values.plate_number}
+                    onChangeText={handleChange("plate_number")}
+                    onBlur={() => setFieldTouched("plate_number")}
                     style={HomeStyle.input}
                   />
-                  {touched.immatriculation && errors.immatriculation && (
+                  {touched.plate_number && errors.plate_number && (
                     <Text style={HomeStyle.errorText}>
-                      {errors.immatriculation}
+                      {errors.plate_number}
                     </Text>
                   )}
                 </View>
@@ -134,6 +174,7 @@ export default function AlertVehicule({ navigation }) {
                       onDateChanged={handleChangeStartDate}
                       onSelectedChange={(date) => setSelectedStartDate(date)}
                       options={{
+                        defaultFont:FONT.Black,
                         backgroundColor: COLORS.primary,
                         textHeaderColor: COLORS.white,
                         textDefaultColor: "#FFFFFF",
@@ -156,14 +197,13 @@ export default function AlertVehicule({ navigation }) {
                     placeholder="Entrer la date du vol..."
                     placeholderTextColor={COLORS.text}
                     selectionColor={COLORS.primary}
-                    keyboardType="numeric"
                     value={selectedStartDate}
-                    onChangeText={handleChange("date_vol")}
-                    onBlur={() => setFieldTouched("date_vol")}
+                    onChangeText={handleChange("stolen_date")}
+                    onBlur={() => setFieldTouched("stolen_date")}
                     style={HomeStyle.input}
                   />
-                  {touched.date_vol && errors.date_vol && (
-                    <Text style={HomeStyle.errorText}>{errors.date_vol}</Text>
+                  {touched.stolen_date && errors.stolen_date && (
+                    <Text style={HomeStyle.errorText}>{errors.stolen_date}</Text>
                   )}
                   <TouchableOpacity
                     style={HomeStyle.eyeBtn}
@@ -186,14 +226,13 @@ export default function AlertVehicule({ navigation }) {
                     placeholder="Donnez une description du vol..."
                     placeholderTextColor={COLORS.text}
                     selectionColor={COLORS.primary}
-                    //keyboardType="numeric"
-                    value={values.number}
-                    onChangeText={handleChange("number")}
-                    onBlur={() => setFieldTouched("number")}
+                    value={values.description}
+                    onChangeText={handleChange("description")}
+                    onBlur={() => setFieldTouched("description")}
                     style={HomeStyle.inputDesc}
                   />
-                  {touched.number && errors.number && (
-                    <Text style={HomeStyle.errorText}>{errors.number}</Text>
+                  {touched.description && errors.description && (
+                    <Text style={HomeStyle.errorText}>{errors.description}</Text>
                   )}
                 </View>
               </View>

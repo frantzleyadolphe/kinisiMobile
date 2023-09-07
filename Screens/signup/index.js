@@ -97,8 +97,9 @@ const SignUp = ({ navigation }) => {
           password_confirmation: "",
         }}
         validationSchema={SignupSchema}
-        onSubmit={(values) => {
+        onSubmit={(values, { resetForm }) => {
           register(values);
+          resetForm();
         }}
       >
         {({

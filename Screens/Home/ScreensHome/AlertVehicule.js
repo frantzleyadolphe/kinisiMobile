@@ -97,8 +97,9 @@ export default function AlertVehicule({ navigation }) {
           description: "",
         }}
         validationSchema={ExpertiseSchema}
-        onSubmit={(values) => {
+        onSubmit={(values, { resetForm }) => {
           signalement(values);
+          resetForm();
         }}
       >
         {({

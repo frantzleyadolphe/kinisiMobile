@@ -78,8 +78,9 @@ const Login = ({ navigation }) => {
           password: "",
         }}
         validationSchema={LoginSchema}
-        onSubmit={(values) => {
+        onSubmit={(values, { resetForm }) => {
           login(values);
+          resetForm();
         }}
       >
         {({

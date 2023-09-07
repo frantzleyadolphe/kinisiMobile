@@ -66,8 +66,9 @@ const ForgotPassword = ({ navigation }) => {
           email: "",
         }}
         validationSchema={ExpertiseSchema}
-        onSubmit={(values) => {
+        onSubmit={(values, { resetForm }) => {
           sendOtpByEmail(values);
+          resetForm();
         }}
       >
         {({
@@ -78,6 +79,7 @@ const ForgotPassword = ({ navigation }) => {
           handleChange,
           setFieldTouched,
           handleSubmit,
+          resetForm
         }) => (
           <ScrollView>
             <View

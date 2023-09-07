@@ -40,6 +40,25 @@ const showToastSignalement = () => {
   });
 };
 
+const showToastOtp = () => {
+  Toast.show({
+    type: "success",
+    text1: "OTP",
+    text2: "OTP envoyé avec succès sur votre email!! 👋",
+    autoHide: true,
+    visibilityTime: 4500,
+  });
+};
+const showToastMailNotFound = () => {
+  Toast.show({
+    type: "error",
+    text1: "Email",
+    text2: "Aucun compte n'ayant cet email👋",
+    autoHide: true,
+    visibilityTime: 4500,
+  });
+};
+
 const showToastErrorNif = () => {
   Toast.show({
     type: "error",
@@ -88,10 +107,6 @@ const showToastErrServNet = () => {
     visibilityTime: 4500,
   });
 };
-
-/*
-  pati sa m jere toast lan ak tout configuration
-*/
 
 const showToastMessageErrorLogin = () => {
   Toast.show({
@@ -221,7 +236,7 @@ export const AuthProvider = ({ children }) => {
       })
       .catch((error) => {
         setIsLoading(false);
-        showToastErr()
+        showToastErr();
         console.log(error);
       });
   };
@@ -248,6 +263,27 @@ export const AuthProvider = ({ children }) => {
         } else {
           setIsLoading(false);
           showToastErrServNet();
+        }
+      });
+  };
+
+  const sendOtpByEmail = async (values) => {
+    setIsLoading(true);
+    axios
+      .post(`${BASE_URL}/api/user/generate-otp`, values)
+      .then((response) => {
+        if (response.status === 200) {
+          setIsLoading(false);
+          showToastOtp();
+        }
+      })
+      .catch((error) => {
+        if (error.response.status === 404) {
+          showToastMailNotFound();
+          setIsLoading(false);
+        } else {
+          setIsLoading(false);
+          showToastErr();
         }
       });
   };
@@ -289,7 +325,6 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     isLoggedIn();
-
   }, []);
 
   return (
@@ -304,6 +339,7 @@ export const AuthProvider = ({ children }) => {
         emailModify,
         logout,
         signalement,
+        sendOtpByEmail,
       }}
     >
       {children}

@@ -58,16 +58,16 @@ export default function SuivisRequete({ navigation }) {
                     <View style={HomeStyle.cardColum}>
                       <View style={HomeStyle.viewCard}>
                         <Ionicons name="car" size={20} />
-                        <Text style={HomeStyle.textAlertDesc}>| AA20167</Text>
+                        <Text> | AA20167</Text>
                       </View>
                       <View style={HomeStyle.viewCard2}>
                         <Ionicons name="shield-checkmark" size={20} color="white" />
-                        <Text style={HomeStyle.textStatus}>| en cours </Text>
+                        <Text style={HomeStyle.textStatus}>| En cours </Text>
                       </View>
                       
                     </View>
-                    <Text style={HomeStyle.textAlertDesc}>
-                      Alerte sur cette plaque #AA20167
+                    <Text>
+                      Ce vehicule a ete volé le 12/12/2023
                     </Text>
                   </View>
                 </View>

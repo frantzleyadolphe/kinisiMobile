@@ -309,9 +309,9 @@ const HomeStyle = {
   },
   textStatus: {
     fontFamily: FONT.SfProMedium,
-    fontSize: 12,
+    fontSize: 13,
     paddingBottom: 3,
-    color: COLORS.white
+    color: COLORS.white,
   },
   viewContent: {
     flexDirection: "column",
@@ -329,7 +329,7 @@ const HomeStyle = {
   viewCard2:{
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "green,0.5",
+    backgroundColor: "orange",
     width: "45%",
     borderRadius:5,
     justifyContent: "center",

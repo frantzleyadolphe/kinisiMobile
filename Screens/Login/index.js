@@ -123,7 +123,7 @@ const Login = ({ navigation }) => {
                     label="Entrer votre nif"
                     variant="outlined"
                     color={COLORS.primary}
-                    inputStyle={{ backgroundColor: COLORS.input }}
+                    inputStyle={{ backgroundColor: COLORS.white }}
                   />
                   {touched.nif && errors.nif && (
                     <Text style={LoginStyle.errorText}>{errors.nif}</Text>
@@ -139,7 +139,7 @@ const Login = ({ navigation }) => {
                     onBlur={() => setFieldTouched("password")}
                     label="Entrer votre mot de passe"
                     variant="outlined"
-                    inputStyle={{ backgroundColor: COLORS.input }}
+                    inputStyle={{ backgroundColor: COLORS.white }}
                     color={COLORS.primary}
                   />
                   {touched.password && errors.password && (

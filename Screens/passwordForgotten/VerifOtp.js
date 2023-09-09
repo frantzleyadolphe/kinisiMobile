@@ -194,7 +194,7 @@ export default function VerifOtp({ navigation }) {
                     onBlur={() => setFieldTouched("otp")}
                     label="Entrer le code OTP"
                     variant="outlined"
-                    inputStyle={{ backgroundColor: COLORS.input }}
+                    inputStyle={{ backgroundColor: COLORS.white }}
                     color={COLORS.primary}
                   />
                   {touched.otp && errors.otp && (

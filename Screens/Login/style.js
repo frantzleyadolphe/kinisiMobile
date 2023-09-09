@@ -62,6 +62,17 @@ const LoginStyle = {
     fontSize: 12,
     color: COLORS.text,
   },
+  timerView:{
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "row",
+  },
+  hrs: {
+    paddingTop: 5,
+    fontFamily: FONT.Black,
+    fontSize: 15,
+    color: COLORS.text,
+  },
   iconColor: { color: COLORS.text },
   forgotPasswordView: {
     alignSelf: "flex-end",

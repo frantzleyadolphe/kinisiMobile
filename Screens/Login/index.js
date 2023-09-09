@@ -123,7 +123,7 @@ const Login = ({ navigation }) => {
                     label="Entrer votre nif"
                     variant="outlined"
                     color={COLORS.primary}
-                    Style={{ backgroundColor: COLORS.input,borderRadius:20 }}
+                    inputStyle={{ backgroundColor: COLORS.input }}
                   />
                   {touched.nif && errors.nif && (
                     <Text style={LoginStyle.errorText}>{errors.nif}</Text>

@@ -45,45 +45,6 @@ const showToastErr = () => {
   });
 };
 
-const ModalPoup = ({ visible, children }) => {
-  const [showModal, setShowModal] = React.useState(visible);
-  const scaleValue = useRef(new Animated.Value(0)).current;
-  React.useEffect(() => {
-    toggleModal();
-  }, [visible]);
-  const toggleModal = () => {
-    if (visible) {
-      setShowModal(true);
-      Animated.spring(scaleValue, {
-        toValue: 1,
-        duration: 300,
-        useNativeDriver: true,
-      }).start();
-    } else {
-      setTimeout(() => setShowModal(false), 200);
-      Animated.timing(scaleValue, {
-        toValue: 0,
-        duration: 300,
-        useNativeDriver: true,
-      }).start();
-    }
-  };
-  return (
-    <Modal transparent visible={showModal}>
-      <View style={SignUpStyle.modalBackGround}>
-        <Animated.View
-          style={[
-            SignUpStyle.modalContainer,
-            { transform: [{ scale: scaleValue }] },
-          ]}
-        >
-          {children}
-        </Animated.View>
-      </View>
-    </Modal>
-  );
-};
-
 const toastConfig = {
   /*
     Overwrite 'success' type,
@@ -120,7 +81,6 @@ const toastConfig = {
 
 const ForgotPassword = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(false);
-  const [modalVisible, setModalVisible] = useState(false);
   
   const sendOtpByEmail = async (values) => {
     setIsLoading(true);
@@ -129,7 +89,7 @@ const ForgotPassword = ({ navigation }) => {
       .then((response) => {
         if (response.status === 200) {
           setIsLoading(false);
-          setModalVisible(true);
+          navigation.replace("VerifOtp");
         }
       })
       .catch((error) => {
@@ -206,28 +166,7 @@ const ForgotPassword = ({ navigation }) => {
                     email et vous recevrez un lien de reinitialisation.
                   </Text>
                 </View>
-                <ModalPoup visible={modalVisible}>
-                  <View style={{ alignItems: "center" }}>
-                    
-                  </View>
-                  <View style={{ alignItems: "center" }}>
-                    <Image
-                      source={require("../../assets/editMail.png")}
-                      style={{ height: 150, width: 150, marginVertical: 5 }}
-                    />
-                  </View>
-                    <Text style={SignUpStyle.textModal}>
-                      Code OTP envoyé sur votre email
-                    </Text>
-                  <View style={{ alignSelf: "center" }}>
-                    <TouchableOpacity
-                      onPress={() => navigation.replace("VerifOtp")}
-                      style={[SignUpStyle.modalBtn]}
-                    >
-                      <Text style={SignUpStyle.textBtn}>Entrer code OTP</Text>
-                    </TouchableOpacity>
-                  </View>
-                </ModalPoup>
+               
 
                 {/* {pati input la } */}
                 <View style={{ width: "100%", paddingTop: 20 }}>

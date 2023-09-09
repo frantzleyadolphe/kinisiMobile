@@ -12,8 +12,7 @@ import IndicatorLoading from "../Screens/IndicatorLoading";
 import Profil from "../Screens/Home/ScreensHome/Profil";
 import AlertVehicule from "../Screens/Home/ScreensHome/AlertVehicule";
 import SuivisRequete from "../Screens/Home/ScreensHome/SuivisRequete";
-
-
+import VerifOtp from "../Screens/passwordForgotten/VerifOtp";
 
 const Stack = createNativeStackNavigator();
 
@@ -23,6 +22,7 @@ const Navigation = () => {
 
   return (
     <NavigationContainer>
+      
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         {splachLoading ? (
           <Stack.Screen name="splach" component={IndicatorLoading}  />
@@ -34,18 +34,21 @@ const Navigation = () => {
               <Stack.Screen name="AlertVehicle" component={AlertVehicule} />
               <Stack.Screen name="Profil" component={Profil} />
               <Stack.Screen name="Suivis" component={SuivisRequete} />
+              
             </>
         ) : (
           <>
             <Stack.Screen name="Login" component={Login} />
             <Stack.Screen name="SignUp" component={SignUp} />
             <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
+            <Stack.Screen name="VerifOtp" component={VerifOtp} />
           </>
           
         )}
         
           
       </Stack.Navigator>
+    
     </NavigationContainer>
   );
 };

@@ -40,24 +40,8 @@ const showToastSignalement = () => {
   });
 };
 
-const showToastOtp = () => {
-  Toast.show({
-    type: "success",
-    text1: "OTP",
-    text2: "OTP envoyé avec succès sur votre email!! 👋",
-    autoHide: true,
-    visibilityTime: 4500,
-  });
-};
-const showToastMailNotFound = () => {
-  Toast.show({
-    type: "error",
-    text1: "Email",
-    text2: "Aucun compte n'ayant cet email👋",
-    autoHide: true,
-    visibilityTime: 4500,
-  });
-};
+
+
 
 const showToastErrorNif = () => {
   Toast.show({
@@ -145,6 +129,7 @@ export const AuthProvider = ({ children }) => {
   const [userInfo, setUserInfo] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [splachLoading, setSplachLoading] = useState(false);
+  
 
   // Définition d'une fonction d'inscription
   const register = (values) => {
@@ -267,26 +252,7 @@ export const AuthProvider = ({ children }) => {
       });
   };
 
-  const sendOtpByEmail = async (values) => {
-    setIsLoading(true);
-    axios
-      .post(`${BASE_URL}/api/user/generate-otp`, values)
-      .then((response) => {
-        if (response.status === 200) {
-          setIsLoading(false);
-          showToastOtp();
-        }
-      })
-      .catch((error) => {
-        if (error.response.status === 404) {
-          showToastMailNotFound();
-          setIsLoading(false);
-        } else {
-          setIsLoading(false);
-          showToastErr();
-        }
-      });
-  };
+ 
 
   // Définition d'une fonction de déconnexion
   const logout = async () => {
@@ -339,7 +305,7 @@ export const AuthProvider = ({ children }) => {
         emailModify,
         logout,
         signalement,
-        sendOtpByEmail,
+        
       }}
     >
       {children}

@@ -23,7 +23,9 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#407BFF"
       },
-      "package": "com.haskalah.kinisi"
+      "package": "com.haskalah.kinisi",
+      "softwareKeyboardLayoutMode": "pan"
+      
     },
     "web": {
       "favicon": "./assets/favicon.png"

@@ -33,7 +33,7 @@ const SignUpStyle = {
     marginVertical: MARGIN.vertical,
     width: 276,
     height: 51,
-    padding: MARGIN.vertical,
+    padding: MARGIN.vertical-6,
     alignItems: "center",
   },
   errorText:{
@@ -47,6 +47,49 @@ const SignUpStyle = {
     top: 20,
   },
   iconColor: { color: COLORS.text },
+  centeredView: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  modalBackGround: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.7)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  modalContainer: {
+    width: "90%",
+    height: "50%",
+    backgroundColor: "white",
+    paddingHorizontal: 20,
+    paddingVertical: 30,
+    borderRadius: 20,
+    elevation: 20,
+  },
+  header: {
+    width: "100%",
+    height: 40,
+    alignItems: "flex-end",
+    justifyContent: "center",
+  },
+  textModal: {
+    marginVertical: 5,
+    fontSize: 20,
+    textAlign: "center",
+    fontFamily: FONT.PoppinsBold,
+    color: COLORS.primary,
+  },
+  modalBtn: {
+    backgroundColor: COLORS.primary,
+    borderRadius: 5,
+    marginVertical: MARGIN.vertical,
+    width: 200,
+    height: 51,
+    padding: MARGIN.vertical,
+    alignItems: "center",
+  },
+  textBtn: { color: COLORS.white, fontFamily: FONT.Black },
 };
 
 export default SignUpStyle;

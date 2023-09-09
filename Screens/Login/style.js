@@ -49,15 +49,7 @@ const LoginStyle = {
   eyeBtn: {
     position: "absolute",
     right: 15,
-    top: 20,
-  },
-  textInput: {
-    height: 48,
-    width: "100%",
-    backgroundColor: COLORS.secondary,
-    padding: MARGIN.horizontal,
-    borderRadius: 10,
-    fontFamily: FONT.SfProRegular,
+    top:25,
   },
   textTitle: {
     fontFamily: FONT.Black,

@@ -33,7 +33,7 @@ export default function App() {
   return (
     <SafeAreaProvider onLayout={onLayoutRootView}>
       <AuthProvider>
-        <StatusBar backgroundColor={COLORS.primary}/>
+        <StatusBar backgroundColor={COLORS.black} />
         <Navigation />
       </AuthProvider>
     </SafeAreaProvider>

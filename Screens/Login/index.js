@@ -1,15 +1,16 @@
-import { View, Text, Image, Alert, Button } from "react-native";
+import { View, Text, Image } from "react-native";
 import React, { useState, useContext } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import LoginStyle from "./style";
 import { COLORS, MARGIN, FONT } from "../../constants";
-import { ScrollView, TextInput, TouchableOpacity } from "react-native";
+import { ScrollView, TouchableOpacity } from "react-native";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import Toast, { BaseToast, ErrorToast } from "react-native-toast-message";
 import { AuthContext } from "../../context/AuthContext";
 import Spinner from "react-native-loading-spinner-overlay";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { TextInput } from "@react-native-material/core";
 
 {
   /* pati sa pemet mwen verifier chak champ nn formulaire a */
@@ -113,14 +114,16 @@ const Login = ({ navigation }) => {
               <View style={LoginStyle.viewAllInput}>
                 <View>
                   <TextInput
-                    placeholder="Entrer votre nif..."
                     placeholderTextColor={COLORS.text}
                     selectionColor={COLORS.primary}
                     keyboardType="numeric"
                     value={values.nif}
                     onChangeText={handleChange("nif")}
                     onBlur={() => setFieldTouched("nif")}
-                    style={LoginStyle.textInput}
+                    label="Entrer votre nif"
+                    variant="outlined"
+                    color={COLORS.primary}
+                    Style={{ backgroundColor: COLORS.input,borderRadius:20 }}
                   />
                   {touched.nif && errors.nif && (
                     <Text style={LoginStyle.errorText}>{errors.nif}</Text>
@@ -128,15 +131,16 @@ const Login = ({ navigation }) => {
                 </View>
                 <View style={{ paddingTop: 10 }}>
                   <TextInput
-                    style={LoginStyle.textInput}
                     secureTextEntry={visiblePassword}
-                    placeholder="Entrer votre mot de passe"
                     placeholderTextColor={COLORS.text}
                     selectionColor={COLORS.primary}
                     value={values.password}
                     onChangeText={handleChange("password")}
                     onBlur={() => setFieldTouched("password")}
-                    autoCapitalize="none"
+                    label="Entrer votre mot de passe"
+                    variant="outlined"
+                    inputStyle={{ backgroundColor: COLORS.input }}
+                    color={COLORS.primary}
                   />
                   {touched.password && errors.password && (
                     <Text style={LoginStyle.errorText}>{errors.password}</Text>
@@ -164,7 +168,7 @@ const Login = ({ navigation }) => {
               <View style={LoginStyle.forgotPasswordView}>
                 <TouchableOpacity
                   onPress={() => {
-                    navigation.navigate("ForgotPassword");
+                    navigation.replace("ForgotPassword");
                   }}
                 >
                   <Text style={LoginStyle.forgotPasswordViewText}>

@@ -1,27 +1,88 @@
 import {
   View,
   Text,
-  Button,
   Image,
   TextInput,
   TouchableOpacity,
+  Modal,
+  Animated,
 } from "react-native";
-import React ,{ useContext}from "react";
+import React, { useState, useRef } from "react";
 import LoginStyle from "../Login/style";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { COLORS, MARGIN, FONT } from "../../constants";
 import { ScrollView } from "react-native-gesture-handler";
 import { Formik } from "formik";
 import * as Yup from "yup";
+import axios from "axios";
 import Toast, { BaseToast, ErrorToast } from "react-native-toast-message";
 import SignUpStyle from "../signup/style";
-import { AuthContext } from "../../context/AuthContext";
+import { BASE_URL } from "../../api/apiUrl";
 import Spinner from "react-native-loading-spinner-overlay";
-
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 const ExpertiseSchema = Yup.object().shape({
   email: Yup.string().email("Email invalide").required("Email obligatoire !"),
 });
+
+const showToastMailNotFound = () => {
+  Toast.show({
+    type: "error",
+    text1: "Email",
+    text2: "Aucun compte n'ayant cet email👋",
+    autoHide: true,
+    visibilityTime: 4500,
+  });
+};
+
+const showToastErr = () => {
+  Toast.show({
+    type: "error",
+    text1: "Attention !!",
+    text2: "Une erreur s'est produite",
+    autoHide: true,
+    visibilityTime: 4500,
+  });
+};
+
+const ModalPoup = ({ visible, children }) => {
+  const [showModal, setShowModal] = React.useState(visible);
+  const scaleValue = useRef(new Animated.Value(0)).current;
+  React.useEffect(() => {
+    toggleModal();
+  }, [visible]);
+  const toggleModal = () => {
+    if (visible) {
+      setShowModal(true);
+      Animated.spring(scaleValue, {
+        toValue: 1,
+        duration: 300,
+        useNativeDriver: true,
+      }).start();
+    } else {
+      setTimeout(() => setShowModal(false), 200);
+      Animated.timing(scaleValue, {
+        toValue: 0,
+        duration: 300,
+        useNativeDriver: true,
+      }).start();
+    }
+  };
+  return (
+    <Modal transparent visible={showModal}>
+      <View style={SignUpStyle.modalBackGround}>
+        <Animated.View
+          style={[
+            SignUpStyle.modalContainer,
+            { transform: [{ scale: scaleValue }] },
+          ]}
+        >
+          {children}
+        </Animated.View>
+      </View>
+    </Modal>
+  );
+};
 
 const toastConfig = {
   /*
@@ -58,136 +119,183 @@ const toastConfig = {
 };
 
 const ForgotPassword = ({ navigation }) => {
-  const { isLoading, sendOtpByEmail } = useContext(AuthContext);
+  const [isLoading, setIsLoading] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  
+  const sendOtpByEmail = async (values) => {
+    setIsLoading(true);
+    axios
+      .post(`${BASE_URL}/api/user/generate-otp`, values)
+      .then((response) => {
+        if (response.status === 200) {
+          setIsLoading(false);
+          setModalVisible(true);
+        }
+      })
+      .catch((error) => {
+        if (error.response.status === 404) {
+          showToastMailNotFound();
+          setIsLoading(false);
+        } else {
+          setIsLoading(false);
+          showToastErr();
+        }
+      });
+  };
+  
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
-      <Formik
-        initialValues={{
-          email: "",
-        }}
-        validationSchema={ExpertiseSchema}
-        onSubmit={(values, { resetForm }) => {
-          sendOtpByEmail(values);
-          resetForm();
-        }}
-      >
-        {({
-          values,
-          errors,
-          touched,
-          isValid,
-          handleChange,
-          setFieldTouched,
-          handleSubmit,
-          resetForm
-        }) => (
-          <ScrollView>
-            <View
-              style={{
-                alignItems: "center",
-                justifyContent: "center",
-                marginRight: MARGIN.horizontal,
-                marginLeft: MARGIN.horizontal,
-              }}
-            >
-              <View style={LoginStyle.view}>
-                <Image
-                  source={require("./../../assets/forgotPassword.png")}
-                  style={LoginStyle.image}
-                />
-              </View>
-              <Spinner visible={isLoading} color={COLORS.spinner} size={60} />
-              <Toast config={toastConfig} />
-              {/* pati text la */}
-              <View style={{ alignItems: "center", paddingTop: 10 }}>
-                <Text
-                  style={{
-                    fontFamily: FONT.Black,
-                    fontSize: 20,
-                    color: COLORS.primary,
-                  }}
-                >
-                  MOT DE PASSE OUBLIE
-                </Text>
-                <Text
-                  style={{
-                    paddingTop: 5,
-                    fontFamily: FONT.SfProMedium,
-                    fontSize: 12,
-                    color: COLORS.text,
-                    opacity: 0.6,
-                  }}
-                >
-                  Pour reinitialiser votre mot de passe, veuillez entrer votre
-                  email et vous recevrez un lien de reinitialisation.
-                </Text>
-              </View>
-              {/* {pati input la } */}
-              <View style={{ width: "100%", paddingTop: 20 }}>
-                <View>
-                  <TextInput
-                    style={[
-                      {
-                        height: 48,
-                        width: "100%",
-                        backgroundColor: COLORS.secondary,
-                        padding: MARGIN.horizontal,
-                        borderRadius: 10,
-                        fontFamily: FONT.SfProRegular,
-                      },
-                    ]}
-                    placeholder="Entrer votre email"
-                    placeholderTextColor={COLORS.text}
-                    selectionColor={COLORS.primary}
-                    value={values.email}
-                    onChangeText={handleChange("email")}
-                    onBlur={() => setFieldTouched("email")}
-                    autoCapitalize="none"
+      <KeyboardAwareScrollView >
+        <Formik
+          initialValues={{
+            email: "",
+          }}
+          validationSchema={ExpertiseSchema}
+          onSubmit={(values, { resetForm }) => {
+            sendOtpByEmail(values);
+            resetForm();
+          }}
+        >
+          {({
+            values,
+            errors,
+            touched,
+            isValid,
+            handleChange,
+            setFieldTouched,
+            handleSubmit,
+          }) => (
+            <ScrollView>
+              <View
+                style={{
+                  alignItems: "center",
+                  justifyContent: "center",
+                  marginRight: MARGIN.horizontal,
+                  marginLeft: MARGIN.horizontal,
+                }}
+              >
+                <View style={LoginStyle.view}>
+                  <Image
+                    source={require("./../../assets/forgotPassword.png")}
+                    style={LoginStyle.image}
                   />
-                  {touched.email && errors.email && (
-                    <Text style={SignUpStyle.errorText}>{errors.email}</Text>
-                  )}
                 </View>
-                <View
-                  style={{
-                    alignSelf: "flex-end",
-                    marginVertical: MARGIN.vertical,
-                  }}
-                >
-                  <TouchableOpacity
-                    onPress={() => {
-                      navigation.goBack();
+                <Spinner visible={isLoading} color={COLORS.spinner} size={60} />
+                <Toast config={toastConfig} />
+                {/* pati text la */}
+                <View style={{ alignItems: "center", paddingTop: 10 }}>
+                  <Text
+                    style={{
+                      fontFamily: FONT.Black,
+                      fontSize: 20,
+                      color: COLORS.primary,
                     }}
                   >
-                    <Text
-                      style={{
-                        fontFamily: FONT.SfProMedium,
-                        color: COLORS.primary,
-                        fontSize: 12,
+                    MOT DE PASSE OUBLIE
+                  </Text>
+                  <Text
+                    style={{
+                      paddingTop: 5,
+                      fontFamily: FONT.SfProMedium,
+                      fontSize: 12,
+                      color: COLORS.text,
+                      opacity: 0.6,
+                    }}
+                  >
+                    Pour reinitialiser votre mot de passe, veuillez entrer votre
+                    email et vous recevrez un lien de reinitialisation.
+                  </Text>
+                </View>
+                <ModalPoup visible={modalVisible}>
+                  <View style={{ alignItems: "center" }}>
+                    
+                  </View>
+                  <View style={{ alignItems: "center" }}>
+                    <Image
+                      source={require("../../assets/editMail.png")}
+                      style={{ height: 150, width: 150, marginVertical: 5 }}
+                    />
+                  </View>
+                    <Text style={SignUpStyle.textModal}>
+                      Code OTP envoyé sur votre email
+                    </Text>
+                  <View style={{ alignSelf: "center" }}>
+                    <TouchableOpacity
+                      onPress={() => navigation.replace("VerifOtp")}
+                      style={[SignUpStyle.modalBtn]}
+                    >
+                      <Text style={SignUpStyle.textBtn}>Entrer code OTP</Text>
+                    </TouchableOpacity>
+                  </View>
+                </ModalPoup>
+
+                {/* {pati input la } */}
+                <View style={{ width: "100%", paddingTop: 20 }}>
+                  <View>
+                    <TextInput
+                      style={[
+                        {
+                          height: 48,
+                          width: "100%",
+                          backgroundColor: COLORS.secondary,
+                          padding: MARGIN.horizontal,
+                          borderRadius: 10,
+                          fontFamily: FONT.SfProRegular,
+                        },
+                      ]}
+                      placeholder="Entrer votre email"
+                      placeholderTextColor={COLORS.text}
+                      selectionColor={COLORS.primary}
+                      value={values.email}
+                      onChangeText={handleChange("email")}
+                      onBlur={() => setFieldTouched("email")}
+                      autoCapitalize="none"
+                    />
+                    {touched.email && errors.email && (
+                      <Text style={SignUpStyle.errorText}>{errors.email}</Text>
+                    )}
+                  </View>
+                  <View
+                    style={{
+                      alignSelf: "flex-end",
+                      marginVertical: MARGIN.vertical,
+                    }}
+                  >
+                    <TouchableOpacity
+                      onPress={() => {
+                        navigation.replace('Login');
                       }}
                     >
-                      Je me souviens du mot de passe
-                    </Text>
-                  </TouchableOpacity>
+                      <Text
+                        style={{
+                          fontFamily: FONT.SfProMedium,
+                          color: COLORS.primary,
+                          fontSize: 12,
+                        }}
+                      >
+                        Je me souviens du mot de passe
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
                 </View>
+                {/* pati button an */}
+                <TouchableOpacity
+                  onPress={handleSubmit}
+                  disabled={!isValid}
+                  style={[
+                    SignUpStyle.btn,
+                    { backgroundColor: isValid ? "#407BFF" : "#D9E5FF" },
+                  ]}
+                >
+                  <Text style={{ color: COLORS.white, fontFamily: FONT.Black }}>
+                    Reinitialiser
+                  </Text>
+                </TouchableOpacity>
               </View>
-              {/* pati button an */}
-              <TouchableOpacity
-                onPress={handleSubmit}
-                disabled={!isValid}
-                style={[
-                  SignUpStyle.btn,
-                  { backgroundColor: isValid ? "#407BFF" : "#D9E5FF" },
-                ]}
-              >
-                <Text style={{ color: COLORS.white, fontFamily: FONT.Black }}>
-                  Reinitialiser
-                </Text>
-              </TouchableOpacity>
-            </View>
-          </ScrollView>
-        )}
-      </Formik>
+            </ScrollView>
+          )}
+        </Formik>
+      </KeyboardAwareScrollView>
     </SafeAreaView>
   );
 };

@@ -11,13 +11,15 @@ import React, { useState, useRef, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import LoginStyle from "../Login/style";
 import SignUpStyle from "../signup/style";
-import HomeStyle from "../Home/style";
 import { TextInput } from "@react-native-material/core";
 import { Formik } from "formik";
+import axios from "axios";
 import * as Yup from "yup";
 import Toast, { BaseToast, ErrorToast } from "react-native-toast-message";
 import Spinner from "react-native-loading-spinner-overlay";
-import { COLORS } from "../../constants";
+import { COLORS, FONT } from "../../constants";
+import { BASE_URL } from "../../api/apiUrl";
+import { useRoute } from "@react-navigation/native";
 
 const ModalPoup = ({ visible, children }) => {
   const [showModal, setShowModal] = React.useState(visible);
@@ -92,6 +94,26 @@ const toastConfig = {
   ),
 };
 
+const showToastOtpSent = () => {
+  Toast.show({
+    type: "success",
+    text1: "OTP Sent !!",
+    text2: "Nouveau code OTP envoyé !!",
+    autoHide: true,
+    visibilityTime: 3500,
+  });
+};
+
+showToastResendOTPError= () => {
+  Toast.show({
+    type: "error",
+    text1: "WARNING",
+    text2: "Erreur d envoie du code OTP!!",
+    autoHide: true,
+    visibilityTime: 3500,
+  });
+};
+
 const LoginSchema = Yup.object().shape({
   otp: Yup.string()
     .matches(/^[0-9]+$/, "Ce champ ne doit avoir que des chiffes !!")
@@ -104,6 +126,28 @@ export default function VerifOtp({ navigation }) {
   const [modalVisible, setModalVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [counter, setCounter] = useState(60);
+  const route = useRoute();
+  const emailUser = route.params.email;
+
+  const resendOTP = (emailUser) => {
+    setIsLoading(true);
+    axios
+      .put(`${BASE_URL}/api/user/resend-otp`, {
+        email: emailUser,
+      }) // Assuming your API expects an email in the request body
+      .then((response) => {
+        if (response.status === 200) {
+          setIsLoading(false);
+          showToastOtpSent();
+        }
+      })
+      .catch((error) => {
+        setIsLoading(false);
+        showToastResendOTPError();
+        //console.log(emailUser);
+      });
+  };
+  
 
   useEffect(() => {
     const timer =
@@ -166,15 +210,21 @@ export default function VerifOtp({ navigation }) {
               <View style={{ alignItems: "center", paddingTop: 30 }}>
                 <Text style={LoginStyle.textTitle}>OTP VERIFICATION</Text>
                 <Text style={LoginStyle.textSubtitle}>
-                  Veuillez entrer le code otp qui a été envoyé sur cet email
+                  Veuillez entrer le code otp qui a été envoyé sur cet email :
+                  <Text style={{ fontFamily: FONT.PoppinsBold }}>{emailUser}</Text>
                 </Text>
                 <View style={LoginStyle.timerView}>
                   <Text style={LoginStyle.hrs}>00:{counter}s | </Text>
-                  <TouchableOpacity disabled={counter > 1 && counter <= 60}>
+                  <TouchableOpacity disabled={counter >= 1 && counter <= 60} onPress={() => resendOTP(emailUser)}>
                     <Text
                       style={[
                         LoginStyle.hrs,
-                        { color: counter > 1 && counter <= 60 ? "#D9E5FF" : "#407BFF" },
+                        {
+                          color:
+                            counter >= 1 && counter <= 60
+                              ? "#D9E5FF"
+                              : "#407BFF",
+                        },
                       ]}
                     >
                       Resend

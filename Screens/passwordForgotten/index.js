@@ -89,7 +89,7 @@ const ForgotPassword = ({ navigation }) => {
       .then((response) => {
         if (response.status === 200) {
           setIsLoading(false);
-          navigation.replace("VerifOtp");
+          navigation.replace("VerifOtp",{ email: values.email });
         }
       })
       .catch((error) => {
@@ -102,6 +102,8 @@ const ForgotPassword = ({ navigation }) => {
         }
       });
   };
+
+  
   
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>

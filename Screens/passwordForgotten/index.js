@@ -162,6 +162,7 @@ const ForgotPassword = ({ navigation }) => {
                       fontSize: 12,
                       color: COLORS.text,
                       opacity: 0.6,
+                      textAlign: "center",
                     }}
                   >
                     Pour reinitialiser votre mot de passe, veuillez entrer votre

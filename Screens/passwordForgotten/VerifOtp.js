@@ -20,6 +20,7 @@ import Spinner from "react-native-loading-spinner-overlay";
 import { COLORS, FONT } from "../../constants";
 import { BASE_URL } from "../../api/apiUrl";
 import { useRoute } from "@react-navigation/native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 const ModalPoup = ({ visible, children }) => {
   const [showModal, setShowModal] = React.useState(visible);
@@ -104,7 +105,17 @@ const showToastOtpSent = () => {
   });
 };
 
-showToastResendOTPError= () => {
+const showToastOtpVerified = () => {
+  Toast.show({
+    type: "success",
+    text1: "OTP Verified",
+    text2: "Code otp validé !!",
+    autoHide: true,
+    visibilityTime: 3500,
+  });
+};
+
+showToastResendOTPError = () => {
   Toast.show({
     type: "error",
     text1: "WARNING",
@@ -129,6 +140,7 @@ export default function VerifOtp({ navigation }) {
   const route = useRoute();
   const emailUser = route.params.email;
 
+  //function resend otp with email was sent previous otp code
   const resendOTP = (emailUser) => {
     setIsLoading(true);
     axios
@@ -147,7 +159,24 @@ export default function VerifOtp({ navigation }) {
         //console.log(emailUser);
       });
   };
-  
+
+  const confirmOTP = (values) => {
+    setIsLoading(true);
+    axios
+      .post(`${BASE_URL}/api/user/verify-otp`, {
+        otp_code: values.otp,
+      }) // Assuming your API expects an email in the request body
+      .then((response) => {
+        if (response.status === 200) {
+          setIsLoading(false);
+          setModalVisible(true);
+        }
+      })
+      .catch((error) => {
+        setIsLoading(false);
+        showToastResendOTPError();
+      });
+  };
 
   useEffect(() => {
     const timer =
@@ -165,7 +194,7 @@ export default function VerifOtp({ navigation }) {
         }}
         validationSchema={LoginSchema}
         onSubmit={(values, { resetForm }) => {
-          login(values);
+          confirmOTP(values);
           resetForm();
         }}
       >
@@ -178,94 +207,104 @@ export default function VerifOtp({ navigation }) {
           setFieldTouched,
           handleSubmit,
         }) => (
-          <ScrollView>
-            <View style={LoginStyle.styleView}>
-              <View>
-                <Image
-                  source={require("../../assets/otp.jpeg")}
-                  style={LoginStyle.image}
-                />
-              </View>
-              <Spinner visible={isLoading} color={COLORS.spinner} size={60} />
-              <Toast config={toastConfig} />
-              {/* pati modal la*/}
-              <ModalPoup visible={modalVisible}>
-                <View style={{ alignItems: "center" }}></View>
-                <View style={{ alignItems: "center" }}>
+          <KeyboardAwareScrollView>
+            <ScrollView>
+              <View style={LoginStyle.styleView}>
+                <View>
                   <Image
-                    source={require("../../assets/editMail.png")}
-                    style={{ height: 150, width: 150, marginVertical: 5 }}
+                    source={require("../../assets/otp.jpeg")}
+                    style={LoginStyle.image}
                   />
                 </View>
-                <Text style={SignUpStyle.textModal}>
-                  Code OTP envoyé sur votre email
-                </Text>
-                <View style={{ alignSelf: "center" }}>
-                  <TouchableOpacity style={[SignUpStyle.modalBtn]}>
-                    <Text style={SignUpStyle.textBtn}>Entrer code OTP</Text>
-                  </TouchableOpacity>
-                </View>
-              </ModalPoup>
-              {/* pati text la */}
-              <View style={{ alignItems: "center", paddingTop: 30 }}>
-                <Text style={LoginStyle.textTitle}>OTP VERIFICATION</Text>
-                <Text style={LoginStyle.textSubtitle}>
-                  Veuillez entrer le code otp qui a été envoyé sur cet email :
-                  <Text style={{ fontFamily: FONT.PoppinsBold }}>{emailUser}</Text>
-                </Text>
-                <View style={LoginStyle.timerView}>
-                  <Text style={LoginStyle.hrs}>00:{counter}s | </Text>
-                  <TouchableOpacity disabled={counter >= 1 && counter <= 60} onPress={() => resendOTP(emailUser)}>
-                    <Text
-                      style={[
-                        LoginStyle.hrs,
-                        {
-                          color:
-                            counter >= 1 && counter <= 60
-                              ? "#D9E5FF"
-                              : "#407BFF",
-                        },
-                      ]}
-                    >
-                      Resend
+                <Spinner visible={isLoading} color={COLORS.spinner} size={60} />
+                <Toast config={toastConfig} />
+                {/* pati modal la*/}
+                <ModalPoup visible={modalVisible}>
+                  <View style={{ alignItems: "center" }}></View>
+                  <View style={{ alignItems: "center" }}>
+                    <Image
+                      source={require("../../assets/editMail.png")}
+                      style={{ height: 150, width: 150, marginVertical: 5 }}
+                    />
+                  </View>
+                  <Text style={SignUpStyle.textModal}>
+                    Code OTP envoyé sur votre email
+                  </Text>
+                  <View style={{ alignSelf: "center" }}>
+                    <TouchableOpacity style={[SignUpStyle.modalBtn]} onPress={() => setModalVisible(false)}>
+                      <Text style={SignUpStyle.textBtn}>Entrer code OTP</Text>
+                    </TouchableOpacity>
+                  </View>
+                </ModalPoup>
+                {/* pati text la */}
+                <View style={{ alignItems: "center", paddingTop: 30 }}>
+                  <Text style={LoginStyle.textTitle}>OTP VERIFICATION</Text>
+                  <Text style={LoginStyle.textSubtitle}>
+                    Veuillez entrer le code otp qui a été envoyé sur cet email :
+                    <Text style={{ fontFamily: FONT.PoppinsBold }}>
+                      {emailUser}
                     </Text>
-                  </TouchableOpacity>
+                  </Text>
+                  <View style={LoginStyle.timerView}>
+                    <Text style={LoginStyle.hrss}>
+                      Vous n'avez pas reçu de code |
+                    </Text>
+                    <TouchableOpacity
+                      disabled={counter >= 1 && counter <= 60}
+                      onPress={() => resendOTP(emailUser)}
+                    >
+                      <Text
+                        style={[
+                          LoginStyle.hrss,
+                          {
+                            color:
+                              counter >= 1 && counter <= 60
+                                ? "#D9E5FF"
+                                : "#407BFF",
+                          },
+                        ]}
+                      >
+                        Renvoyer
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                  <Text style={LoginStyle.hrs}>dans {counter} secondes </Text>
                 </View>
-              </View>
-              {/* pati input la */}
-              <View style={LoginStyle.viewAllInput}>
-                <View style={{ paddingTop: 10 }}>
-                  <TextInput
-                    placeholderTextColor={COLORS.text}
-                    selectionColor={COLORS.primary}
-                    value={values.otp}
-                    keyboardType="numeric"
-                    onChangeText={handleChange("otp")}
-                    onBlur={() => setFieldTouched("otp")}
-                    label="Entrer le code OTP"
-                    variant="outlined"
-                    inputStyle={{ backgroundColor: COLORS.white }}
-                    color={COLORS.primary}
-                  />
-                  {touched.otp && errors.otp && (
-                    <Text style={LoginStyle.errorText}>{errors.otp}</Text>
-                  )}
+                {/* pati input la */}
+                <View style={LoginStyle.viewAllInput}>
+                  <View style={{ paddingTop: 10 }}>
+                    <TextInput
+                      placeholderTextColor={COLORS.text}
+                      selectionColor={COLORS.primary}
+                      value={values.otp}
+                      keyboardType="numeric"
+                      onChangeText={handleChange("otp")}
+                      onBlur={() => setFieldTouched("otp")}
+                      label="Entrer le code OTP"
+                      variant="outlined"
+                      inputStyle={{ backgroundColor: COLORS.white }}
+                      color={COLORS.primary}
+                    />
+                    {touched.otp && errors.otp && (
+                      <Text style={LoginStyle.errorText}>{errors.otp}</Text>
+                    )}
+                  </View>
                 </View>
-              </View>
 
-              {/* pati button an */}
-              <TouchableOpacity
-                onPress={handleSubmit}
-                disabled={!isValid}
-                style={[
-                  LoginStyle.btn,
-                  { backgroundColor: isValid ? "#407BFF" : "#D9E5FF" },
-                ]}
-              >
-                <Text style={LoginStyle.textBtn}>Confirm OTP</Text>
-              </TouchableOpacity>
-            </View>
-          </ScrollView>
+                {/* pati button an */}
+                <TouchableOpacity
+                  onPress={handleSubmit}
+                  disabled={!isValid}
+                  style={[
+                    LoginStyle.btn,
+                    { backgroundColor: isValid ? "#407BFF" : "#D9E5FF" },
+                  ]}
+                >
+                  <Text style={LoginStyle.textBtn}>Confirm OTP</Text>
+                </TouchableOpacity>
+              </View>
+            </ScrollView>
+          </KeyboardAwareScrollView>
         )}
       </Formik>
     </SafeAreaView>

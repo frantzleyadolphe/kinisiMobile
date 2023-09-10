@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+
 import { FONT, MARGIN, COLORS } from "../../constants";
 
 const LoginStyle = {
@@ -61,6 +61,7 @@ const LoginStyle = {
     fontFamily: FONT.SfProMedium,
     fontSize: 12,
     color: COLORS.text,
+    textAlign: "center",
   },
   timerView:{
     justifyContent: "center",
@@ -69,7 +70,13 @@ const LoginStyle = {
   },
   hrs: {
     paddingTop: 5,
-    fontFamily: FONT.Black,
+    fontFamily: FONT.PoppinsBold,
+    fontSize: 15,
+    color: COLORS.text,
+  },
+  hrss: {
+    paddingTop: 5,
+    fontFamily: FONT.SfProMedium,
     fontSize: 15,
     color: COLORS.text,
   },

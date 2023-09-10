@@ -13,6 +13,7 @@ import Profil from "../Screens/Home/ScreensHome/Profil";
 import AlertVehicule from "../Screens/Home/ScreensHome/AlertVehicule";
 import SuivisRequete from "../Screens/Home/ScreensHome/SuivisRequete";
 import VerifOtp from "../Screens/passwordForgotten/VerifOtp";
+import Success from "../Screens/passwordForgotten/Success";
 
 const Stack = createNativeStackNavigator();
 
@@ -42,6 +43,7 @@ const Navigation = () => {
             <Stack.Screen name="SignUp" component={SignUp} />
             <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
             <Stack.Screen name="VerifOtp" component={VerifOtp} />
+            <Stack.Screen name="Success" component={Success} />
           </>
           
         )}

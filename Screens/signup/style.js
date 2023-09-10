@@ -31,10 +31,11 @@ const SignUpStyle = {
     backgroundColor: COLORS.primary,
     borderRadius: 5,
     marginVertical: MARGIN.vertical,
-    width: 276,
+    width: 200,
     height: 51,
     padding: MARGIN.vertical-6,
     alignItems: "center",
+    justifyContent: "center",
   },
   errorText:{
     color: 'red',
@@ -44,7 +45,7 @@ const SignUpStyle = {
   eyeBtn: {
     position: "absolute",
     right: 15,
-    top: 20,
+    top: 25,
   },
   iconColor: { color: COLORS.text },
   centeredView: {
@@ -60,7 +61,7 @@ const SignUpStyle = {
   },
   modalContainer: {
     width: "90%",
-    height: "50%",
+    height: "70%",
     backgroundColor: "white",
     paddingHorizontal: 20,
     paddingVertical: 30,
@@ -75,7 +76,7 @@ const SignUpStyle = {
   },
   textModal: {
     marginVertical: 5,
-    fontSize: 20,
+    fontSize: 14,
     textAlign: "center",
     fontFamily: FONT.PoppinsBold,
     color: COLORS.primary,

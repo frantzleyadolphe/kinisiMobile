@@ -21,7 +21,7 @@ import { COLORS, FONT } from "../../constants";
 import { BASE_URL } from "../../api/apiUrl";
 import { useRoute } from "@react-navigation/native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-
+import Ionicons from "@expo/vector-icons/Ionicons";
 const ModalPoup = ({ visible, children }) => {
   const [showModal, setShowModal] = React.useState(visible);
   const scaleValue = useRef(new Animated.Value(0)).current;
@@ -133,11 +133,27 @@ const LoginSchema = Yup.object().shape({
     .required("Champ obligatoire !!"),
 });
 
+const newPasswordSchema = Yup.object().shape({
+  password: Yup.string()
+    .min(8)
+    .required("Mot de passe obligatoire !!")
+    .matches(
+      /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
+      "Le mot de passe doit avoir 8 caractères et au moins une lettre majuscule des symboles "
+    ),
+  password_confirmation: Yup.string()
+    .min(8)
+    .oneOf([Yup.ref("password")], "Les mot de passe ne correspondent pas !")
+    .required("Confirmation de mot de passe obligatoire !"),
+});
+
 export default function VerifOtp({ navigation }) {
   const [modalVisible, setModalVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [counter, setCounter] = useState(60);
   const route = useRoute();
+  const [showPassword, setShowPassword] = useState(false);
+  const [visiblePassword, setVisiblePassword] = useState(true);
   const emailUser = route.params.email;
 
   //function resend otp with email was sent previous otp code
@@ -177,6 +193,27 @@ export default function VerifOtp({ navigation }) {
         showToastResendOTPError();
       });
   };
+
+  const resetPassword = (values) => {
+    setIsLoading(true);
+    axios
+      .put(`${BASE_URL}/api/user/reset-password`, {
+        email: emailUser,
+        password: values.password,
+        password_confirmation: values.password_confirmation,
+      }) // Assuming your API expects an email in the request body
+      .then((response) => {
+        if (response.status === 200) {
+          setIsLoading(false);
+          navigation.replace("Success");
+        }
+      })
+      .catch((error) => {
+        setIsLoading(false);
+        showToastResendOTPError();
+        //console.log(emailUser);
+      });
+  }
 
   useEffect(() => {
     const timer =
@@ -219,23 +256,115 @@ export default function VerifOtp({ navigation }) {
                 <Spinner visible={isLoading} color={COLORS.spinner} size={60} />
                 <Toast config={toastConfig} />
                 {/* pati modal la*/}
-                <ModalPoup visible={modalVisible}>
-                  <View style={{ alignItems: "center" }}></View>
-                  <View style={{ alignItems: "center" }}>
-                    <Image
-                      source={require("../../assets/editMail.png")}
-                      style={{ height: 150, width: 150, marginVertical: 5 }}
-                    />
-                  </View>
-                  <Text style={SignUpStyle.textModal}>
-                    Code OTP envoyé sur votre email
-                  </Text>
-                  <View style={{ alignSelf: "center" }}>
-                    <TouchableOpacity style={[SignUpStyle.modalBtn]} onPress={() => setModalVisible(false)}>
-                      <Text style={SignUpStyle.textBtn}>Entrer code OTP</Text>
-                    </TouchableOpacity>
-                  </View>
-                </ModalPoup>
+                <Formik
+                  initialValues={{
+                    email: emailUser,
+                    password: "",
+                    password_confirmation: "",
+                  }}
+                  validationSchema={newPasswordSchema}
+                  onSubmit={(values, { resetForm }) => {
+                    resetPassword(values);
+                    resetForm();
+                  }}
+                >
+                  {({
+                    values,
+                    errors,
+                    touched,
+                    isValid,
+                    handleChange,
+                    setFieldTouched,
+                    handleSubmit,
+                  }) => (
+                    <ModalPoup visible={modalVisible}>
+                      {/* <View style={{ alignItems: "center" }}>
+                        <Image
+                          source={require("../../assets/editMail.png")}
+                          style={{ height: 150, width: 150, marginVertical: 5 }}
+                        />
+                      </View> */}
+                      <Text style={SignUpStyle.textModal}>
+                        Changer votre mot de passe
+                      </Text>
+                      <View style={{ paddingTop: 10 }}>
+                        <TextInput
+                          placeholderTextColor={COLORS.text}
+                          selectionColor={COLORS.primary}
+                          value={values.password}
+                          secureTextEntry={visiblePassword}
+                          onChangeText={handleChange("password")}
+                          onBlur={() => setFieldTouched("password")}
+                          label="Entrer le nouveau mot de passe"
+                          variant="outlined"
+                          inputStyle={{ backgroundColor: COLORS.white }}
+                          color={COLORS.primary}
+                        />
+                        {touched.password && errors.password && (
+                          <Text style={LoginStyle.errorText}>
+                            {errors.password}
+                          </Text>
+                        )}
+                        <TouchableOpacity
+                          style={SignUpStyle.eyeBtn}
+                          onPress={() => {
+                            setVisiblePassword(!visiblePassword);
+                            setShowPassword(!showPassword);
+                          }}
+                        >
+                          <Ionicons
+                            name={
+                              showPassword === false
+                                ? "eye-outline"
+                                : "eye-off-outline"
+                            }
+                            disabled
+                            size={25}
+                            color={SignUpStyle.iconColor}
+                          />
+                        </TouchableOpacity>
+                      </View>
+                      <View style={{ paddingTop: 10 }}>
+                        <TextInput
+                          secureTextEntry={visiblePassword}
+                          placeholderTextColor={COLORS.text}
+                          selectionColor={COLORS.primary}
+                          value={values.password_confirmation}
+                          onChangeText={handleChange("password_confirmation")}
+                          onBlur={() =>
+                            setFieldTouched("password_confirmation")
+                          }
+                          label="Confirmer le nouveau mot de passe"
+                          variant="outlined"
+                          inputStyle={{ backgroundColor: COLORS.white }}
+                          color={COLORS.primary}
+                        />
+                        {touched.password_confirmation &&
+                          errors.password_confirmation && (
+                            <Text style={LoginStyle.errorText}>
+                              {errors.password_confirmation}
+                            </Text>
+                          )}
+                      </View>
+                      <View style={{ alignSelf: "center" }}>
+                        <TouchableOpacity
+                          disabled={!isValid}
+                          style={[
+                            SignUpStyle.btn,
+                            {
+                              backgroundColor: isValid ? "#407BFF" : "#D9E5FF",
+                            },
+                          ]}
+                          onPress={handleSubmit}
+                        >
+                          <Text style={SignUpStyle.textBtn}>
+                            Changer mot de passe
+                          </Text>
+                        </TouchableOpacity>
+                      </View>
+                    </ModalPoup>
+                  )}
+                </Formik>
                 {/* pati text la */}
                 <View style={{ alignItems: "center", paddingTop: 30 }}>
                   <Text style={LoginStyle.textTitle}>OTP VERIFICATION</Text>

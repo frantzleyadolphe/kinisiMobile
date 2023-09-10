@@ -12,6 +12,12 @@ const SignUpStyle = {
     fontSize: 20,
     color: COLORS.primary,
   },
+  titrePass: {
+    fontFamily: FONT.PoppinsBold,
+    fontSize: 20,
+    color: COLORS.primary,
+    textAlign: 'center'
+  },
   sousTitre: {
     paddingTop: 5,
     fontFamily: FONT.SfProMedium,

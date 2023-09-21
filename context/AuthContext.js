@@ -134,6 +134,7 @@ export const AuthProvider = ({ children }) => {
   // Définition d'une fonction d'inscription
   const register = (values) => {
     setIsLoading(true);
+    //nan pati sa mwen fe appel ak on function ki permet mwen rele lien url avek api mwen an 
     axios
       .post(`${BASE_URL}/api/auth/register`, values)
       .then((response) => {

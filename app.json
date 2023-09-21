@@ -25,7 +25,6 @@
       },
       "package": "com.haskalah.kinisi",
       "softwareKeyboardLayoutMode": "pan"
-      
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -34,6 +33,12 @@
       "eas": {
         "projectId": "a3d8bb1e-c6c3-415a-a90e-d2f414853487"
       }
+    },
+    "runtimeVersion": {
+      "policy": "sdkVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/a3d8bb1e-c6c3-415a-a90e-d2f414853487"
     }
   }
 }

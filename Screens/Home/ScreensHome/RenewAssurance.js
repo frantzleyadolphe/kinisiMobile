@@ -4,7 +4,6 @@ import {
   Image,
   TouchableOpacity,
   ScrollView,
-  TextInput,
 } from "react-native";
 import React, { useState, useContext } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -15,6 +14,7 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import { AuthContext } from "../../../context/AuthContext";
 import { COLORS, MARGIN, FONT } from "../../../constants/index";
+import { TextInput } from "@react-native-material/core";
 
 const ExpertiseSchema = Yup.object().shape({
   number: Yup.string()
@@ -88,14 +88,14 @@ export default function RenewAssurance({ navigation }) {
               <View style={{ width: "100%", paddingTop: 20 }}>
                 <View>
                   <TextInput
-                    placeholder="Entrer votre numéro d'expertise..."
                     placeholderTextColor={COLORS.text}
                     selectionColor={COLORS.primary}
-                    keyboardType="numeric"
                     value={values.number}
-                    onChangeText={handleChange("number")}
                     onBlur={() => setFieldTouched("number")}
-                    style={HomeStyle.input}
+                    label="Entrer le numero d'expertise"
+                    variant="outlined"
+                    inputStyle={{ backgroundColor: COLORS.white }}
+                    color={COLORS.primary}
                   />
                   {touched.number && errors.number && (
                     <Text style={HomeStyle.errorText}>{errors.number}</Text>

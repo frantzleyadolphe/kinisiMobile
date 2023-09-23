@@ -217,7 +217,7 @@ const Profil = ({ navigation }) => {
           <View style={HomeStyle.profilView}>
             <TouchableOpacity
               style={HomeStyle.row}
-              onPress={() => setVisible(true)}
+              onPress={() => setVisibleModal(true)}
             >
               <Ionicons
                 name="lock-closed-outline"

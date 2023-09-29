@@ -125,9 +125,9 @@ const HomeStyle = {
   Header: {
     width: "100%",
     flexDirection: "row",
-    alignContent: "center",
     paddingTop: 10,
     justifyContent: "space-between",
+    alignItems: "center",
   },
   btnLr: {
     paddingLeft: 10,

@@ -47,7 +47,7 @@ const HomeScreen = ({ navigation }) => {
                 </Text>
               </View>
             </TouchableOpacity>
-            <TouchableOpacity style={HomeStyle.button}>
+            <TouchableOpacity style={HomeStyle.button} onPress={()=>navigation.navigate("ExpertiseQuery")}>
               <View style={HomeStyle.viewButton}>
                 <Image
                   source={require("../../assets/Expertise.png")}

@@ -17,26 +17,32 @@ import Success from "../Screens/passwordForgotten/Success";
 
 const Stack = createNativeStackNavigator();
 
+const StackUser = createNativeStackNavigator();
+
+function InsideLayout() {
+  <NavigationContainer>
+    <StackUser.Navigator>
+      <StackUser.Screen name="Home" component={HomeScreen} />
+      <StackUser.Screen name="RenewAssurance" component={RenewAssucance} />
+      <StackUser.Screen name="ExpertiseQuery" component={ExperstiseQuery} />
+      <StackUser.Screen name="AlertVehicle" component={AlertVehicule} />
+      <StackUser.Screen name="Profil" component={Profil} />
+      <StackUser.Screen name="Suivis" component={SuivisRequete} />
+    </StackUser.Navigator>
+  </NavigationContainer>;
+}
+
 const Navigation = () => {
   const { userInfo, splachLoading } = useContext(AuthContext);
   const token = userInfo.token ? true : false;
 
   return (
     <NavigationContainer>
-      
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         {splachLoading ? (
-          <Stack.Screen name="splach" component={IndicatorLoading}  />
+          <Stack.Screen name="splach" component={IndicatorLoading} />
         ) : token ? (
-            <>
-              <Stack.Screen name="Home" component={HomeScreen} />
-              <Stack.Screen name="RenewAssurance" component={RenewAssucance}/>
-              <Stack.Screen name="ExpertiseQuery" component={ExperstiseQuery} />
-              <Stack.Screen name="AlertVehicle" component={AlertVehicule} />
-              <Stack.Screen name="Profil" component={Profil} />
-              <Stack.Screen name="Suivis" component={SuivisRequete} />
-              
-            </>
+          <></>
         ) : (
           <>
             <Stack.Screen name="Login" component={Login} />
@@ -45,12 +51,8 @@ const Navigation = () => {
             <Stack.Screen name="VerifOtp" component={VerifOtp} />
             <Stack.Screen name="Success" component={Success} />
           </>
-          
         )}
-        
-          
       </Stack.Navigator>
-    
     </NavigationContainer>
   );
 };

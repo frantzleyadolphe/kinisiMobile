@@ -9,6 +9,9 @@ import * as Yup from "yup";
 import { AuthContext } from "../../../context/AuthContext";
 import { COLORS, MARGIN, FONT } from "../../../constants/index";
 import { TextInput } from "@react-native-material/core";
+import { SelectList } from "react-native-dropdown-select-list";
+import { BASE_URL } from "../../../api/apiUrl";
+import axios from "axios";
 
 const ExpertiseSchema = Yup.object().shape({
   number: Yup.string()
@@ -16,15 +19,39 @@ const ExpertiseSchema = Yup.object().shape({
     .min(10, "il doit avoir exactement 10 chiffres !!")
     .max(10, "il doit avoir exactement 10 chiffres !!")
     .required("Champ obligatoire !!"),
+  type: Yup.string()
+    .required("Champ obligatoire !!"),
 });
 
 export default function ExperstiseQuery({ navigation }) {
-  const { isLoading, login } = useContext(AuthContext);
+  const [selected, setSelected] = useState("");
+  const [data,setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  React.useEffect(async() => 
+    //Get Values from database
+    await axios.get(`${BASE_URL}/api/user/type-expertise`)
+      .then((response) => {
+        // Store Values in Temporary Array
+        let newArray = response.data.map((item) => {
+          return {key: item.montant, value: item.type_expertise}
+        })
+        setIsLoading(false);
+        //Set Data Variable
+        setData(newArray)
+      })
+      .catch((e) => {
+        console.log(e)
+      })
+  ,[])
+
+  const { login } = useContext(AuthContext);
   return (
     <SafeAreaView style={HomeStyle.colorPage}>
       <Formik
         initialValues={{
           number: "",
+          type:""
         }}
         validationSchema={ExpertiseSchema}
         onSubmit={(values) => {
@@ -42,23 +69,6 @@ export default function ExperstiseQuery({ navigation }) {
         }) => (
           <ScrollView>
             <View style={HomeStyle.Page}>
-              <View style={HomeStyle.Header}>
-                <TouchableOpacity onPress={() => navigation.goBack()}>
-                  <Ionicons
-                    name="chevron-back-outline"
-                    size={32}
-                    style={HomeStyle.ButtonRetour}
-                  />
-                </TouchableOpacity>
-                <Text style={HomeStyle.TextHeader}>Demande d'expertise</Text>
-                <TouchableOpacity>
-                  <Ionicons
-                    name="person-circle-outline"
-                    size={32}
-                    style={HomeStyle.ButtonRetour}
-                  />
-                </TouchableOpacity>
-              </View>
               {/* pati corps paj lan */}
               <Spinner visible={isLoading} color={COLORS.spinner} size={60} />
               <View>
@@ -91,20 +101,16 @@ export default function ExperstiseQuery({ navigation }) {
                     <Text style={HomeStyle.errorText}>{errors.number}</Text>
                   )}
                 </View>
-                <View style={{  paddingTop: 10 }}>
-                  <TextInput
-                    placeholderTextColor={COLORS.text}
-                    selectionColor={COLORS.primary}
-                    value={values.number}
-                    onBlur={() => setFieldTouched("number")}
-                    onChangeText={handleChange("number")}
-                    label="Type d'immatriculation"
-                    variant="outlined"
-                    inputStyle={{ backgroundColor: COLORS.white }}
-                    color={COLORS.primary}
+                <View style={{ paddingTop: 10 }}>
+                  <SelectList
+                    setSelected={setSelected}
+                    data={data}
+                    save="value"
+                    label="Type d'expertise"
+                    searchPlaceholder="Type d'expertise"
                   />
-                  {touched.number && errors.number && (
-                    <Text style={HomeStyle.errorText}>{errors.number}</Text>
+                  {touched.type && errors.type && (
+                    <Text style={HomeStyle.errorText}>{errors.type}</Text>
                   )}
                 </View>
               </View>

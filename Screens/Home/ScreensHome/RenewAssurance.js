@@ -48,23 +48,6 @@ export default function RenewAssurance({ navigation }) {
         }) => (
           <ScrollView>
             <View style={HomeStyle.Page}>
-              <View style={HomeStyle.Header}>
-                <TouchableOpacity onPress={() => navigation.goBack()}>
-                  <Ionicons
-                    name="chevron-back-outline"
-                    size={32}
-                    style={HomeStyle.ButtonRetour}
-                  />
-                </TouchableOpacity>
-                <Text style={HomeStyle.TextHeader}>Numero expertise</Text>
-                <TouchableOpacity>
-                  <Ionicons
-                    name="person-circle-outline"
-                    size={32}
-                    style={HomeStyle.ButtonRetour}
-                  />
-                </TouchableOpacity>
-              </View>
               {/* pati corps paj lan */}
               <View>
                 <Image

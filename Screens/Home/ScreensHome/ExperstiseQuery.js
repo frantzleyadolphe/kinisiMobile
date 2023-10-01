@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity, ScrollView } from "react-native";
-import React, { useState, useContext,useEffect } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import HomeStyle from "./../style";
 import Spinner from "react-native-loading-spinner-overlay";
@@ -18,22 +18,22 @@ const ExpertiseSchema = Yup.object().shape({
     .min(10, "il doit avoir exactement 10 chiffres !!")
     .max(10, "il doit avoir exactement 10 chiffres !!")
     .required("Champ obligatoire !!"),
-  type: Yup.string()
-    .required("Champ obligatoire !!"),
+  type: Yup.string().required("Champ obligatoire !!"),
 });
 
 export default function ExperstiseQuery({ navigation }) {
   const [selected, setSelected] = useState("");
-  const [data,setData] = useState([]);
+  const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
+/* fucntion sa permet mwen fetch data yo from api an poum voye l sou mobile lan nn pati select lan  */
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(`${BASE_URL}/api/user/type-expertise`);
         const newArray = response.data.map((item) => ({
           key: item.montant,
-          value: item.type_expertise
+          value: item.type_expertise,
         }));
         setData(newArray);
         setIsLoading(false);
@@ -41,7 +41,7 @@ export default function ExperstiseQuery({ navigation }) {
         console.error(error);
       }
     };
-
+    
     fetchData();
   }, []);
 
@@ -51,7 +51,7 @@ export default function ExperstiseQuery({ navigation }) {
       <Formik
         initialValues={{
           number: "",
-          type:""
+          type: "",
         }}
         validationSchema={ExpertiseSchema}
         onSubmit={(values) => {

@@ -106,21 +106,7 @@ const Profil = ({ navigation }) => {
   return (
     <SafeAreaView style={HomeStyle.colorPage}>
       <View style={HomeStyle.Page}>
-        <View style={HomeStyle.Header}>
-          <View style={HomeStyle.btnRr}>
-            <TouchableOpacity onPress={() => navigation.goBack()}>
-              <Ionicons
-                name="chevron-back-outline"
-                size={32}
-                style={HomeStyle.ButtonRetour}
-              />
-            </TouchableOpacity>
-          </View>
-          <View style={HomeStyle.viewTitle}>
-            <Text style={HomeStyle.TextHeader}>Profil</Text>
-          </View>
-        </View>
-        <View style={{ paddingTop: 30, paddingBottom: 30 }}>
+        <View style={{ paddingBottom: 10 }}>
           <Image
             style={HomeStyle.avatarProfil}
             source={require("../../../assets/avatar.png")}

@@ -40,6 +40,7 @@ function InsideLayout() {
           headerTitleAlign: "center",
           headerTintColor: "#ffffff",
           headerBackTitle: false,
+          headerLargeTitle: false,
           headerStyle: {
             backgroundColor: COLORS.primary,
 
@@ -59,6 +60,7 @@ function InsideLayout() {
           headerTitleAlign: "center",
           headerTintColor: "#ffffff",
           headerBackTitle: false,
+          headerLargeTitle: false,
           headerStyle: {
             backgroundColor: COLORS.primary,
             headerTitleStyle: {
@@ -76,6 +78,7 @@ function InsideLayout() {
           headerTitleAlign: "center",
           headerTintColor: "#ffffff",
           headerBackTitle: false,
+          headerLargeTitle: false,
           headerStyle: {
             backgroundColor: COLORS.primary,
             headerTitleStyle: {
@@ -93,6 +96,7 @@ function InsideLayout() {
           headerTitleAlign: "center",
           headerTintColor: "#ffffff",
           headerBackTitle: false,
+          headerLargeTitle: false,
           headerStyle: {
             backgroundColor: COLORS.primary,
             headerTitleStyle: {

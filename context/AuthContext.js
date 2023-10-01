@@ -122,9 +122,7 @@ const showToastUserFound = () => {
   });
 };
 
-/*
 
-*/
 export const AuthProvider = ({ children }) => {
   const [userInfo, setUserInfo] = useState({});
   const [isLoading, setIsLoading] = useState(false);

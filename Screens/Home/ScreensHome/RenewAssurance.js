@@ -8,7 +8,6 @@ import {
 import React, { useState, useContext } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import HomeStyle from "./../style";
-import Ionicons from "@expo/vector-icons/Ionicons";
 import Spinner from "react-native-loading-spinner-overlay";
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -49,12 +48,12 @@ export default function RenewAssurance({ navigation }) {
           <ScrollView>
             <View style={HomeStyle.Page}>
               {/* pati corps paj lan */}
-              <View>
+              {/* <View>
                 <Image
                   style={HomeStyle.imageRenew}
                   source={require("./../../../assets/ExpertiseNumber.png")}
                 />
-              </View>
+              </View> */}
               <Spinner visible={isLoading} color={COLORS.spinner} size={60} />
               <View>
                 <Text style={HomeStyle.textTitleRenew}>

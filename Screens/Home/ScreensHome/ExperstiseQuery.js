@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity, ScrollView } from "react-native";
-import React, { useState, useContext } from "react";
+import React, { useState, useContext,useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import HomeStyle from "./../style";
 import Spinner from "react-native-loading-spinner-overlay";
@@ -27,22 +27,23 @@ export default function ExperstiseQuery({ navigation }) {
   const [data,setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  React.useEffect(async() => 
-    //Get Values from database
-    await axios.get(`${BASE_URL}/api/user/type-expertise`)
-      .then((response) => {
-        // Store Values in Temporary Array
-        let newArray = response.data.map((item) => {
-          return {key: item.montant, value: item.type_expertise}
-        })
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`${BASE_URL}/api/user/type-expertise`);
+        const newArray = response.data.map((item) => ({
+          key: item.montant,
+          value: item.type_expertise
+        }));
+        setData(newArray);
         setIsLoading(false);
-        //Set Data Variable
-        setData(newArray)
-      })
-      .catch((e) => {
-        console.log(e)
-      })
-  ,[])
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const { login } = useContext(AuthContext);
   return (

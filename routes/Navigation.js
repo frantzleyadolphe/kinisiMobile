@@ -15,6 +15,7 @@ import SuivisRequete from "../Screens/Home/ScreensHome/SuivisRequete";
 import VerifOtp from "../Screens/passwordForgotten/VerifOtp";
 import Success from "../Screens/passwordForgotten/Success";
 import { COLORS } from "../constants";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 const Stack = createNativeStackNavigator();
 
@@ -28,16 +29,68 @@ function InsideLayout() {
       <StackUser.Screen
         name="Home"
         component={HomeScreen}
-        options={{ headerShown: false }}
+        options={{ headerShown: false,statusBarColor: COLORS.primary, }}
       />
-      <StackUser.Screen name="RenewAssurance" component={RenewAssucance} options={{ title: "Renouvellement assurance", statusBarColor: COLORS.primary,headerTitleAlign: 'center',headerTintColor: '#ffffff',headerStyle: {backgroundColor: COLORS.primary,
+      <StackUser.Screen
+        name="RenewAssurance"
+        component={RenewAssucance}
+        options={{
+          title: "Renouvellement",
+          statusBarColor: COLORS.primary,
+          headerTitleAlign: "center",
+          headerTintColor: "#ffffff",
+          headerStyle: {
+            backgroundColor: COLORS.primary,
             headerTitleStyle: {
-              fontWeight: 'bold',
+              fontWeight: "bold",
             },
-          },}}/>
-      <StackUser.Screen name="ExpertiseQuery" component={ExperstiseQuery} />
-      <StackUser.Screen name="AlertVehicle" component={AlertVehicule} />
-      <StackUser.Screen name="Profil" component={Profil} />
+          },
+          headerShadowVisible: false,
+        }}
+      />
+      <StackUser.Screen
+        name="ExpertiseQuery"
+        component={ExperstiseQuery}
+        options={{
+          title: "Demande expertise",
+          statusBarColor: COLORS.primary,
+          headerTitleAlign: "center",
+          headerTintColor: "#ffffff",
+          headerStyle: {
+            backgroundColor: COLORS.primary,
+            headerTitleStyle: {
+              fontWeight: "bold",
+            },
+          },
+         
+        }}
+      />
+      <StackUser.Screen name="AlertVehicle" component={AlertVehicule} options={{
+          title: "Alerte vol de vehicule",
+          statusBarColor: COLORS.primary,
+          headerTitleAlign: "center",
+          headerTintColor: "#ffffff",
+          headerStyle: {
+            backgroundColor: COLORS.primary,
+            headerTitleStyle: {
+              fontWeight: "bold",
+            },
+          },
+          
+        }}/>
+      <StackUser.Screen name="Profil" component={Profil} options={{
+          title: "Profil",
+          statusBarColor: COLORS.primary,
+          headerTitleAlign: "center",
+          headerTintColor: "#ffffff",
+          headerStyle: {
+            backgroundColor: COLORS.primary,
+            headerTitleStyle: {
+              fontWeight: "bold",
+            },
+          },
+          
+        }}/>
       <StackUser.Screen name="Suivis" component={SuivisRequete} />
     </StackUser.Navigator>
   );
@@ -46,7 +99,11 @@ function InsideLayout() {
 function OutsideLayout() {
   return (
     <StackOut.Navigator>
-      <StackOut.Screen name="Login" component={Login} />
+      <StackOut.Screen
+        name="Login"
+        component={Login}
+        options={{ headerShown: false }}
+      />
       <StackOut.Screen name="SignUp" component={SignUp} />
       <StackOut.Screen name="ForgotPassword" component={ForgotPassword} />
       <StackOut.Screen name="VerifOtp" component={VerifOtp} />
@@ -58,16 +115,33 @@ function OutsideLayout() {
 const Navigation = () => {
   const { userInfo, splachLoading } = useContext(AuthContext);
   const token = userInfo.token ? true : false;
+  //console.log(token);
 
   return (
     <NavigationContainer>
       <Stack.Navigator>
         {splachLoading ? (
-          <Stack.Screen name="splach" component={IndicatorLoading} />
+          <Stack.Screen
+            name="splach"
+            component={IndicatorLoading}
+            options={{ headerShown: false }}
+          />
         ) : token ? (
-          <Stack.Screen name="Inside@" component={InsideLayout} options={{ headerShown: false }}/>
+          <>
+            <Stack.Screen
+              name="Inside"
+              component={InsideLayout}
+              options={{ headerShown: false }}
+            />
+          </>
         ) : (
-          <Stack.Screen name="Outside" component={OutsideLayout} />
+          <>
+            <Stack.Screen
+              name="Outside"
+              component={OutsideLayout}
+              options={{ headerShown: false }}
+            />
+          </>
         )}
       </Stack.Navigator>
     </NavigationContainer>

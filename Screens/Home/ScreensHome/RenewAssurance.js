@@ -48,12 +48,6 @@ export default function RenewAssurance({ navigation }) {
           <ScrollView>
             <View style={HomeStyle.Page}>
               {/* pati corps paj lan */}
-              {/* <View>
-                <Image
-                  style={HomeStyle.imageRenew}
-                  source={require("./../../../assets/ExpertiseNumber.png")}
-                />
-              </View> */}
               <Spinner visible={isLoading} color={COLORS.spinner} size={60} />
               <View>
                 <Text style={HomeStyle.textTitleRenew}>

@@ -113,20 +113,6 @@ export default function AlertVehicule({ navigation }) {
         }) => (
           <ScrollView>
             <View style={HomeStyle.Page}>
-              <View style={HomeStyle.Header}>
-                <View style={HomeStyle.btnRr}>
-                  <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Ionicons
-                      name="chevron-back-outline"
-                      size={32}
-                      style={HomeStyle.ButtonRetour}
-                    />
-                  </TouchableOpacity>
-                </View>
-                <View style={HomeStyle.viewTitle}>
-                  <Text style={HomeStyle.TextHeader}>Alerte vol </Text>
-                </View>
-              </View>
               {/* pati corps paj lan */}
               
               <View>

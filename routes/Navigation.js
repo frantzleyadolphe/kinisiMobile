@@ -29,7 +29,7 @@ function InsideLayout() {
       <StackUser.Screen
         name="Home"
         component={HomeScreen}
-        options={{ headerShown: false,statusBarColor: COLORS.primary, }}
+        options={{ headerShown: false, statusBarColor: COLORS.primary }}
       />
       <StackUser.Screen
         name="RenewAssurance"
@@ -39,8 +39,10 @@ function InsideLayout() {
           statusBarColor: COLORS.primary,
           headerTitleAlign: "center",
           headerTintColor: "#ffffff",
+          headerBackTitle: false,
           headerStyle: {
             backgroundColor: COLORS.primary,
+
             headerTitleStyle: {
               fontWeight: "bold",
             },
@@ -56,41 +58,49 @@ function InsideLayout() {
           statusBarColor: COLORS.primary,
           headerTitleAlign: "center",
           headerTintColor: "#ffffff",
+          headerBackTitle: false,
           headerStyle: {
             backgroundColor: COLORS.primary,
             headerTitleStyle: {
               fontWeight: "bold",
             },
           },
-         
         }}
       />
-      <StackUser.Screen name="AlertVehicle" component={AlertVehicule} options={{
+      <StackUser.Screen
+        name="AlertVehicle"
+        component={AlertVehicule}
+        options={{
           title: "Alerte vol de vehicule",
           statusBarColor: COLORS.primary,
           headerTitleAlign: "center",
           headerTintColor: "#ffffff",
+          headerBackTitle: false,
           headerStyle: {
             backgroundColor: COLORS.primary,
             headerTitleStyle: {
               fontWeight: "bold",
             },
           },
-          
-        }}/>
-      <StackUser.Screen name="Profil" component={Profil} options={{
+        }}
+      />
+      <StackUser.Screen
+        name="Profil"
+        component={Profil}
+        options={{
           title: "Profil",
           statusBarColor: COLORS.primary,
           headerTitleAlign: "center",
           headerTintColor: "#ffffff",
+          headerBackTitle: false,
           headerStyle: {
             backgroundColor: COLORS.primary,
             headerTitleStyle: {
               fontWeight: "bold",
             },
           },
-          
-        }}/>
+        }}
+      />
       <StackUser.Screen name="Suivis" component={SuivisRequete} />
     </StackUser.Navigator>
   );

@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, ScrollView } from "react-native";
+import { View, Text, TouchableOpacity, ScrollView, Alert } from "react-native";
 import React, { useState, useContext, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import HomeStyle from "./../style";
@@ -14,11 +14,13 @@ import axios from "axios";
 
 const ExpertiseSchema = Yup.object().shape({
   number: Yup.string()
-    .matches(/^[0-9]+$/, "Ce champ ne doit avoir que des chiffes !!")
-    .min(10, "il doit avoir exactement 10 chiffres !!")
-    .max(10, "il doit avoir exactement 10 chiffres !!")
+    .matches(
+      /^[A-Za-z]{2}-[0-9]{5}$/,
+      "Ce champ ne doit avoir que deux lettres et cinq chiffres avec un (-) tiret apres les deux lettres alphabets"
+    )
+    .min(8, "il doit avoir exactement 8 caracteres !!")
+    .max(8, "il doit avoir exactement 8 caracteres !!")
     .required("Champ obligatoire !!"),
-  type: Yup.string().required("Champ obligatoire !!"),
 });
 
 export default function ExperstiseQuery({ navigation }) {
@@ -26,7 +28,7 @@ export default function ExperstiseQuery({ navigation }) {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-/* fucntion sa permet mwen fetch data yo from api an poum voye l sou mobile lan nn pati select lan  */
+  /* fucntion sa permet mwen fetch data yo from api an poum voye l sou mobile lan nn pati select lan  */
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -41,9 +43,23 @@ export default function ExperstiseQuery({ navigation }) {
         console.error(error);
       }
     };
-    
+
     fetchData();
   }, []);
+
+  const handleValidation = () => {
+    if (selected === null || selected === "") {
+      // Aucune option sélectionnée, afficher un message d'erreur ou prendre une autre action
+      alert(
+        "Veuillez sélectionner une option pour préciser le type d'expertise voulu (à domicile ou à l oavct)"
+      );
+    } else {
+      // handleSubmit;
+      alert(
+        "Ou ranpli tout champ yo byen TI JHON, Nap koupe sa koz nap bezwen l"
+      );
+    }
+  };
 
   const { login } = useContext(AuthContext);
   return (
@@ -105,18 +121,17 @@ export default function ExperstiseQuery({ navigation }) {
                   <SelectList
                     setSelected={setSelected}
                     data={data}
-                    save="value"
                     label="Type d'expertise"
                     searchPlaceholder="Type d'expertise"
                   />
-                  {touched.type && errors.type && (
+                  {/* {touched.type && errors.type && (
                     <Text style={HomeStyle.errorText}>{errors.type}</Text>
-                  )}
+                  )} */}
                 </View>
               </View>
               {/* pati button an */}
               <TouchableOpacity
-                onPress={handleSubmit}
+                onPress={handleValidation}
                 disabled={!isValid}
                 style={[
                   HomeStyle.btnForm,

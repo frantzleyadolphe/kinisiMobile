@@ -3,7 +3,7 @@ import React, { useState, useContext, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import HomeStyle from "./../style";
 import Spinner from "react-native-loading-spinner-overlay";
-import { Formik, Field } from "formik";
+import { Formik } from "formik";
 import * as Yup from "yup";
 import { AuthContext } from "../../../context/AuthContext";
 import { COLORS, MARGIN, FONT } from "../../../constants/index";

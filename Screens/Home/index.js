@@ -6,6 +6,7 @@ import SliderImage from "../../components/SliderImage";
 import Spinner from "react-native-loading-spinner-overlay";
 import { AuthContext } from "../../context/AuthContext";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { COLORS } from "../../constants";
 
 const HomeScreen = ({ navigation }) => {
   const { isLoading } = useContext(AuthContext);
@@ -29,7 +30,7 @@ const HomeScreen = ({ navigation }) => {
             />
           </TouchableOpacity>
         </View>
-        <Spinner visible={isLoading} />
+        <Spinner visible={isLoading} color={COLORS.primary} />
         <SliderImage />
         <View style={HomeStyle.Section}>
           <View style={HomeStyle.ViewButton}>

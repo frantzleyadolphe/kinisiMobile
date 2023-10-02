@@ -13,7 +13,7 @@ export const COLORS= {
     iconColor:'#407BFF',
     white:'#FFFFFF',
     buttonText:'#000038',
-    spinner:'#BB0000',
+    spinner:'#1C71A6',
     gray:'#8C8C8C',
     black:'#0D0D0D',
 };

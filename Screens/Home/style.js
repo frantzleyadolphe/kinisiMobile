@@ -211,6 +211,13 @@ const HomeStyle = {
     color: COLORS.text,
     textAlign: "center",
   },
+  textModalExpertise: {
+    paddingTop: 10,
+    fontFamily: FONT.SfProMedium,
+    fontSize: 14,
+    color: COLORS.text,
+    textAlign: "center",
+  },
   btnForm: {
     backgroundColor: COLORS.primary,
     borderRadius: 5,
@@ -229,6 +236,15 @@ const HomeStyle = {
   modalContainer: {
     width: "90%",
     height: "60%",
+    backgroundColor: "white",
+    paddingHorizontal: 20,
+    paddingVertical: 30,
+    borderRadius: 20,
+    elevation: 20,
+  },
+  modalContainerPayment: {
+    width: "90%",
+    height: "45%",
     backgroundColor: "white",
     paddingHorizontal: 20,
     paddingVertical: 30,
@@ -264,6 +280,17 @@ const HomeStyle = {
     width: 276,
     height: 51,
     padding: MARGIN.vertical,
+    alignItems: "center",
+  },
+  modalBtnPayment: {
+    backgroundColor: "#FF0000",
+    borderRadius: 5,
+    flexDirection: "row",
+    marginVertical: MARGIN.vertical,
+    width: 276,
+    height: 51,
+    padding: MARGIN.vertical,
+    justifyContent: "center",
     alignItems: "center",
   },
   errorText: {

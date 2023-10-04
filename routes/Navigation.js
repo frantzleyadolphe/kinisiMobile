@@ -16,6 +16,8 @@ import VerifOtp from "../Screens/passwordForgotten/VerifOtp";
 import Success from "../Screens/passwordForgotten/Success";
 import { COLORS } from "../constants";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import SuccessEx from "../Screens/Home/ScreensHome/SuccessEx";
+import FAQ from "../Screens/Home/ScreensHome/FAQ";
 
 const Stack = createNativeStackNavigator();
 
@@ -106,6 +108,29 @@ function InsideLayout() {
         }}
       />
       <StackUser.Screen name="Suivis" component={SuivisRequete} />
+      <StackUser.Screen
+        name="SuccessEx"
+        component={SuccessEx}
+        options={{ headerShown: false }}
+      />
+      <StackUser.Screen
+        name="Faq"
+        component={FAQ}
+        options={{
+          title: "FAQ",
+          statusBarColor: COLORS.primary,
+          headerTitleAlign: "center",
+          headerTintColor: "#ffffff",
+          headerBackTitle: false,
+          headerLargeTitle: false,
+          headerStyle: {
+            backgroundColor: COLORS.primary,
+            headerTitleStyle: {
+              fontWeight: "bold",
+            },
+          },
+        }}
+      />
     </StackUser.Navigator>
   );
 }

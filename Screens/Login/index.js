@@ -2,7 +2,7 @@ import { View, Text, Image } from "react-native";
 import React, { useState, useContext } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import LoginStyle from "./style";
-import { COLORS, MARGIN, FONT } from "../../constants";
+import { COLORS, } from "../../constants";
 import { ScrollView, TouchableOpacity } from "react-native";
 import { Formik } from "formik";
 import * as Yup from "yup";

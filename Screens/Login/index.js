@@ -26,8 +26,8 @@ const LoginSchema = Yup.object().shape({
     .min(8)
     .required("Mot de passe obligatoire !!")
     .matches(
-      /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
-      "Le mot de passe doit avoir 8 caractères et des symboles et sans lettres capitales"
+      /^(?![^A-Z]*[A-Z][^A-Z]*$)(?!\D*\d\D*$)[A-Z0-9]{4,8}$/,
+      "Le mot de passe doit avoir au moins 4 ou 8 caractères et doit contenir uniquement une lettre majuscule, un chiffre sans espace et sans symboles"
     ),
 });
 

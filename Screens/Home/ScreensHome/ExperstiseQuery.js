@@ -1,16 +1,25 @@
-import { View, Text, TouchableOpacity, ScrollView, Alert } from "react-native";
-import React, { useState, useContext, useEffect } from "react";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  ScrollView,
+  Image,
+  Modal,
+  Animated,
+} from "react-native";
+import React, { useState, useContext, useEffect, useRef } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import HomeStyle from "./../style";
 import Spinner from "react-native-loading-spinner-overlay";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import { AuthContext } from "../../../context/AuthContext";
-import { COLORS, MARGIN, FONT } from "../../../constants/index";
+import { COLORS, FONT } from "../../../constants/index";
 import { TextInput } from "@react-native-material/core";
 import { SelectList } from "react-native-dropdown-select-list";
 import { BASE_URL } from "../../../api/apiUrl";
 import axios from "axios";
+import { AuthContext } from "../../../context/AuthContext";
+
 
 const ExpertiseSchema = Yup.object().shape({
   number: Yup.string()
@@ -23,12 +32,55 @@ const ExpertiseSchema = Yup.object().shape({
     .required("Champ obligatoire !!"),
 });
 
+const ModalPoup = ({ visible, children }) => {
+  const [showModal, setShowModal] = React.useState(visible);
+  const scaleValue = useRef(new Animated.Value(0)).current;
+  React.useEffect(() => {
+    toggleModal();
+  }, [visible]);
+  const toggleModal = () => {
+    if (visible) {
+      setShowModal(true);
+      Animated.spring(scaleValue, {
+        toValue: 1,
+        duration: 300,
+        useNativeDriver: true,
+      }).start();
+    } else {
+      setTimeout(() => setShowModal(false), 200);
+      Animated.timing(scaleValue, {
+        toValue: 0,
+        duration: 300,
+        useNativeDriver: true,
+      }).start();
+    }
+  };
+  return (
+    <Modal transparent visible={showModal}>
+      <View style={HomeStyle.modalBackGround}>
+        <Animated.View
+          style={[
+            HomeStyle.modalContainerPayment,
+            { transform: [{ scale: scaleValue }] },
+          ]}
+        >
+          {children}
+        </Animated.View>
+      </View>
+    </Modal>
+  );
+};
+
 export default function ExperstiseQuery({ navigation }) {
   const [selected, setSelected] = useState("");
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [visibleModal, setVisibleModal] = useState(false);
+  const {userInfo}=useContext(AuthContext);
+  const nifUser=userInfo.user.nif;
+  
 
-  /* fucntion sa permet mwen fetch data yo from api an poum voye l sou mobile lan nn pati select lan  */
+  /* function sa permet mwen fetch data yo from api an poum voye l sou mobile lan nn pati select lan  */
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -54,24 +106,35 @@ export default function ExperstiseQuery({ navigation }) {
         "Veuillez sélectionner une option pour préciser le type d'expertise voulu (à domicile ou à l oavct)"
       );
     } else {
-      // handleSubmit;
-      alert(
-        "Ou ranpli tout champ yo byen TI JHON, Nap koupe sa koz nap bezwen l"
-      );
+      setVisibleModal(true);
     }
   };
 
-  const { login } = useContext(AuthContext);
+
   return (
     <SafeAreaView style={HomeStyle.colorPage}>
       <Formik
         initialValues={{
-          number: "",
-          type: "",
+          number: "", 
         }}
         validationSchema={ExpertiseSchema}
-        onSubmit={(values) => {
-          login(values);
+        onSubmit={() => {
+          const typeExpertise=selected;
+          setIsLoading(true);
+          setVisibleModal(false);
+          //const plaque=number.number;
+          //console.log(typeExpertise);
+          axios.post(`${BASE_URL}/api/user/payment-expertise`,{
+            //nif:nifUser,
+            //type:typeExpertise,
+            //immatriculation:plaque,
+            montant:typeExpertise
+            
+          } ).then(() => {
+            setIsLoading(false);
+            navigation.replace("SuccessEx");
+          })
+          
         }}
       >
         {({
@@ -86,7 +149,38 @@ export default function ExperstiseQuery({ navigation }) {
           <ScrollView>
             <View style={HomeStyle.Page}>
               {/* pati corps paj lan */}
-              <Spinner visible={isLoading} color={COLORS.spinner} size={60} />
+              <Spinner visible={isLoading} color={COLORS.spinner} size={80} />
+              <ModalPoup visible={visibleModal}>
+                <View style={{ alignItems: "center" }}>
+                  <View style={HomeStyle.header}>
+                    <TouchableOpacity onPress={() => setVisibleModal(false)}>
+                      <Image
+                        source={require("../../../assets/x.png")}
+                        style={{ height: 30, width: 30 }}
+                      />
+                    </TouchableOpacity>
+                  </View>
+                  <View style={{ alignItems: "center" }}>
+                    <Image
+                      source={require("../../../assets/paymentAlert.png")}
+                      style={{ height: 100, width: 100, marginVertical: 5 }}
+                    />
+                    <Text style={HomeStyle.textModalExpertise}>
+                      Veuillez sélectionner la methode de paiement (MONCASH) qui vous
+                      convient afin de payer votre demande d'expertise
+                    </Text>
+                    <View style={{ alignSelf: "center" }}>
+                      <TouchableOpacity style={HomeStyle.modalBtnPayment} onPress={handleSubmit}>
+                        <Image source={require("../../../assets/moncash.png")}
+                        style={{ height: 30, width: 30, marginRight: 10 }}
+                        />
+                        <Text style={HomeStyle.textBtn}>Moncash</Text>
+                      </TouchableOpacity>
+                    </View>
+                    
+                  </View>
+                </View>
+              </ModalPoup>
               <View>
                 <Text style={HomeStyle.textTitleRenew}>
                   FAITES VOTRE DEMANDE D'EXPERTISE

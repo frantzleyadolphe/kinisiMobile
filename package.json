@@ -25,6 +25,7 @@
     "expo-updates": "~0.16.4",
     "formik": "^2.4.2",
     "moment": "^2.29.4",
+    "nodejs-moncash-sdk": "github:ecelestin/ecelestin-Moncash-sdk-nodejs",
     "react": "18.2.0",
     "react-native": "0.71.8",
     "react-native-bouncy-checkbox": "^3.0.7",

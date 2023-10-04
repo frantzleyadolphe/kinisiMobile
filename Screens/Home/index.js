@@ -88,7 +88,8 @@ const HomeScreen = ({ navigation }) => {
                 <Text style={HomeStyle.Text}>Centre de support technique</Text>
               </View>
             </TouchableOpacity>
-            <TouchableOpacity style={HomeStyle.button}>
+            <TouchableOpacity style={HomeStyle.button}
+            onPress={()=>navigation.replace("Faq")}>
               <View style={HomeStyle.viewButton}>
                 <Image
                   source={require("../../assets/FAQ.png")}

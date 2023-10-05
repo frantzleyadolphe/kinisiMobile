@@ -89,7 +89,7 @@ const HomeScreen = ({ navigation }) => {
               </View>
             </TouchableOpacity>
             <TouchableOpacity style={HomeStyle.button}
-            onPress={()=>navigation.replace("Faq")}>
+            onPress={()=>navigation.navigate("Faq")}>
               <View style={HomeStyle.viewButton}>
                 <Image
                   source={require("../../assets/FAQ.png")}

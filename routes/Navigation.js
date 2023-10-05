@@ -14,10 +14,11 @@ import AlertVehicule from "../Screens/Home/ScreensHome/AlertVehicule";
 import SuivisRequete from "../Screens/Home/ScreensHome/SuivisRequete";
 import VerifOtp from "../Screens/passwordForgotten/VerifOtp";
 import Success from "../Screens/passwordForgotten/Success";
-import { COLORS } from "../constants";
+import { COLORS, FONT, SCREENSIZE } from "../constants";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import SuccessEx from "../Screens/Home/ScreensHome/SuccessEx";
 import FAQ from "../Screens/Home/ScreensHome/FAQ";
+import FaqDetail from "../Screens/Home/ScreensHome/FaqDetail";
 
 const Stack = createNativeStackNavigator();
 
@@ -131,6 +132,24 @@ function InsideLayout() {
           },
         }}
       />
+      <StackUser.Screen
+        name="FaqDetail"
+        component={FaqDetail}
+        options={{
+          title: "Details",
+          statusBarColor: COLORS.primary,
+          headerTitleAlign: "center",
+          headerTintColor: "#ffffff",
+          headerBackTitle: false,
+          headerLargeTitle: false,
+          headerStyle: {
+            backgroundColor: COLORS.primary,
+            headerTitleStyle: {
+              fontWeight: "bold",
+            },
+          },
+        }}
+      />
     </StackUser.Navigator>
   );
 }
@@ -154,7 +173,7 @@ function OutsideLayout() {
 const Navigation = () => {
   const { userInfo, splachLoading } = useContext(AuthContext);
   const token = userInfo.token ? true : false;
-  //console.log(token);
+
 
   return (
     <NavigationContainer>

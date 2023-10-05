@@ -1,9 +1,15 @@
 import { FONT, MARGIN, COLORS, SCREENSIZE } from "../../constants";
+import FaqDetail from './ScreensHome/FaqDetail';
 
 const HomeStyle = {
   Page: {
     alignItems: "center",
     justifyContent: "center",
+    marginRight: MARGIN.horizontal,
+    marginLeft: MARGIN.horizontal,
+  },
+  FaqDetail: {
+    //alignItems: "center",
     marginRight: MARGIN.horizontal,
     marginLeft: MARGIN.horizontal,
   },
@@ -87,9 +93,27 @@ const HomeStyle = {
   Text: {
     fontFamily: FONT.PoppinsBold,
     padding: 10,
-    fontSize: SCREENSIZE.deviceHeight / 55,
+    fontSize: SCREENSIZE.deviceWidth / 28,
     color: COLORS.buttonText,
     textAlign: "center",
+  },
+  view_faq:{   
+    borderRadius: 10,
+  },
+  Title_faq: {
+    fontFamily: FONT.PoppinsBold,
+    padding: 3,
+    fontSize: SCREENSIZE.deviceWidth / 35,
+    color: COLORS.buttonText,
+
+  },
+  Text_faq:{
+    fontFamily: FONT.SfProRegular,
+    paddingRight: SCREENSIZE.deviceWidth / 28,
+    paddingLeft: SCREENSIZE.deviceWidth / 28,
+    fontSize: SCREENSIZE.deviceWidth / 28,
+    color: COLORS.primary,
+    textAlign: "justify",
   },
   viewButton: {
     alignItems: "center",
@@ -113,14 +137,26 @@ const HomeStyle = {
     backgroundColor: "rgba(224, 252, 255, 0.4)",
     borderColor: "#78CAD5",
     borderWidth: 1,
-    height: 80,
+    height: SCREENSIZE.deviceHeight / 4 - 126,
     width: "90%",
-    marginTop: 20,
+    marginTop: SCREENSIZE.deviceHeight / 4 - 186,
     alignSelf: "center",
     borderRadius: 10,
     flexDirection: "row",
-    paddingLeft: 10,
+    paddingLeft: SCREENSIZE.deviceHeight / 4 - 196,
     alignItems: "center",
+  },
+  flatlist2:{
+    backgroundColor: "rgba(224, 252, 255, 0.4)",
+    borderColor: "#78CAD5",
+    borderWidth: 1,
+    height: SCREENSIZE.deviceHeight / 4 - 85,
+    width: "90%",
+    marginTop: SCREENSIZE.deviceHeight / 4 - 186,
+    alignSelf: "center",
+    borderRadius: 10,
+    //paddingLeft: SCREENSIZE.deviceHeight / 4 - 196,
+    //paddingRight: SCREENSIZE.deviceHeight / 4 - 196,
   },
   Header: {
     width: "100%",

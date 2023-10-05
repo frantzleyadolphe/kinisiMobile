@@ -19,8 +19,8 @@ export const COLORS= {
 };
 
 export const MARGIN={
-    horizontal: 16,
-    vertical:16,
+    horizontal: SCREENSIZE.deviceWidth/25,
+    vertical:SCREENSIZE.deviceWidth/25,
 };
 
 export const SIZE={

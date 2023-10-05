@@ -130,7 +130,7 @@ export default function ExperstiseQuery({ navigation }) {
             //immatriculation:plaque,
             montant:typeExpertise
             
-          } ).then(() => {
+          } ).then((response) => {
             setIsLoading(false);
             navigation.replace("SuccessEx");
           })

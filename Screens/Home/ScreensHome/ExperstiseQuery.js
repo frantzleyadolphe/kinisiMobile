@@ -19,7 +19,7 @@ import { SelectList } from "react-native-dropdown-select-list";
 import { BASE_URL } from "../../../api/apiUrl";
 import axios from "axios";
 import { AuthContext } from "../../../context/AuthContext";
-
+import { Linking } from "react-native";
 
 const ExpertiseSchema = Yup.object().shape({
   number: Yup.string()
@@ -76,9 +76,9 @@ export default function ExperstiseQuery({ navigation }) {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [visibleModal, setVisibleModal] = useState(false);
-  const {userInfo}=useContext(AuthContext);
-  const nifUser=userInfo.user.nif;
-  
+  const [visibleModalError, setVisibleModalError] = useState(false);
+  const { userInfo } = useContext(AuthContext);
+  const nifUser = userInfo.user.nif;
 
   /* function sa permet mwen fetch data yo from api an poum voye l sou mobile lan nn pati select lan  */
   useEffect(() => {
@@ -110,31 +110,44 @@ export default function ExperstiseQuery({ navigation }) {
     }
   };
 
-
   return (
     <SafeAreaView style={HomeStyle.colorPage}>
       <Formik
         initialValues={{
-          number: "", 
+          number: "",
         }}
         validationSchema={ExpertiseSchema}
-        onSubmit={() => {
-          const typeExpertise=selected;
+        onSubmit={(number) => {
+          const typeExpertise = selected;
           setIsLoading(true);
           setVisibleModal(false);
-          //const plaque=number.number;
-          //console.log(typeExpertise);
-          axios.post(`${BASE_URL}/api/user/payment-expertise`,{
-            //nif:nifUser,
-            //type:typeExpertise,
-            //immatriculation:plaque,
-            montant:typeExpertise
-            
-          } ).then((response) => {
-            setIsLoading(false);
-            navigation.replace("SuccessEx");
-          })
-          
+          const plaque = number.number;
+          axios
+            .post(`${BASE_URL}/api/user/payment-expertise`, {
+              nif: nifUser,
+              immatriculation: plaque,
+              amount: typeExpertise,
+            })
+            .then((response) => {
+              setIsLoading(false);
+              linkPayment = response.data.link_payment;
+              const supported = Linking.canOpenURL(linkPayment);
+              if (supported) {
+                Linking.openURL(linkPayment);
+              } else {
+                console.error("Impossible d'ouvrir le lien");
+              }
+              //navigation.replace("SuccessEx");
+            })
+            .catch((error) => {
+              // En cas d'erreur...
+              const errorParsed = error.response.data;
+              if (errorParsed?.message) {
+                setIsLoading(false);
+                setVisibleModalError(true);
+              }
+              console.error(error);
+            });
         }}
       >
         {({
@@ -166,18 +179,47 @@ export default function ExperstiseQuery({ navigation }) {
                       style={{ height: 100, width: 100, marginVertical: 5 }}
                     />
                     <Text style={HomeStyle.textModalExpertise}>
-                      Veuillez sélectionner la methode de paiement (MONCASH) qui vous
-                      convient afin de payer votre demande d'expertise
+                      Veuillez sélectionner la methode de paiement (MONCASH) qui
+                      vous convient afin de payer votre demande d'expertise
                     </Text>
                     <View style={{ alignSelf: "center" }}>
-                      <TouchableOpacity style={HomeStyle.modalBtnPayment} onPress={handleSubmit}>
-                        <Image source={require("../../../assets/moncash.png")}
-                        style={{ height: 30, width: 30, marginRight: 10 }}
+                      <TouchableOpacity
+                        style={HomeStyle.modalBtnPayment}
+                        onPress={handleSubmit}
+                      >
+                        <Image
+                          source={require("../../../assets/moncash.png")}
+                          style={{ height: 30, width: 30, marginRight: 10 }}
                         />
                         <Text style={HomeStyle.textBtn}>Moncash</Text>
                       </TouchableOpacity>
                     </View>
-                    
+                  </View>
+                </View>
+              </ModalPoup>
+
+              <ModalPoup visible={visibleModalError}>
+                <View style={{ alignItems: "center" }}>
+                  <View style={HomeStyle.header}>
+                    <TouchableOpacity
+                      onPress={() => setVisibleModalError(false)}
+                    >
+                      <Image
+                        source={require("../../../assets/x.png")}
+                        style={{ height: 30, width: 30 }}
+                      />
+                    </TouchableOpacity>
+                  </View>
+                  <View style={{ alignItems: "center" }}>
+                    <Image
+                      source={require("../../../assets/error.png")}
+                      style={{ height: 120, width: 150, marginVertical: 5 }}
+                    />
+                    <Text style={HomeStyle.textModalExpertiseError}>
+                      Une erreur s'est produite lors de votre paiement, le
+                      montant doit etre superieur a 0 sinon votre demande
+                      d'expertise ne sera pas effectué ni payé !!!
+                    </Text>
                   </View>
                 </View>
               </ModalPoup>

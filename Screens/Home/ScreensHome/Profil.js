@@ -6,8 +6,9 @@ import {
   Modal,
   Animated,
   TextInput,
+
 } from "react-native";
-import React, { useContext, useState, useRef } from "react";
+import React, { useContext, useState, useRef, } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import HomeStyle from "../style";
 import { AuthContext } from "../../../context/AuthContext";
@@ -260,3 +261,4 @@ const Profil = ({ navigation }) => {
 };
 
 export default Profil;
+

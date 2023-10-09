@@ -1,5 +1,4 @@
 import { FONT, MARGIN, COLORS, SCREENSIZE } from "../../constants";
-import FaqDetail from './ScreensHome/FaqDetail';
 
 const HomeStyle = {
   Page: {
@@ -40,8 +39,8 @@ const HomeStyle = {
     paddingTop: 10,
   },
   image: {
-    width: 100,
-    height: 100,
+    width: SCREENSIZE.deviceWidth / 4,
+    height: SCREENSIZE.deviceHeight / 8,
     marginTop: MARGIN.vertical,
   },
   image2: {
@@ -128,6 +127,7 @@ const HomeStyle = {
   imageSlider: {
     width: SCREENSIZE.deviceWidth - 25,
     height: 100,
+    resizeMode: "cover",
     borderRadius: 15,
   },
   ButtonRetour: {
@@ -251,6 +251,13 @@ const HomeStyle = {
     paddingTop: 10,
     fontFamily: FONT.SfProMedium,
     fontSize: 14,
+    color: COLORS.text,
+    textAlign: "center",
+  },
+  textModalExpertiseError: {
+    paddingTop: SCREENSIZE.deviceHeight / 40,
+    fontFamily: FONT.SfProMedium,
+    fontSize: SCREENSIZE.deviceWidth / 29.5,
     color: COLORS.text,
     textAlign: "center",
   },

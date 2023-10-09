@@ -2,8 +2,10 @@ import { Dimensions } from "react-native";
 
 export const SCREENSIZE ={
     deviceHeight : Dimensions.get('window').height,
-    deviceWidth : Dimensions.get('window').width
+    deviceWidth : Dimensions.get('window').width,
+
 };
+
 
 export const COLORS= {
     primary: '#1C71A6',

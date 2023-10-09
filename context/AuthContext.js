@@ -41,6 +41,23 @@ const showToastSignalement = () => {
 };
 
 
+const logout = async () => {
+  setIsLoading(true);
+  axios
+    .post(`${BASE_URL}/api/auth/logout`, null, {
+      headers: { Authorization: `Bearer ${userInfo.token}` },
+    })
+    .then((response) => {
+      AsyncStorage.removeItem("userInfo");
+      setUserInfo({});
+      setIsLoading(false);
+    })
+    .catch((error) => {
+      // En cas d'erreur...
+      setIsLoading(false);
+      showToastErr();
+    });
+};
 
 
 const showToastErrorNif = () => {
@@ -235,6 +252,7 @@ export const AuthProvider = ({ children }) => {
         let userInfo = response.data;
         setIsLoading(false);
         setUserInfo(userInfo);
+        //console.log(userInfo);
         let values = JSON.stringify(userInfo);
         AsyncStorage.setItem("userInfo", values);
       })

@@ -8,9 +8,10 @@ import { AuthContext } from "../../context/AuthContext";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { COLORS } from "../../constants";
 
-const HomeScreen = ({ navigation }) => {
-  const { isLoading } = useContext(AuthContext);
 
+const HomeScreen = ({ navigation }) => {
+  
+  const { isLoading } = useContext(AuthContext);
   return (
     <SafeAreaView style={HomeStyle.colorPage}>
       <View style={HomeStyle.Page}>
@@ -48,7 +49,10 @@ const HomeScreen = ({ navigation }) => {
                 </Text>
               </View>
             </TouchableOpacity>
-            <TouchableOpacity style={HomeStyle.button} onPress={()=>navigation.navigate("ExpertiseQuery")}>
+            <TouchableOpacity
+              style={HomeStyle.button}
+              onPress={() => navigation.navigate("ExpertiseQuery")}
+            >
               <View style={HomeStyle.viewButton}>
                 <Image
                   source={require("../../assets/Expertise.png")}
@@ -59,7 +63,10 @@ const HomeScreen = ({ navigation }) => {
             </TouchableOpacity>
           </View>
           <View style={HomeStyle.ViewButton}>
-            <TouchableOpacity style={HomeStyle.button} onPress={()=>navigation.navigate("AlertVehicle")}>
+            <TouchableOpacity
+              style={HomeStyle.button}
+              onPress={() => navigation.navigate("AlertVehicle")}
+            >
               <View style={HomeStyle.viewButton}>
                 <Image
                   source={require("../../assets/Alert.png")}
@@ -68,7 +75,10 @@ const HomeScreen = ({ navigation }) => {
                 <Text style={HomeStyle.Text}>Alerte vol de Vehicule</Text>
               </View>
             </TouchableOpacity>
-            <TouchableOpacity style={HomeStyle.button} onPress={()=>navigation.navigate("Suivis")}>
+            <TouchableOpacity
+              style={HomeStyle.button}
+              onPress={() => navigation.navigate("Suivis")}
+            >
               <View style={HomeStyle.viewButton}>
                 <Image
                   source={require("../../assets/Suivie.png")}
@@ -88,8 +98,10 @@ const HomeScreen = ({ navigation }) => {
                 <Text style={HomeStyle.Text}>Centre de support technique</Text>
               </View>
             </TouchableOpacity>
-            <TouchableOpacity style={HomeStyle.button}
-            onPress={()=>navigation.navigate("Faq")}>
+            <TouchableOpacity
+              style={HomeStyle.button}
+              onPress={() => navigation.navigate("Faq")}
+            >
               <View style={HomeStyle.viewButton}>
                 <Image
                   source={require("../../assets/FAQ.png")}
@@ -100,6 +112,7 @@ const HomeScreen = ({ navigation }) => {
             </TouchableOpacity>
           </View>
         </View>
+        
       </View>
     </SafeAreaView>
   );

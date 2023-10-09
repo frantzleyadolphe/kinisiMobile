@@ -2,7 +2,7 @@ import { View, Text, Image } from "react-native";
 import React, { useState, useContext } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import LoginStyle from "./style";
-import { COLORS, } from "../../constants";
+import { COLORS,SCREENSIZE } from "../../constants";
 import { ScrollView, TouchableOpacity } from "react-native";
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -99,6 +99,7 @@ const Login = ({ navigation }) => {
                 <Image
                   source={require("./../../assets/login.png")}
                   style={LoginStyle.image}
+                  resizeMode="contain"
                 />
               </View>
               <Spinner visible={isLoading} color={COLORS.spinner} size={60} />
@@ -168,7 +169,7 @@ const Login = ({ navigation }) => {
               <View style={LoginStyle.forgotPasswordView}>
                 <TouchableOpacity
                   onPress={() => {
-                    navigation.replace("ForgotPassword");
+                    navigation.navigate("ForgotPassword");
                   }}
                 >
                   <Text style={LoginStyle.forgotPasswordViewText}>

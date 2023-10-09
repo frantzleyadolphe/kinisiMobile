@@ -1,5 +1,5 @@
 
-import { FONT, MARGIN, COLORS } from "../../constants";
+import { FONT, MARGIN, COLORS, SCREENSIZE } from "../../constants";
 
 const LoginStyle = {
   safeAreaViewStyle: { flex: 1, backgroundColor: COLORS.white },
@@ -10,8 +10,8 @@ const LoginStyle = {
     marginLeft: MARGIN.horizontal,
   },
   image: {
-    width: 250,
-    height: 250,
+    width: SCREENSIZE.deviceWidth-10,
+    height: SCREENSIZE.deviceHeight/3.5,
   },
 
   view: {

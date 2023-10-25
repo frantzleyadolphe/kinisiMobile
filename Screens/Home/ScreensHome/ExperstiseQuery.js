@@ -80,6 +80,11 @@ export default function ExperstiseQuery({ navigation }) {
   const { userInfo } = useContext(AuthContext);
   const nifUser = userInfo.user.nif;
 
+//jskadjs mwen menm si w wem ap travya m focus 
+  const handleFocus = () => {
+    setIsLoading(true);
+  }
+
   /* function sa permet mwen fetch data yo from api an poum voye l sou mobile lan nn pati select lan  */
   useEffect(() => {
     const fetchData = async () => {
@@ -146,7 +151,7 @@ export default function ExperstiseQuery({ navigation }) {
                 setIsLoading(false);
                 setVisibleModalError(true);
               }
-              console.error(error);
+              
             });
         }}
       >

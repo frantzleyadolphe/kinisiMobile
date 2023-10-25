@@ -18,6 +18,7 @@ import { COLORS } from "../constants";
 import SuccessEx from "../Screens/Home/ScreensHome/SuccessEx";
 import FAQ from "../Screens/Home/ScreensHome/FAQ";
 import FaqDetail from "../Screens/Home/ScreensHome/FaqDetail";
+import QueryList from "../Screens/Home/ScreensHome/QueryList";
 
 const Stack = createNativeStackNavigator();
 
@@ -109,6 +110,24 @@ function InsideLayout() {
       />
       <StackUser.Screen name="Suivis" component={SuivisRequete} />
       <StackUser.Screen
+        name="QueryList"
+        component={QueryList}
+        options={{
+          title: "Requete liste",
+          statusBarColor: COLORS.primary,
+          headerTitleAlign: "center",
+          headerTintColor: "#ffffff",
+          headerBackTitle: false,
+          headerLargeTitle: false,
+          headerStyle: {
+            backgroundColor: COLORS.primary,
+            headerTitleStyle: {
+              fontWeight: "bold",
+            },
+          },
+        }}
+      />
+      <StackUser.Screen
         name="SuccessEx"
         component={SuccessEx}
         options={{ headerShown: false }}
@@ -154,7 +173,6 @@ function InsideLayout() {
 }
 
 function OutsideLayout() {
-  
   return (
     <StackOut.Navigator>
       <StackOut.Screen
@@ -184,7 +202,10 @@ function OutsideLayout() {
           },
         }}
       />
-      <StackOut.Screen name="VerifOtp" component={VerifOtp} options={{
+      <StackOut.Screen
+        name="VerifOtp"
+        component={VerifOtp}
+        options={{
           title: "Verification OTP",
           statusBarColor: COLORS.primary,
           headerTitleAlign: "center",
@@ -197,8 +218,13 @@ function OutsideLayout() {
               fontWeight: "bold",
             },
           },
-        }}/>
-      <StackOut.Screen name="Success" component={Success} options={{ headerShown: false }}/>
+        }}
+      />
+      <StackOut.Screen
+        name="Success"
+        component={Success}
+        options={{ headerShown: false }}
+      />
     </StackOut.Navigator>
   );
 }

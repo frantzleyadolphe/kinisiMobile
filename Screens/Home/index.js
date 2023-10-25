@@ -77,7 +77,7 @@ const HomeScreen = ({ navigation }) => {
             </TouchableOpacity>
             <TouchableOpacity
               style={HomeStyle.button}
-              onPress={() => navigation.navigate("Suivis")}
+              onPress={() => navigation.navigate("QueryList")}
             >
               <View style={HomeStyle.viewButton}>
                 <Image

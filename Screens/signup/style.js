@@ -12,6 +12,12 @@ const SignUpStyle = {
     fontSize: 20,
     color: COLORS.primary,
   },
+  titrePass: {
+    fontFamily: FONT.PoppinsBold,
+    fontSize: 20,
+    color: COLORS.primary,
+    textAlign: 'center'
+  },
   sousTitre: {
     paddingTop: 5,
     fontFamily: FONT.SfProMedium,
@@ -31,16 +37,66 @@ const SignUpStyle = {
     backgroundColor: COLORS.primary,
     borderRadius: 5,
     marginVertical: MARGIN.vertical,
-    width: 276,
+    width: 200,
     height: 51,
-    padding: MARGIN.vertical,
+    padding: MARGIN.vertical-6,
     alignItems: "center",
+    justifyContent: "center",
   },
   errorText:{
     color: 'red',
     fontFamily: FONT.SfProMedium,
     paddingTop: 2,
   },
+  eyeBtn: {
+    position: "absolute",
+    right: 15,
+    top: 25,
+  },
+  iconColor: { color: COLORS.text },
+  centeredView: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  modalBackGround: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.7)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  modalContainer: {
+    width: "90%",
+    height: "70%",
+    backgroundColor: "white",
+    paddingHorizontal: 20,
+    paddingVertical: 30,
+    borderRadius: 20,
+    elevation: 20,
+  },
+  header: {
+    width: "100%",
+    height: 40,
+    alignItems: "flex-end",
+    justifyContent: "center",
+  },
+  textModal: {
+    marginVertical: 5,
+    fontSize: 14,
+    textAlign: "center",
+    fontFamily: FONT.PoppinsBold,
+    color: COLORS.primary,
+  },
+  modalBtn: {
+    backgroundColor: COLORS.primary,
+    borderRadius: 5,
+    marginVertical: MARGIN.vertical,
+    width: 200,
+    height: 51,
+    padding: MARGIN.vertical,
+    alignItems: "center",
+  },
+  textBtn: { color: COLORS.white, fontFamily: FONT.Black },
 };
 
 export default SignUpStyle;

@@ -1,10 +1,17 @@
-import { StyleSheet } from "react-native";
-import { FONT, MARGIN, COLORS } from "../../constants";
+
+import { FONT, MARGIN, COLORS, SCREENSIZE } from "../../constants";
 
 const LoginStyle = {
+  safeAreaViewStyle: { flex: 1, backgroundColor: COLORS.white },
+  styleView: {
+    alignItems: "center",
+    justifyContent: "center",
+    marginRight: MARGIN.horizontal,
+    marginLeft: MARGIN.horizontal,
+  },
   image: {
-    width: 250,
-    height: 250,
+    width: SCREENSIZE.deviceWidth-10,
+    height: SCREENSIZE.deviceHeight/3.5,
   },
 
   view: {
@@ -39,6 +46,56 @@ const LoginStyle = {
     padding: MARGIN.vertical,
     alignItems: "center",
   },
+  eyeBtn: {
+    position: "absolute",
+    right: 15,
+    top:25,
+  },
+  textTitle: {
+    fontFamily: FONT.Black,
+    fontSize: 20,
+    color: COLORS.primary,
+  },
+  textSubtitle: {
+    paddingTop: 5,
+    fontFamily: FONT.SfProMedium,
+    fontSize: 12,
+    color: COLORS.text,
+    textAlign: "center",
+  },
+  timerView:{
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "row",
+  },
+  hrs: {
+    paddingTop: 5,
+    fontFamily: FONT.PoppinsBold,
+    fontSize: 15,
+    color: COLORS.text,
+  },
+  hrss: {
+    paddingTop: 5,
+    fontFamily: FONT.SfProMedium,
+    fontSize: 15,
+    color: COLORS.text,
+  },
+  iconColor: { color: COLORS.text },
+  forgotPasswordView: {
+    alignSelf: "flex-end",
+    marginVertical: MARGIN.vertical,
+  },
+  forgotPasswordViewText: {
+    fontFamily: FONT.SfProMedium,
+    color: COLORS.primary,
+  },
+  viewNew: { alignSelf: "center", marginVertical: MARGIN.vertical },
+  viewNewText: {
+    fontFamily: FONT.SfProMedium,
+    color: COLORS.primary,
+  },
+  textBtn: { color: COLORS.white, fontFamily: FONT.Black },
+  viewAllInput:{ width: "100%", paddingTop: 30 },
 };
 
 export default LoginStyle;

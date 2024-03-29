@@ -6,10 +6,12 @@ import SliderImage from "../../components/SliderImage";
 import Spinner from "react-native-loading-spinner-overlay";
 import { AuthContext } from "../../context/AuthContext";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { COLORS } from "../../constants";
+
 
 const HomeScreen = ({ navigation }) => {
+  
   const { isLoading } = useContext(AuthContext);
-
   return (
     <SafeAreaView style={HomeStyle.colorPage}>
       <View style={HomeStyle.Page}>
@@ -29,7 +31,7 @@ const HomeScreen = ({ navigation }) => {
             />
           </TouchableOpacity>
         </View>
-        <Spinner visible={isLoading} />
+        <Spinner visible={isLoading} color={COLORS.primary} />
         <SliderImage />
         <View style={HomeStyle.Section}>
           <View style={HomeStyle.ViewButton}>
@@ -37,55 +39,80 @@ const HomeScreen = ({ navigation }) => {
               style={HomeStyle.button}
               onPress={() => navigation.navigate("RenewAssurance")}
             >
-              <Image
-                source={require("../../assets/Renouvellement.png")}
-                style={HomeStyle.image}
-              />
-              <Text style={HomeStyle.Text}>
-                Renouveler ma police d’assurance
-              </Text>
+              <View style={HomeStyle.viewButton}>
+                <Image
+                  source={require("../../assets/Renouvellement.png")}
+                  style={HomeStyle.image}
+                />
+                <Text style={HomeStyle.Text}>
+                  Renouveler ma police d’assurance
+                </Text>
+              </View>
             </TouchableOpacity>
-            <TouchableOpacity style={HomeStyle.button}>
-              <Image
-                source={require("../../assets/Expertise.png")}
-                style={HomeStyle.image}
-              />
-              <Text style={HomeStyle.Text}>Demande d’expertise</Text>
+            <TouchableOpacity
+              style={HomeStyle.button}
+              onPress={() => navigation.navigate("ExpertiseQuery")}
+            >
+              <View style={HomeStyle.viewButton}>
+                <Image
+                  source={require("../../assets/Expertise.png")}
+                  style={HomeStyle.image}
+                />
+                <Text style={HomeStyle.Text}>Demande d’expertise</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+          <View style={HomeStyle.ViewButton}>
+            <TouchableOpacity
+              style={HomeStyle.button}
+              onPress={() => navigation.navigate("AlertVehicle")}
+            >
+              <View style={HomeStyle.viewButton}>
+                <Image
+                  source={require("../../assets/Alert.png")}
+                  style={HomeStyle.image2}
+                />
+                <Text style={HomeStyle.Text}>Alerte vol de Vehicule</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={HomeStyle.button}
+              onPress={() => navigation.navigate("QueryList")}
+            >
+              <View style={HomeStyle.viewButton}>
+                <Image
+                  source={require("../../assets/Suivie.png")}
+                  style={HomeStyle.image}
+                />
+                <Text style={HomeStyle.Text}>Suivie de mes requêtes</Text>
+              </View>
             </TouchableOpacity>
           </View>
           <View style={HomeStyle.ViewButton}>
             <TouchableOpacity style={HomeStyle.button}>
-              <Image
-                source={require("../../assets/Alert.png")}
-                style={HomeStyle.image2}
-              />
-              <Text style={HomeStyle.Text}>Alerte vol de Vehicule</Text>
+              <View style={HomeStyle.viewButton}>
+                <Image
+                  source={require("../../assets/HelpCenter.png")}
+                  style={HomeStyle.image}
+                />
+                <Text style={HomeStyle.Text}>Centre de support technique</Text>
+              </View>
             </TouchableOpacity>
-            <TouchableOpacity style={HomeStyle.button}>
-              <Image
-                source={require("../../assets/Suivie.png")}
-                style={HomeStyle.image}
-              />
-              <Text style={HomeStyle.Text}>Suivie de mes requêtes</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={HomeStyle.ViewButton}>
-            <TouchableOpacity style={HomeStyle.button}>
-              <Image
-                source={require("../../assets/HelpCenter.png")}
-                style={HomeStyle.image}
-              />
-              <Text style={HomeStyle.Text}>Centre de support technique</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={HomeStyle.button}>
-              <Image
-                source={require("../../assets/FAQ.png")}
-                style={HomeStyle.image}
-              />
-              <Text style={HomeStyle.Text}>FAQ</Text>
+            <TouchableOpacity
+              style={HomeStyle.button}
+              onPress={() => navigation.navigate("Faq")}
+            >
+              <View style={HomeStyle.viewButton}>
+                <Image
+                  source={require("../../assets/FAQ.png")}
+                  style={HomeStyle.image}
+                />
+                <Text style={HomeStyle.Text}>FAQ</Text>
+              </View>
             </TouchableOpacity>
           </View>
         </View>
+        
       </View>
     </SafeAreaView>
   );

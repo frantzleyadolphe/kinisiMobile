@@ -14,9 +14,10 @@ export default function App() {
   //const {userInfo}=useContext(AuthContext);
   //load all font
   const [fontsLoaded] = useFonts({
-    bohuan: require("./assets/fonts/bohuan.ttf"),
+    bohuan: require("./assets/fonts/Poppins-Black.ttf"),
     SfProRegular: require("./assets/fonts/SF-Pro.ttf"),
     SfProMedium: require("./assets/fonts/sf-pro-medium.ttf"),
+    PoppinsBold: require("./assets/fonts/Poppins-Bold.ttf"),
   });
 
   const onLayoutRootView = useCallback(async () => {
@@ -32,7 +33,7 @@ export default function App() {
   return (
     <SafeAreaProvider onLayout={onLayoutRootView}>
       <AuthProvider>
-        <StatusBar backgroundColor={COLORS.primary}/>
+        <StatusBar backgroundColor={COLORS.black} />
         <Navigation />
       </AuthProvider>
     </SafeAreaProvider>

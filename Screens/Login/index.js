@@ -1,14 +1,16 @@
-import { View, Text, Image, Alert, Button } from "react-native";
+import { View, Text, Image } from "react-native";
 import React, { useState, useContext } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import LoginStyle from "./style";
-import { COLORS, MARGIN, FONT } from "../../constants";
-import { ScrollView, TextInput, TouchableOpacity } from "react-native";
+import { COLORS,SCREENSIZE } from "../../constants";
+import { ScrollView, TouchableOpacity } from "react-native";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import Toast, { BaseToast, ErrorToast } from "react-native-toast-message";
 import { AuthContext } from "../../context/AuthContext";
 import Spinner from "react-native-loading-spinner-overlay";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import { TextInput } from "@react-native-material/core";
 
 {
   /* pati sa pemet mwen verifier chak champ nn formulaire a */
@@ -67,15 +69,21 @@ const toastConfig = {
 
 const Login = ({ navigation }) => {
   const { isLoading, login } = useContext(AuthContext);
+  const [showPassword, setShowPassword] = useState(false);
+  const [visiblePassword, setVisiblePassword] = useState(true);
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
+    <SafeAreaView style={LoginStyle.safeAreaViewStyle}>
       <Formik
         initialValues={{
           nif: "",
           password: "",
         }}
         validationSchema={LoginSchema}
-        onSubmit={(values) => {login(values);}}>
+        onSubmit={(values, { resetForm }) => {
+          login(values);
+          resetForm();
+        }}
+      >
         {({
           values,
           errors,
@@ -86,65 +94,37 @@ const Login = ({ navigation }) => {
           handleSubmit,
         }) => (
           <ScrollView>
-            <View
-              style={{
-                alignItems: "center",
-                justifyContent: "center",
-                marginRight: MARGIN.horizontal,
-                marginLeft: MARGIN.horizontal,
-              }}
-            >
+            <View style={LoginStyle.styleView}>
               <View style={LoginStyle.view}>
                 <Image
                   source={require("./../../assets/login.png")}
                   style={LoginStyle.image}
+                  resizeMode="contain"
                 />
               </View>
               <Spinner visible={isLoading} color={COLORS.spinner} size={60} />
               <Toast config={toastConfig} />
               {/* pati text la */}
               <View style={{ alignItems: "center", paddingTop: 30 }}>
-                <Text
-                  style={{
-                    fontFamily: FONT.Black,
-                    fontSize: 20,
-                    color: COLORS.primary,
-                  }}
-                >
-                  CONNEXION
-                </Text>
-                <Text
-                  style={{
-                    paddingTop: 5,
-                    fontFamily: FONT.SfProMedium,
-                    fontSize: 12,
-                    color: COLORS.text,
-                  }}
-                >
+                <Text style={LoginStyle.textTitle}>CONNEXION</Text>
+                <Text style={LoginStyle.textSubtitle}>
                   Remplissez les champs ci-dessous pour vous connecter
                 </Text>
               </View>
               {/* pati input la */}
-              <View style={{ width: "100%", paddingTop: 30 }}>
+              <View style={LoginStyle.viewAllInput}>
                 <View>
                   <TextInput
-                    placeholder="Entrer votre nif..."
                     placeholderTextColor={COLORS.text}
                     selectionColor={COLORS.primary}
                     keyboardType="numeric"
                     value={values.nif}
                     onChangeText={handleChange("nif")}
                     onBlur={() => setFieldTouched("nif")}
-                    style={[
-                      {
-                        height: 48,
-                        width: "100%",
-                        backgroundColor: COLORS.secondary,
-                        padding: MARGIN.horizontal,
-                        borderRadius: 10,
-                        fontFamily: FONT.SfProRegular,
-                      },
-                    ]}
+                    label="Entrer votre nif"
+                    variant="outlined"
+                    color={COLORS.primary}
+                    inputStyle={{ backgroundColor: COLORS.white }}
                   />
                   {touched.nif && errors.nif && (
                     <Text style={LoginStyle.errorText}>{errors.nif}</Text>
@@ -152,47 +132,47 @@ const Login = ({ navigation }) => {
                 </View>
                 <View style={{ paddingTop: 10 }}>
                   <TextInput
-                    style={[
-                      {
-                        height: 48,
-                        width: "100%",
-                        backgroundColor: COLORS.secondary,
-                        padding: MARGIN.horizontal,
-                        borderRadius: 10,
-                        fontFamily: FONT.SfProRegular,
-                      },
-                    ]}
-                    secureTextEntry
-                    placeholder="Entrer votre mot de passe"
+                    secureTextEntry={visiblePassword}
                     placeholderTextColor={COLORS.text}
                     selectionColor={COLORS.primary}
                     value={values.password}
                     onChangeText={handleChange("password")}
                     onBlur={() => setFieldTouched("password")}
-                    autoCapitalize="none"
+                    label="Entrer votre mot de passe"
+                    variant="outlined"
+                    inputStyle={{ backgroundColor: COLORS.white }}
+                    color={COLORS.primary}
                   />
                   {touched.password && errors.password && (
                     <Text style={LoginStyle.errorText}>{errors.password}</Text>
                   )}
+                  <TouchableOpacity
+                    style={LoginStyle.eyeBtn}
+                    onPress={() => {
+                      setVisiblePassword(!visiblePassword);
+                      setShowPassword(!showPassword);
+                    }}
+                  >
+                    <Ionicons
+                      name={
+                        showPassword === false
+                          ? "eye-outline"
+                          : "eye-off-outline"
+                      }
+                      disabled
+                      size={25}
+                      color={LoginStyle.iconColor}
+                    />
+                  </TouchableOpacity>
                 </View>
               </View>
-              <View
-                style={{
-                  alignSelf: "flex-end",
-                  marginVertical: MARGIN.vertical,
-                }}
-              >
+              <View style={LoginStyle.forgotPasswordView}>
                 <TouchableOpacity
                   onPress={() => {
                     navigation.navigate("ForgotPassword");
                   }}
                 >
-                  <Text
-                    style={{
-                      fontFamily: FONT.SfProMedium,
-                      color: COLORS.primary,
-                    }}
-                  >
+                  <Text style={LoginStyle.forgotPasswordViewText}>
                     Mot de passe oublié ?
                   </Text>
                 </TouchableOpacity>
@@ -206,26 +186,17 @@ const Login = ({ navigation }) => {
                   { backgroundColor: isValid ? "#407BFF" : "#D9E5FF" },
                 ]}
               >
-                <Text style={{ color: COLORS.white, fontFamily: FONT.Black }}>
-                  Se connecter
-                </Text>
+                <Text style={LoginStyle.textBtn}>Se connecter</Text>
               </TouchableOpacity>
               {/* pati forgotten lan */}
 
-              <View
-                style={{ alignSelf: "center", marginVertical: MARGIN.vertical }}
-              >
+              <View style={LoginStyle.viewNew}>
                 <TouchableOpacity
                   onPress={() => {
                     navigation.navigate("SignUp");
                   }}
                 >
-                  <Text
-                    style={{
-                      fontFamily: FONT.SfProMedium,
-                      color: COLORS.primary,
-                    }}
-                  >
+                  <Text style={LoginStyle.viewNewText}>
                     Nouveau sur KINISI ? Créer un compte
                   </Text>
                 </TouchableOpacity>

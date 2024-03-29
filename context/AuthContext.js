@@ -20,6 +20,46 @@ const showToast = () => {
   });
 };
 
+const showToastModifEmail = () => {
+  Toast.show({
+    type: "success",
+    text1: "Inscription",
+    text2: "Modification effectué avec succès!! 👋",
+    autoHide: true,
+    visibilityTime: 4500,
+  });
+};
+
+const showToastSignalement = () => {
+  Toast.show({
+    type: "success",
+    text1: "Alert vol de vehicule",
+    text2: "Alerte effectuée avec succès!! 👋",
+    autoHide: true,
+    visibilityTime: 4500,
+  });
+};
+
+
+const logout = async () => {
+  setIsLoading(true);
+  axios
+    .post(`${BASE_URL}/api/auth/logout`, null, {
+      headers: { Authorization: `Bearer ${userInfo.token}` },
+    })
+    .then((response) => {
+      AsyncStorage.removeItem("userInfo");
+      setUserInfo({});
+      setIsLoading(false);
+    })
+    .catch((error) => {
+      // En cas d'erreur...
+      setIsLoading(false);
+      showToastErr();
+    });
+};
+
+
 const showToastErrorNif = () => {
   Toast.show({
     type: "error",
@@ -59,12 +99,17 @@ const showToastErr = () => {
     visibilityTime: 4500,
   });
 };
+const showToastErrServNet = () => {
+  Toast.show({
+    type: "error",
+    text1: "Attention !!",
+    text2: "Erreur de connection ou serveur",
+    autoHide: true,
+    visibilityTime: 4500,
+  });
+};
 
-/*
-  pati sa m jere toast lan ak tout configuration
-*/
-
-const showToastNif = () => {
+const showToastMessageErrorLogin = () => {
   Toast.show({
     type: "error",
     text1: "Attention!",
@@ -94,146 +139,156 @@ const showToastUserFound = () => {
   });
 };
 
-/*
 
-*/
 export const AuthProvider = ({ children }) => {
   const [userInfo, setUserInfo] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [splachLoading, setSplachLoading] = useState(false);
+  
 
-
-
- // Définition d'une fonction d'inscription
- const register = (values) => {
-  setIsLoading(true);
-  axios
-    .post(`${BASE_URL}/api/auth/register`, values)
-    .then((response) => {
-      let userInfo = response.data;
-      /*
+  // Définition d'une fonction d'inscription
+  const register = (values) => {
+    setIsLoading(true);
+    //nan pati sa mwen fe appel ak on function ki permet mwen rele lien url avek api mwen an 
+    axios
+      .post(`${BASE_URL}/api/auth/register`, values)
+      .then((response) => {
+        let userInfo = response.data;
+        /*
       Afficher un message pour indiquer que le compte a été créé
       */
-      if (userInfo) {
-        setIsLoading(false);
-        setUserInfo(userInfo);
-        AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
-        showToast();
-      }
-    })
-    .catch((error) => {
-      if (error.response) {
-        const statusCode = error.response.status;
-
-        if (statusCode === 422) {
-          const errors = error.response.data;
-
-          if (errors.hasOwnProperty("nif") && errors.hasOwnProperty("email")) {
-            setIsLoading(false);
-            showToastEmailNif();
-          } else if (errors.hasOwnProperty("nif")) {
-            setIsLoading(false);
-            showToastErrorNif();
-          } else if (errors.hasOwnProperty("email")) {
-            setIsLoading(false);
-            showToastErrorEmail();
-          }
-        } else if (statusCode === 403) {
+        if (userInfo) {
           setIsLoading(false);
-          showToastAccessDenied();
-        } else if (statusCode === 302){
-          setIsLoading(false);
-          showToastUserFound();
+          setUserInfo(userInfo);
+          AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
+          showToast();
         }
-      } else {
+      })
+      .catch((error) => {
+        if (error.response) {
+          const statusCode = error.response.status;
+
+          if (statusCode === 422) {
+            const errors = error.response.data;
+            if (
+              errors.hasOwnProperty("nif") &&
+              errors.hasOwnProperty("email")
+            ) {
+              setIsLoading(false);
+              showToastEmailNif();
+            } else if (errors.hasOwnProperty("nif")) {
+              setIsLoading(false);
+              showToastErrorNif();
+            } else if (errors.hasOwnProperty("email")) {
+              setIsLoading(false);
+              showToastErrorEmail();
+            }
+          } else if (statusCode === 403) {
+            setIsLoading(false);
+            showToastAccessDenied();
+          } else if (statusCode === 302) {
+            setIsLoading(false);
+            showToastUserFound();
+          }
+        } else {
+          setIsLoading(false);
+          showToastErr();
+        }
+      });
+  };
+
+  const emailModify = async (idUser, new_email) => {
+    setIsLoading(true);
+    axios
+      .put(`${BASE_URL}/api/user/${idUser}/change-email`, new_email)
+      .then((response) => {
+        let userInfo = response.data;
+        /*
+      Afficher un message pour indiquer que la mise a jour a été faite
+      */
+        if (userInfo) {
+          setIsLoading(false);
+          showToastModifEmail();
+          //setVisibleModal(false);
+        }
+      })
+      .catch((error) => {
+        if (error.response) {
+          const statusCode = error.response.status;
+          if (statusCode === 401) {
+            setIsLoading(false);
+            //setVisibleModal(false);
+            showToastErr();
+            console.log(error.response.data);
+          }
+        }
+      });
+  };
+
+  const signalement = async (values) => {
+    setIsLoading(true);
+    axios
+      .post(`${BASE_URL}/api/user/signalement`, values)
+      .then((response) => {
+        if (response.status === 200) {
+          setIsLoading(false);
+          showToastSignalement();
+        }
+      })
+      .catch((error) => {
         setIsLoading(false);
         showToastErr();
-      }
-    });
-};
-
-
+        console.log(error);
+      });
+  };
 
   // Définition d'une fonction de connexion
-const login = (values) => {
-  // Mettre isLoading à true pour indiquer qu'une opération est en cours
-  setIsLoading(true);
-
-  // Effectuer une requête POST à l'URL de base combinée avec le chemin d'authentification "/api/auth/login"
-  axios
-    .post(`${BASE_URL}/api/auth/login`, values)
-    .then((response) => {
-      // Une fois la réponse reçue avec succès...
-      // Extraire les informations de l'utilisateur de la réponse
-      let userInfo = response.data;
-
-      /*
-      m voy mesaj poum di moun nn ke kont lan cree
-      */
-
-      // Mettre isLoading à false pour indiquer que l'opération est terminée
-      setIsLoading(false);
-
-      // Mettre à jour les informations de l'utilisateur avec les données reçues
-      setUserInfo(userInfo);
-
-      // Convertir les informations de l'utilisateur en chaîne JSON
-      let values = JSON.stringify(userInfo);
-
-      // Stocker les informations de l'utilisateur dans le stockage local (AsyncStorage)
-      AsyncStorage.setItem("userInfo", values);
-
-      // Décommenter la ligne suivante si vous avez une fonction showToastSucces() pour afficher un message de succès
-      //showToastSucces();
-    })
-    .catch((error) => {
-      /*
-      m afiche messaj si nif lan ak email lan existe deja
-      */
-
-      // Extraire les données d'erreur de la réponse d'erreur
-      const errorParsed = error.response.data;
-
-      // Vérifier si un message d'erreur est présent dans les données d'erreur
-      if (errorParsed?.message) {
-        // Mettre isLoading à false en cas d'erreur
+  const login = (values) => {
+    // Mettre isLoading à true pour indiquer qu'une opération est en cours
+    setIsLoading(true);
+    axios
+      .post(`${BASE_URL}/api/auth/login`, values)
+      .then((response) => {
+        let userInfo = response.data;
         setIsLoading(false);
+        setUserInfo(userInfo);
+        //console.log(userInfo);
+        let values = JSON.stringify(userInfo);
+        AsyncStorage.setItem("userInfo", values);
+      })
+      .catch((error) => {
+        const errorParsed = error.response.data;
+        //console.log(error);
+        if (errorParsed?.message) {
+          setIsLoading(false);
+          showToastMessageErrorLogin();
+        } else {
+          setIsLoading(false);
+          showToastErrServNet();
+        }
+      });
+  };
 
-        // Appeler la fonction showToastNif() pour afficher un message d'erreur
-        showToastNif();
-      }
-    });
-};
+ 
 
-// Définition d'une fonction de déconnexion 
-const logout = async () => {
-  // Mettre isLoading à true pour indiquer qu'une opération est en cours
-  setIsLoading(true);
-
-  // Effectuer une requête POST à l'URL de base combinée avec le chemin de déconnexion "/api/auth/logout"
-  // et inclure le token d'autorisation dans les en-têtes de la requête
-  axios.post(`${BASE_URL}/api/auth/logout`, null, {
-    headers: { Authorization: `Bearer ${userInfo.token}` }
-  }).then(response => {
-    // Une fois la réponse reçue avec succès...
-    // Supprimer les informations utilisateur du stockage local
-    AsyncStorage.removeItem('userInfo');
-
-    // Réinitialiser les informations utilisateur à un objet vide
-    setUserInfo({});
-
-    // Mettre isLoading à false pour indiquer que l'opération est terminée
-    setIsLoading(false);
-  }).catch(error => {
-    // En cas d'erreur...
-    // Mettre isLoading à false en cas d'erreur
-    setIsLoading(false);
-
-    // Appeler la fonction showToastErr() pour afficher un message d'erreur
-    showToastErr();
-  });
-};
-
+  // Définition d'une fonction de déconnexion
+  const logout = async () => {
+    setIsLoading(true);
+    axios
+      .post(`${BASE_URL}/api/auth/logout`, null, {
+        headers: { Authorization: `Bearer ${userInfo.token}` },
+      })
+      .then((response) => {
+        AsyncStorage.removeItem("userInfo");
+        setUserInfo({});
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        // En cas d'erreur...
+        setIsLoading(false);
+        showToastErr();
+      });
+  };
 
   const isLoggedIn = async () => {
     try {
@@ -264,7 +319,10 @@ const logout = async () => {
         splachLoading,
         register,
         login,
+        emailModify,
         logout,
+        signalement,
+        
       }}
     >
       {children}

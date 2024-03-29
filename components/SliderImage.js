@@ -1,4 +1,4 @@
-import { View, ScrollView, Image, FlatList } from "react-native";
+import { View, Image, FlatList } from "react-native";
 import React from "react";
 import HomeStyle from "../Screens/Home/style";
 import slides from "../components/data";
